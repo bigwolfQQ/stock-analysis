@@ -55,10 +55,12 @@
 ### 方法一：Claude Skills 版（推薦 Claude.ai 用戶使用）
 
 **步驟：**
-1. 進入 [Claude.ai](https://claude.ai)，開啟或建立一個「專案（Project）」
-2. 在專案設定的「Project Knowledge」中上傳 `SKILL.md`
+1. 進入 [Claude.ai](https://claude.ai)，點選帳號，找到「設定（Settings）」
+2. 將本repo的 `SKILL.md`下載到本機電腦
 3. **先修改檔案內的佔位符**：把 `{your-username}/{your-repo}` 換成你自己的 GitHub repo，否則 AI 會嘗試 push 到別人的 repository
-4. 之後在該專案內提供股票代號＋現金流量表資料（截圖或文字），即自動啟動六步驟流程
+4. 在設定（Settings）找到Skills，找到新增「Add」，選擇Upload a skill
+5. 將第二步驟下載的`SKILL.md`上傳至Claude
+6. 之後在Claude內表示分析股票名稱或股票代號，即自動啟動分析程序
 
 > ⚠️ 此版本包含 Claude 專屬工具指令（`create_file`／`present_files`／`bash` 等），**僅限 Claude.ai** 使用。
 
