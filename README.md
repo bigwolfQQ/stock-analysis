@@ -64,6 +64,20 @@
 
 > ⚠️ 此版本包含 Claude 專屬工具指令（`create_file`／`present_files`／`bash` 等），**僅限 Claude.ai** 使用。
 
+#### 🔑 關於自動化版控（Git Push）需要的 GitHub Token
+ 
+若你的 `SKILL.md` 保留了「Git 版控與發布規則」章節，Claude 在第一次要 push 報告之前，會**主動向你索取 GitHub Personal Access Token**。準備方式：
+ 
+1. 打開 [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)
+2. 點 **Generate new token**，取一個你看得懂的名字（例如 `stock-analysis-claude`）
+3. **Repository access** 選 **Only select repositories**，選你自己的 repo
+4. **Permissions** 裡把 **Contents** 設成 **Read and write**
+5. 產生後複製給 Claude
+**注意事項：**
+- 這組 token 只在**當次對話**中使用，Claude 不會把它存進記憶，換一個新對話分析下一檔股票時要重新提供
+- Token 直接貼在對話裡屬於明碼傳輸，建議設定過期時間，且用完後可以到 GitHub 設定裡撤銷重發
+- 若不想每次都要提供 token，可以刪除 `SKILL.md` 中「Git 版控與發布規則」整個章節，改成手動下載報告自行上傳
+  
 ---
 
 ### 方法二：通用 Prompt 版（跨平台通用）
@@ -107,7 +121,6 @@
 
 - 股價、EPS、營收等數字依賴網路搜尋與第三方網站，同一時間點不同來源偶爾會不一致；流程設計上會如實並陳、不擅自判斷對錯，但仍建議自行以官方公告（公開資訊觀測站 MOPS）或看盤軟體核實
 - 部分官網簡報 PDF 因 robots.txt 限制無法直接讀取內容，只能附連結供自行查閱
-- 現金流量表、營收，自行截圖給AI會更精準
 - **使用者截圖提供的原始資料，通常比 AI 自行搜尋取得的資料更可靠**，關鍵數字（現金流量表、月營收、月K棒）建議優先用截圖方式提供
 
 ---
