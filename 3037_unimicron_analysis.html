@@ -543,5 +543,40 @@
 </footer>
 
 </div>
+<script>
+(function(){
+  var pads = document.querySelectorAll('.pad');
+  var sections = [];
+  pads.forEach(function(pad){
+    var step = pad.getAttribute('data-step');
+    var section = document.getElementById('step' + step);
+    if (section) {
+      sections.push({ pad: pad, section: section });
+      if (!pad.classList.contains('locked')) {
+        pad.addEventListener('click', function(){
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    }
+  });
+
+  function onScroll(){
+    var scrollPos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(item){
+      if (item.section.offsetTop <= scrollPos) {
+        current = item;
+      }
+    });
+    sections.forEach(function(item){
+      if (item.pad.classList.contains('locked')) return;
+      item.pad.classList.toggle('active', item === current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+})();
+</script>
 </body>
 </html>
