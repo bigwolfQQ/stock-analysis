@@ -136,8 +136,8 @@
 <nav class="stepnav">
   <a href="#step1">01 現金流量表分析</a>
   <a href="#step2">02 基本資訊查詢</a>
-  <a href="#step3" class="active">03 法說會討論</a>
-  <span class="disabled">04 營收趨勢</span>
+  <a href="#step3">03 法說會討論</a>
+  <a href="#step4" class="active">04 營收趨勢</a>
   <span class="disabled">05 前瞻本益比</span>
   <span class="disabled">06 投資決策推理</span>
 </nav>
@@ -438,10 +438,56 @@
   </div>
 </section>
 
+<section id="step4">
+  <div class="progress">【第 4 步／共 6 步：營收趨勢視覺化】</div>
+  <p class="note">近12期月營收（使用者提供截圖，Goodinfo月營收走勢圖），單位：億元</p>
+
+  <div class="callout">
+    <b>月營收從 2025/07 的 106.5 億元成長到 2026/06 的 153.6 億元，12個月累計成長約 44%</b>，年增率同步從接近持平（-3.25%）擴大到 <b>+38.9%</b>，成長動能明顯加速，與第2、3步看到的Q2營收創新高、AI相關應用占比提升至16%互相呼應。
+  </div>
+
+  <div class="chart-wrap">
+    <div class="bars">
+      <div class="bar-col"><div class="bar" style="height:173px;background:var(--c-trough);"><span class="val" style="color:var(--c-trough)">106.5▼</span></div><div class="bar-label">2025/07</div></div>
+      <div class="bar-col"><div class="bar" style="height:175px;background:var(--accent-dim);"><span class="val">107.6</span></div><div class="bar-label">2025/08</div></div>
+      <div class="bar-col"><div class="bar" style="height:190px;background:var(--accent-dim);"><span class="val">116.8</span></div><div class="bar-label">2025/09</div></div>
+      <div class="bar-col"><div class="bar" style="height:185px;background:var(--accent-dim);"><span class="val">113.5</span></div><div class="bar-label">2025/10</div></div>
+      <div class="bar-col"><div class="bar" style="height:200px;background:var(--accent-dim);"><span class="val">122.6</span></div><div class="bar-label">2025/11</div></div>
+      <div class="bar-col"><div class="bar" style="height:201px;background:var(--accent-dim);"><span class="val">123.5</span></div><div class="bar-label">2025/12</div></div>
+      <div class="bar-col"><div class="bar" style="height:212px;background:var(--accent-dim);"><span class="val">130.3</span></div><div class="bar-label">2026/01</div></div>
+      <div class="bar-col"><div class="bar" style="height:187px;background:var(--gold);"><span class="val" style="color:var(--gold)">115.1</span></div><div class="bar-label">2026/02</div></div>
+      <div class="bar-col"><div class="bar" style="height:222px;background:var(--accent-dim);"><span class="val">136.3</span></div><div class="bar-label">2026/03</div></div>
+      <div class="bar-col"><div class="bar" style="height:229px;background:var(--accent-dim);"><span class="val">140.4</span></div><div class="bar-label">2026/04</div></div>
+      <div class="bar-col"><div class="bar" style="height:245px;background:var(--accent-dim);"><span class="val">150.6</span></div><div class="bar-label">2026/05</div></div>
+      <div class="bar-col"><div class="bar" style="height:250px;background:var(--c-peak);"><span class="val" style="color:var(--c-peak)">153.6▲</span></div><div class="bar-label">2026/06</div></div>
+    </div>
+    <div class="zero-axis"></div>
+  </div>
+
+  <table>
+    <thead><tr><th>月份</th><th>營收（億元）</th><th>月增率</th><th>年增率</th></tr></thead>
+    <tbody>
+      <tr><td>2025/07</td><td>106.5</td><td class="neg">-3.7%</td><td class="neg">-3.25%</td></tr>
+      <tr><td>2025/08</td><td>107.6</td><td class="pos">+1.05%</td><td class="pos">+4.27%</td></tr>
+      <tr><td>2025/09</td><td>116.8</td><td class="pos">+8.56%</td><td class="pos">+12.2%</td></tr>
+      <tr><td>2025/10</td><td>113.5</td><td class="neg">-2.81%</td><td class="pos">+8.47%</td></tr>
+      <tr><td>2025/11</td><td>122.6</td><td class="pos">+8.03%</td><td class="pos">+22.4%</td></tr>
+      <tr><td>2025/12</td><td>123.5</td><td class="pos">+0.7%</td><td class="pos">+29.7%</td></tr>
+      <tr><td>2026/01</td><td>130.3</td><td class="pos">+5.49%</td><td class="pos">+27.1%</td></tr>
+      <tr class="hl-row"><td>2026/02</td><td>115.1</td><td class="neg">-11.7%</td><td class="pos">+18%</td></tr>
+      <tr><td>2026/03</td><td>136.3</td><td class="pos">+18.5%</td><td class="pos">+22.8%</td></tr>
+      <tr><td>2026/04</td><td>140.4</td><td class="pos">+2.99%</td><td class="pos">+22%</td></tr>
+      <tr><td>2026/05</td><td>150.6</td><td class="pos">+7.25%</td><td class="pos">+47.5%</td></tr>
+      <tr><td>2026/06</td><td>153.6</td><td class="pos">+1.99%</td><td class="pos">+38.9%</td></tr>
+    </tbody>
+  </table>
+  <p>2026年2月是全年低點（115.1億，月減11.7%），對照農曆春節工作天數較少的慣例性淡季（2026年春節落在2月中旬），屬正常季節性因素，3月立刻月增18.5%回補，不是需求轉弱的訊號。整體趨勢是<b>年增率一路走高並在近三個月站穩130億以上</b>，其中2026/05年增率高達47.5%，與第3步法說會揭露「所有終端應用之營收金額均呈現成長」（工業連6季成長、汽車回溫、消費強勁）的說法一致，顯示這波營收加速不是單一月份的異常波動，而是延續多月的結構性成長趨勢。</p>
+</section>
+
 </main>
 
 <footer>
-  報告版本 v1.2 ｜ 生成時間：2026-07-31 ｜ 資料來源：第1步為使用者提供之財報截圖，第2步為線上搜尋，第3步為使用者提供之官方法說會簡報截圖（來源已於各節標註）
+  報告版本 v1.3 ｜ 生成時間：2026-07-31 ｜ 資料來源：第1、4步為使用者提供之截圖，第2步為線上搜尋，第3步為使用者提供之官方法說會簡報截圖（來源已於各節標註）
 </footer>
 
 </body>
