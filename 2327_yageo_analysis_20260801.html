@@ -102,7 +102,7 @@ footer{ text-align:center; color:var(--text-dim); font-size:0.8rem; padding:30px
   <a href="#step1" class="active">① 現金流量表</a>
   <a href="#step2">② 基本資訊</a>
   <a href="#step3">③ 法說會</a>
-  <a href="#step4" class="disabled">④ 營收趨勢</a>
+  <a href="#step4">④ 營收趨勢</a>
   <a href="#step5" class="disabled">⑤ 本益比估值</a>
   <a href="#step6" class="disabled">⑥ 投資決策</a>
 </nav>
@@ -482,10 +482,89 @@ footer{ text-align:center; color:var(--text-dim); font-size:0.8rem; padding:30px
 
 </section>
 
-<section id="step4" style="opacity:0.4">
-<div class="progress-tag" style="color:#6c7688;border-color:#6c7688">【第 4 步／共 6 步：營收趨勢視覺化】</div>
-<h2>營收趨勢視覺化</h2>
-<p>待執行。</p>
+<section id="step4">
+<div class="progress-tag">【第 4 步／共 6 步：營收趨勢視覺化】</div>
+<h2>營收趨勢視覺化（近 12 個月月營收）</h2>
+
+<div class="callout pass">
+<b>近 12 個月營收呈現「先打底、後加速」的走勢</b>：2025 年 7～8 月是相對低點（106～108 億元，年增僅個位數甚至一度年減），之後逐月墊高，到 2026 年 5、6 月分別繳出 150.6 億、153.6 億元，創單月歷史新高，年增率也擴大到 47.5%、38.9%，成長動能明顯在近兩季加速，時間點與第三步討論的 AI 需求升溫、鉭質電容漲價落地大致吻合。
+</div>
+
+<h3>月營收走勢（2025/07～2026/06，單位：億元）</h3>
+<div class="chart-wrap">
+<svg viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="200" x2="1080" y2="200" stroke="#3a4152" stroke-width="1"/>
+  <g font-size="12" fill="#e9e7df">
+    <rect x="0.0" y="85.6" width="80.8" height="114.4" rx="3" fill="#ff8fa3"/>
+    <text x="40.4" y="76" text-anchor="middle">106.5</text>
+    <text x="40.4" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/07</text>
+
+    <rect x="90.8" y="84.4" width="80.8" height="115.6" rx="3" fill="#6c7688"/>
+    <text x="131.2" y="75" text-anchor="middle">107.6</text>
+    <text x="131.2" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/08</text>
+
+    <rect x="181.7" y="74.5" width="80.8" height="125.5" rx="3" fill="#6c7688"/>
+    <text x="222.1" y="65" text-anchor="middle">116.8</text>
+    <text x="222.1" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/09</text>
+
+    <rect x="272.5" y="78.1" width="80.8" height="121.9" rx="3" fill="#6c7688"/>
+    <text x="312.9" y="69" text-anchor="middle">113.5</text>
+    <text x="312.9" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/10</text>
+
+    <rect x="363.3" y="68.3" width="80.8" height="131.7" rx="3" fill="#6c7688"/>
+    <text x="403.7" y="59" text-anchor="middle">122.6</text>
+    <text x="403.7" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/11</text>
+
+    <rect x="454.2" y="67.3" width="80.8" height="132.7" rx="3" fill="#6c7688"/>
+    <text x="494.6" y="58" text-anchor="middle">123.5</text>
+    <text x="494.6" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">25/12</text>
+
+    <rect x="545.0" y="60.0" width="80.8" height="140.0" rx="3" fill="#6c7688"/>
+    <text x="585.4" y="51" text-anchor="middle">130.3</text>
+    <text x="585.4" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/01</text>
+
+    <rect x="635.8" y="76.4" width="80.8" height="123.6" rx="3" fill="#6c7688"/>
+    <text x="676.2" y="67" text-anchor="middle">115.1</text>
+    <text x="676.2" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/02</text>
+
+    <rect x="726.7" y="53.6" width="80.8" height="146.4" rx="3" fill="#6c7688"/>
+    <text x="767.1" y="44" text-anchor="middle">136.3</text>
+    <text x="767.1" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/03</text>
+
+    <rect x="817.5" y="49.2" width="80.8" height="150.8" rx="3" fill="#6c7688"/>
+    <text x="857.9" y="40" text-anchor="middle">140.4</text>
+    <text x="857.9" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/04</text>
+
+    <rect x="908.3" y="38.2" width="80.8" height="161.8" rx="3" fill="#3fc98a"/>
+    <text x="948.7" y="29" text-anchor="middle">150.6</text>
+    <text x="948.7" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/05</text>
+
+    <rect x="999.2" y="35.0" width="80.8" height="165.0" rx="3" fill="#f4e2b8"/>
+    <text x="1039.6" y="25" text-anchor="middle">153.6（新高）</text>
+    <text x="1039.6" y="215" text-anchor="middle" fill="#9aa0ac" font-size="10.5">26/06</text>
+  </g>
+</svg>
+<div class="legend"><span><span class="dot" style="background:#ff8fa3"></span>相對低點</span><span><span class="dot" style="background:#f4e2b8"></span>單月新高</span><span><span class="dot" style="background:#3fc98a"></span>加速期</span><span><span class="dot" style="background:#6c7688"></span>一般月份</span></div>
+</div>
+
+<h3>月增／年增率細節</h3>
+<table>
+<tr><th>月份</th><th>單月營收(億)</th><th>月增%</th><th>年增%</th></tr>
+<tr><td>2025/07</td><td>106.5</td><td class="negv">-3.7%</td><td class="negv">-3.25%</td></tr>
+<tr><td>2025/08</td><td>107.6</td><td class="pos">+1.05%</td><td class="pos">+4.27%</td></tr>
+<tr><td>2025/09</td><td>116.8</td><td class="pos">+8.56%</td><td class="pos">+12.2%</td></tr>
+<tr><td>2025/10</td><td>113.5</td><td class="negv">-2.81%</td><td class="pos">+8.47%</td></tr>
+<tr><td>2025/11</td><td>122.6</td><td class="pos">+8.03%</td><td class="pos">+22.4%</td></tr>
+<tr><td>2025/12</td><td>123.5</td><td class="pos">+0.7%</td><td class="pos">+29.7%</td></tr>
+<tr><td>2026/01</td><td>130.3</td><td class="pos">+5.49%</td><td class="pos">+27.1%</td></tr>
+<tr><td>2026/02</td><td>115.1</td><td class="negv">-11.7%</td><td class="pos">+18%</td></tr>
+<tr><td>2026/03</td><td>136.3</td><td class="pos">+18.5%</td><td class="pos">+22.8%</td></tr>
+<tr><td>2026/04</td><td>140.4</td><td class="pos">+2.99%</td><td class="pos">+22%</td></tr>
+<tr><td>2026/05</td><td class="pos"><b>150.6</b></td><td class="pos">+7.25%</td><td class="pos">+47.5%</td></tr>
+<tr><td>2026/06</td><td class="pos"><b>153.6（歷史新高）</b></td><td class="pos">+1.99%</td><td class="pos">+38.9%</td></tr>
+</table>
+<p class="note">2026/02 單月月減 11.7% 屬正常季節性波動（農曆春節工作天數較少），年增率仍達 18%，並未偏離成長軌道。3 月以後月增、年增同步放大，與法說會提到的 AI 相關營收占比從法說前的個位數逐步墊高至 26Q2 的 16% 時間點吻合。</p>
+<p class="src">資料來源：使用者提供之 Goodinfo 月營收走勢圖截圖（2025/01～2026/06），非本次網路搜尋所得。</p>
 </section>
 
 <section id="step5" style="opacity:0.4">
