@@ -100,7 +100,7 @@ footer{ text-align:center; color:var(--text-dim); font-size:0.8rem; padding:30px
 
 <nav class="stepnav" id="stepnav">
   <a href="#step1" class="active">① 現金流量表</a>
-  <a href="#step2" class="disabled">② 基本資訊</a>
+  <a href="#step2">② 基本資訊</a>
   <a href="#step3" class="disabled">③ 法說會</a>
   <a href="#step4" class="disabled">④ 營收趨勢</a>
   <a href="#step5" class="disabled">⑤ 本益比估值</a>
@@ -367,10 +367,74 @@ footer{ text-align:center; color:var(--text-dim); font-size:0.8rem; padding:30px
 </p>
 </section>
 
-<section id="step2" style="opacity:0.4">
-<div class="progress-tag" style="color:#6c7688;border-color:#6c7688">【第 2 步／共 6 步：基本資訊查詢】</div>
+<section id="step2">
+<div class="progress-tag">【第 2 步／共 6 步：基本資訊查詢】</div>
 <h2>基本資訊查詢</h2>
-<p>待確認是否繼續後執行。</p>
+
+<div class="callout">
+  <b>國巨股價近期經歷「先腰斬、後漲停反彈」的劇烈震盪</b>：從 52 週高點 1220 元，7 月下旬一度重挫到 456.5 元附近，7/29 法說會公布史上第三高單季獲利（EPS 4.59 元）後股價續跌，隔日才反彈至 <b>502 元漲停（+9.97%）</b>。目前現金殖利率僅 1.19%，明顯低於近 5 年平均 2.82%，主因是股價基期已大幅墊高。
+</div>
+
+<h3>股價與市值</h3>
+<table>
+<tr><th>項目</th><th>數值</th><th>備註</th></tr>
+<tr><td class="label">最新收盤（07/31）</td><td class="pos">502.00 元（+45.50，+9.97%，漲停）</td><td>昨收 456.50 元</td></tr>
+<tr><td class="label">52 週高／低</td><td>1220.00 元 ／ 132.50 元</td><td>目前股價距高點約 -58.9%</td></tr>
+<tr><td class="label">本益比（本淨比）</td><td>39.49 倍（本淨比 1.56）</td><td>依近四季 EPS 12.71 元計算</td></tr>
+<tr><td class="label">總市值</td><td>約 1.03 兆元</td><td>發行股數約 20.59 億股</td></tr>
+<tr><td class="label">每股淨值</td><td>321.19 元</td><td>—</td></tr>
+</table>
+<p class="src">資料來源：<a href="https://www.cnyes.com/twstock/2327" target="_blank">鉅亨網個股總覽</a>（頁面標示市場收盤 07/31 05:30）。</p>
+
+<div class="callout risk">
+<b>資料一致性提醒</b>：鉅亨網快照上的「近四季EPS 12.71元」「當季EPS 3.90元」等本益比相關欄位，經比對應為 <b>26Q1（而非最新公布的26Q2）</b>的結算基礎（80億稅後淨利 ÷ 約20.7億股 ≈ 3.9元，與畫面標示的3.90元吻合），該頁面尚未即時更新 7/29 剛公布的 Q2 財報數字。因此「本益比39.49倍」這項數字目前仍是用較舊的EPS基礎計算，實際本益比在Q2財報反映後應會下修。以下 Q2 財報數字改採法說會官方公告為準（見下表），本站不會混用新舊基期數字。此外，提醒此為頁面最後更新時間之快照，非即時報價，正式交易請以看盤軟體/券商App為準。
+</div>
+
+<h3>最新財報（2026 年第二季，7/29 法說會公布）</h3>
+<table>
+<tr><th>項目</th><th>26Q2</th><th>季增</th><th>年增</th></tr>
+<tr><td class="label">合併營收</td><td>444.56 億元</td><td class="pos">+16.5%</td><td class="pos">+35.7%</td></tr>
+<tr><td class="label">毛利率</td><td>38.5%</td><td class="pos">+0.4 個百分點</td><td class="pos">+2.9 個百分點</td></tr>
+<tr><td class="label">營業利益率</td><td>26.4%</td><td class="pos">+1.2 個百分點</td><td class="pos">+4.9 個百分點</td></tr>
+<tr><td class="label">稅後純益</td><td>94.18 億元</td><td class="pos">+17.7%</td><td class="pos">+88.5%（單季歷史第三高）</td></tr>
+<tr><td class="label">EPS</td><td class="pos"><b>4.59 元</b></td><td class="pos">+17.7%</td><td class="pos">+88.4%</td></tr>
+</table>
+<table>
+<tr><th>項目</th><th>2026 上半年累計</th><th>年增</th></tr>
+<tr><td class="label">合併營收</td><td>826.22 億元</td><td class="pos">+29.3%</td></tr>
+<tr><td class="label">毛利率</td><td>38.3%</td><td class="pos">+2.7 個百分點</td></tr>
+<tr><td class="label">營業利益率</td><td>25.9%</td><td class="pos">+4.7 個百分點</td></tr>
+<tr><td class="label">稅後純益</td><td>174.19 億元</td><td class="pos">+65.5%（同期新高）</td></tr>
+<tr><td class="label">EPS</td><td class="pos"><b>8.48 元</b></td><td class="pos">—</td></tr>
+</table>
+<p class="note">產品營收占比（26Q2）：鉭質電容 23.8%、磁性元件 23.5%、MLCC 19.1%、電阻 14.3%、感測器 10.9%。應用別：工業 28.4%（連續 6 季成長）、運算 27.3%、車用 15.9%、消費性電子 12.2%、通訊 12.2%。</p>
+<p class="note">法說會亦揭露 26Q2 自由現金流 <span class="negv">57.83 億元</span>，較 26Q1（77.52 億元）與 25Q4（85.92 億元）季減——與第一步規則三「近期投資效益轉弱」的觀察方向一致，值得留意是否延續到下半年。</p>
+<p class="src">資料來源：<a href="https://news.cnyes.com/news/id/6550988" target="_blank">〈國巨法說〉Q2純益季增17.7% 上半年獲利創高EPS8.48元（鉅亨網）</a>、<a href="https://money.udn.com/money/story/5710/9658563" target="_blank">國巨財報／第2季EPS 4.59元（經濟日報）</a>、<a href="https://poorstock.com/earningcall/2327" target="_blank">poorstock.com 國巨法說會整理（含自由現金流細項）</a></p>
+
+<h3>股利與殖利率</h3>
+<table>
+<tr><th>項目</th><th>數值</th></tr>
+<tr><td class="label">2025 年度現金股利</td><td>5.998 元（約 6.00 元），已於 2026/06/12 發放</td></tr>
+<tr><td class="label">目前殖利率（依 502 元股價）</td><td class="negv">1.19%</td></tr>
+<tr><td class="label">近 5 年平均現金殖利率</td><td>2.82%</td></tr>
+</table>
+<p class="note">目前殖利率明顯低於歷史平均，主因是股價基期已大幅墊高，並非公司減少配息；解讀殖利率時建議搭配股價位階一併判斷。</p>
+<p class="src">資料來源：<a href="https://tw.stock.yahoo.com/quote/2327.TW/dividend" target="_blank">Yahoo股市股利政策</a>、股市爆料同學會股利公告整理。</p>
+
+<h3>近期股價劇烈波動背景（提供脈絡，非投資建議）</h3>
+<p>7 月中旬起市場流傳「大股東解質押賣股」傳聞，國巨公開聲明<b>未收到相關股權變動申報或通知</b>，予以闢謠；同期間台股 AI 相關權值股全面重挫，國巨與台達電等多次觸及跌停，股價從高點 1220 元一度重挫超過 5 成。7/29 法說會公布上述亮眼財報後，公司也表示<b>目前沒有實施庫藏股護盤的計畫</b>，消息一度使股價續跌，直到 7/31 才出現漲停反彈。</p>
+<p class="src">資料來源：<a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=2327" target="_blank">Goodinfo 個股新聞彙整</a>、<a href="https://tw.stock.yahoo.com/news/%E5%9C%8B%E5%B7%A8-q2%E7%8D%B2%E5%88%A9%E5%AD%A3%E5%A2%9E17-7-eps-4-111100640.html" target="_blank">國巨*Q2獲利季增17.7%，EPS 4.59元（相關新聞）</a></p>
+
+<h3>法說會資訊</h3>
+<p>最新一場法說會：<b>2026 年 7 月 29 日</b>，公布 2026 年第二季合併財務報告與營運成果。</p>
+<p class="src">
+公司官網投資人關係專區：<a href="https://www.yageo.com/zh-TW/Download/Index/investor_conference" target="_blank">www.yageo.com 法人說明會專區</a><br>
+第三方彙整（含日期/直播/簡報連結，資料源自 MOPS）：<a href="https://poorstock.com/earningcall/2327" target="_blank">poorstock.com/earningcall/2327</a>
+</p>
+
+<div class="callout pass">
+現金流體質（第一步：71.5分，良好）與基本面（26Q2 營收、獲利雙創同期新高，EPS明顯優於預期）方向一致，屬於「體質健康＋當前業績強勁」的組合，但股價近期波動劇烈、且尚無庫藏股護盤計畫，短線籌碼面風險需另外留意，不屬於現金流或基本面範疇。
+</div>
 </section>
 
 <section id="step3" style="opacity:0.4">
