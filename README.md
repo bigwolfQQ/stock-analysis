@@ -66,13 +66,21 @@
 
 #### 🔑 關於自動化版控（Git Push）需要的 GitHub Token
  
-若你的 `SKILL.md` 保留了「Git 版控與發布規則」章節，Claude 在第一次要 push 報告之前，會**主動向你索取 GitHub Personal Access Token**。準備方式：
- 
-1. 打開 [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)
-2. 點 **Generate new token**，取一個你看得懂的名字（例如 `stock-analysis-claude`）
+若你的 `SKILL.md` 保留了「Git 版控與發布規則」章節，Claude 在第一次要 push 報告之前，會**主動向你索取 GitHub Personal Access Token**。準備方式（二選一）：
+
+**方法 A：手動點擊路徑**
+1. 點畫面右上角你的頭像（注意：不是在某個 repo 頁面點，要在 GitHub 任何頁面都可以）→ 選單選 **Settings**
+2. 進入「你的帳號設定」頁面（網址會變成 `github.com/settings/profile`），**左側選單最下方**會看到 **Developer settings**
+3. 依序點：**Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
+
+**方法 B：網址捷徑（跳過找選單）**
+- 登入狀態下，直接在網址列輸入 [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)，會直接進入建立 Fine-grained token 的頁面
+- ⚠️ 這是捷徑網址，若 GitHub 未來改版導致此網址失效，請改用方法 A 的手動路徑
+
+**兩種方法走到最後，設定步驟相同：**
 3. **Repository access** 選 **Only select repositories**，選你自己的 repo
 4. **Permissions** 裡把 **Contents** 設成 **Read and write**
-5. 產生後複製給 Claude
+5. **Generate token** 後複製給 Claude
 **注意事項：**
 - 這組 token 只在**當次對話**中使用，Claude 不會把它存進記憶，換一個新對話分析下一檔股票時要重新提供
 - Token 直接貼在對話裡屬於明碼傳輸，建議設定過期時間，且用完後可以到 GitHub 設定裡撤銷重發
