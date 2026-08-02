@@ -140,8 +140,8 @@
     <div class="pad active" data-step="2"><div class="dot"></div><div class="lbl">02 基本資訊</div></div>
     <div class="wire lit"></div>
     <div class="pad active" data-step="3"><div class="dot"></div><div class="lbl">03 法說會</div></div>
-    <div class="wire"></div>
-    <div class="pad locked" data-step="4"><div class="dot"></div><div class="lbl">04 營收趨勢</div></div>
+    <div class="wire lit"></div>
+    <div class="pad active" data-step="4"><div class="dot"></div><div class="lbl">04 營收趨勢</div></div>
     <div class="wire"></div>
     <div class="pad locked" data-step="5"><div class="dot"></div><div class="lbl">05 本益比</div></div>
     <div class="wire"></div>
@@ -519,6 +519,92 @@
   <p class="chart-cap">資料來源：<a class="src" href="https://ec.ltn.com.tw/article/breakingnews/4932077" target="_blank">自由財經（2025/01/22併購公告）</a>、<a class="src" href="https://blog.fugle.tw/earnings-call-1560-2025-07-30/" target="_blank">富果直送法說會備忘錄（2025/07/30、2026/03/10場次）</a>、<a class="src" href="https://vocus.cc/article/656bfa76fd8978000190f6de" target="_blank">個股研究報告（台積電為DBU最大客戶交叉確認）</a>、<a class="src" href="https://poorstock.com/earningcall/1560" target="_blank">散戶鬥嘴鼓法說會整理</a>。</p>
 
   <p>法說會深入討論到這裡，要不要接著進入<b>第 4 步：營收趨勢視覺化</b>？</p>
+
+</section>
+
+<section class="step" id="step4">
+  <div class="step-tag">【第 4 步／共 6 步：營收趨勢視覺化】</div>
+  <h2>近 18 個月月營收走勢</h2>
+
+  <div class="callout">
+    <b>先講結論：</b> 近 18 個月月營收<b>沒有一個月年增率是負的</b>，從 2025/01 的 5.66 億穩定攀升到 2026/06 的 8.33 億，累計成長約 47%。更值得留意的是 2026 年起成長明顯<b>加速</b>：2026年前六個月中有四個月年增率超過 20%（最高 33.1%），比 2025 年多數月份的 10～20% 區間更強勁，跟第 3 步法說會揭露的產能擴充與併購綜效時程相呼應。
+  </div>
+
+  <div class="chart-card">
+    <svg viewBox="0 0 900 260" width="100%">
+      <line x1="50" y1="210" x2="870" y2="210" class="zline"/>
+      <rect x="60" y="80.9" width="32" height="129.1" fill="var(--c-trough)" opacity="0.8" rx="2"/>
+      <rect x="105" y="72.2" width="32" height="137.8" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="150" y="72.7" width="32" height="137.3" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="195" y="50.6" width="32" height="159.4" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="240" y="49.4" width="32" height="160.6" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="285" y="46.7" width="32" height="163.3" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="330" y="50.3" width="32" height="159.7" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="375" y="52.6" width="32" height="157.4" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="420" y="50.8" width="32" height="159.2" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="465" y="48.5" width="32" height="161.5" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="510" y="44.2" width="32" height="165.8" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="555" y="42.1" width="32" height="167.9" fill="#8b93a1" opacity="0.55" rx="2"/>
+      <rect x="600" y="38.2" width="32" height="171.8" fill="var(--gold-dim)" opacity="0.8" rx="2"/>
+      <rect x="645" y="38.7" width="32" height="171.3" fill="var(--gold-dim)" opacity="0.8" rx="2"/>
+      <rect x="690" y="30.0" width="32" height="180.0" fill="var(--gold-dim)" opacity="0.9" rx="2"/>
+      <rect x="735" y="20.7" width="32" height="189.3" fill="var(--c-peak)" rx="2"/>
+      <rect x="780" y="20.9" width="32" height="189.1" fill="var(--c-peak)" opacity="0.9" rx="2"/>
+      <rect x="825" y="20.0" width="32" height="190.0" fill="var(--c-peak)" rx="2"/>
+
+      <text x="76" y="75" text-anchor="middle" fill="var(--text-muted)" font-size="9">5.66</text>
+      <text x="121" y="66" text-anchor="middle" fill="var(--text-primary)" font-size="9">6.04</text>
+      <text x="166" y="67" text-anchor="middle" fill="var(--text-primary)" font-size="9">6.02</text>
+      <text x="211" y="45" text-anchor="middle" fill="var(--text-primary)" font-size="9">6.99</text>
+      <text x="256" y="43" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.04</text>
+      <text x="301" y="41" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.16</text>
+      <text x="346" y="45" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.00</text>
+      <text x="391" y="47" text-anchor="middle" fill="var(--text-primary)" font-size="9">6.90</text>
+      <text x="436" y="45" text-anchor="middle" fill="var(--text-primary)" font-size="9">6.98</text>
+      <text x="481" y="43" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.08</text>
+      <text x="526" y="39" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.27</text>
+      <text x="571" y="37" text-anchor="middle" fill="var(--text-primary)" font-size="9">7.36</text>
+      <text x="616" y="33" text-anchor="middle" fill="var(--gold)" font-size="9">7.53</text>
+      <text x="661" y="33" text-anchor="middle" fill="var(--gold)" font-size="9">7.51</text>
+      <text x="706" y="25" text-anchor="middle" fill="var(--gold)" font-size="9">7.89</text>
+      <text x="751" y="15" text-anchor="middle" fill="var(--text-primary)" font-size="9">8.30</text>
+      <text x="796" y="15" text-anchor="middle" fill="var(--text-primary)" font-size="9">8.29</text>
+      <text x="841" y="14" text-anchor="middle" fill="var(--text-primary)" font-size="9">8.33</text>
+
+      <text x="76" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/01</text>
+      <text x="121" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/02</text>
+      <text x="166" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/03</text>
+      <text x="211" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/04</text>
+      <text x="256" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/05</text>
+      <text x="301" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/06</text>
+      <text x="346" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/07</text>
+      <text x="391" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/08</text>
+      <text x="436" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/09</text>
+      <text x="481" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/10</text>
+      <text x="526" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/11</text>
+      <text x="571" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="9">25/12</text>
+      <text x="616" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/01</text>
+      <text x="661" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/02</text>
+      <text x="706" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/03</text>
+      <text x="751" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/04</text>
+      <text x="796" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/05</text>
+      <text x="841" y="225" text-anchor="middle" fill="var(--gold)" font-size="9">26/06</text>
+    </svg>
+    <div class="legend"><span><i style="background:var(--c-trough)"></i>期間最低（25/01）</span><span><i style="background:var(--c-peak)"></i>期間新高（26/04起連3月）</span><span><i style="background:var(--gold-dim)"></i>2026年起明顯墊高</span></div>
+    <p class="chart-cap">月營收（億元）逐月變化，2025/01～2026/06 共18個月，金色系標示2026年各月，可清楚看出台階式墊高的趨勢。</p>
+  </div>
+
+  <h3>年增率變化：從穩健到加速</h3>
+  <table>
+    <tr><th>期間</th><th>年增率區間</th><th>特徵</th></tr>
+    <tr><td>2025/01～2025/12</td><td>+3.8% ～ +28.7%</td><td>多數月份落在10～20%區間，屬穩健成長</td></tr>
+    <tr><td>2026/01～2026/06</td><td>+16.4% ～ +33.1%</td><td>四個月超過20%，成長明顯加速</td></tr>
+  </table>
+  <p>對照第3步法說會內容，2026年營收加速的時間點，與 DBU 鑽石碟先進製程放量、SBU 12吋晶圓Q2擴產至36萬片、以及 ABU 併購MKS/MGT綜效顯現的時程大致吻合，三大事業部的成長動能在數字上是可以互相對得上的，不是單一事業部撐起的成長。</p>
+
+  <p class="chart-cap">資料來源：使用者提供之Goodinfo月營收走勢截圖（非本次搜尋所得），與第2步查詢到的「2026年6月營收8.33億，年增16.39%」數字交叉比對一致（本表為16.4%，屬四捨五入誤差，非數字衝突）。</p>
+
+  <p>要不要接著進入<b>第 5 步：前瞻本益比／EPS 預估</b>？</p>
 
 </section>
 </div>
