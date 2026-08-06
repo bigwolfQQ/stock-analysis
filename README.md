@@ -18,7 +18,7 @@
 ## ✨ 功能特色
 
 - 🔒 **現金流優先，盲測判斷**：第一步只看現金流量表數字本身，避免先入為主，評分低於門檻時主動建議停止後續分析
-- 🎭 **擬人化解讀**：把冰冷的財務數字轉譯成「老將自費特訓型」「寅吃卯糧型」等直覺標籤
+- 🎭 **擬人化解讀**：把冰冷的財務數字轉譯成「老將自費特訓型」、「寅吃卯糧型」等直覺標籤
 - 🔗 **來源必附連結**：任何查得的市場數據都要附上實際查詢頁面連結，可逐項覆核打勾／打叉
 - 📈 **雙重估值檢視**：前瞻本益比（股價反推倍數）與目標本益比法（倍數反推目標價）並用，交叉檢視現在貴不貴
 - 🧭 **可跳步、可單步執行**：可只問「法說會怎麼看」、「營收趨勢圖」，不必每次從頭走完六步
@@ -38,6 +38,14 @@
 ---
 
 ## 🗂️ 流程概覽
+
+**六步驟不是隨意排列的檢查清單，而是仿照中醫「先求不傷身，再求療效」的邏輯層層推進：**
+
+1. **不傷身體**（Step 1）：現金流量表能看到帳面數字之外的隱藏現象，先確認這家公司的體質沒問題，再往下看。
+2. **講求療效**（Step 2）：確認安全之後，才看「現在有沒有效」——營收、獲利、EPS 這些當下一般投資人喜歡關注的指標。
+3. **未來也會好嗎**（Step 3、4）：現在有效不代表以後也有效，這兩步是在確認「未來的趨勢是不是也好」。一般會先看法說會，這是管理層對未來的說法，月營收則是驗證這個說法有沒有兌現最快的方式（因為季報資料通常已經是一兩個月前的舊消息），當然以後搭配新聞等其他訊息。
+4. **掂量貴不貴**（Step 5）：體質、療效、未來趨勢都沒問題後，才問「這個價格划不划算」。
+5. **做出決策**（Step 6）：最後才回答「要不要進場」。
 
 | 步驟 | 內容 | 說明 |
 |------|------|------|
@@ -66,13 +74,21 @@
 
 #### 🔑 關於自動化版控（Git Push）需要的 GitHub Token
  
-若你的 `SKILL.md` 保留了「Git 版控與發布規則」章節，Claude 在第一次要 push 報告之前，會**主動向你索取 GitHub Personal Access Token**。準備方式：
- 
-1. 打開 [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)
-2. 點 **Generate new token**，取一個你看得懂的名字（例如 `stock-analysis-claude`）
+若你的 `SKILL.md` 保留了「Git 版控與發布規則」章節，Claude 在第一次要 push 報告之前，會**主動向你索取 GitHub Personal Access Token**。準備方式（二選一）：
+
+**方法 A：手動點擊路徑**
+1. 點畫面右上角你的頭像（注意：不是在某個 repo 頁面點，要在 GitHub 任何頁面都可以）→ 選單選 **Settings**
+2. 進入「你的帳號設定」頁面（網址會變成 `github.com/settings/profile`），**左側選單最下方**會看到 **Developer settings**
+3. 依序點：**Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
+
+**方法 B：網址捷徑（跳過找選單）**
+- 登入狀態下，直接在網址列輸入 [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)，會直接進入建立 Fine-grained token 的頁面
+- ⚠️ 這是捷徑網址，若 GitHub 未來改版導致此網址失效，請改用方法 A 的手動路徑
+
+**兩種方法走到最後，設定步驟相同：**
 3. **Repository access** 選 **Only select repositories**，選你自己的 repo
 4. **Permissions** 裡把 **Contents** 設成 **Read and write**
-5. 產生後複製給 Claude
+5. **Generate token** 後複製給 Claude
 **注意事項：**
 - 這組 token 只在**當次對話**中使用，Claude 不會把它存進記憶，換一個新對話分析下一檔股票時要重新提供
 - Token 直接貼在對話裡屬於明碼傳輸，建議設定過期時間，且用完後可以到 GitHub 設定裡撤銷重發
