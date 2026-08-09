@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>藥華藥 × AOP 國際仲裁案時間軸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,700;1,8..60,500&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e1420;
+    --panel:#161d2c;
+    --panel-border:#2a3448;
+    --gold:#c9a24b;
+    --gold-dim:#8a7538;
+    --parchment:#e9e4d6;
+    --parchment-dim:#a8a293;
+    --win:#5fae8b;
+    --win-dim:#2c3f37;
+    --loss:#c46a52;
+    --loss-dim:#432e29;
+    --pending:#7d8bab;
+    --pending-dim:#2b3245;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 800px 500px at 15% -5%, rgba(201,162,75,0.08), transparent),
+      radial-gradient(ellipse 900px 600px at 100% 20%, rgba(95,174,139,0.05), transparent),
+      var(--ink);
+    color:var(--parchment);
+    font-family:'Noto Sans TC','IBM Plex Mono',sans-serif;
+    min-height:100vh;
+    padding:0 0 80px 0;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    padding:56px 24px 40px;
+    max-width:900px;
+    margin:0 auto;
+    border-bottom:1px solid var(--panel-border);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:1px;
+    background:var(--gold-dim);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Noto Serif TC',serif;
+    font-weight:900;
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.25;
+    margin:0 0 14px;
+    color:#f5f1e6;
+    letter-spacing:0.01em;
+  }
+  h1 .accent{color:var(--gold);}
+  .subhead{
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--parchment-dim);
+    max-width:560px;
+    line-height:1.7;
+    margin:0;
+  }
+  .meta-row{
+    display:flex;
+    gap:28px;
+    margin-top:28px;
+    flex-wrap:wrap;
+  }
+  .meta-item{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--parchment-dim);}
+  .meta-item b{color:var(--parchment);display:block;font-size:15px;margin-top:2px;font-weight:500;}
+
+  /* ---------- Timeline ---------- */
+  .timeline-wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:48px 24px 0;
+    position:relative;
+  }
+  .spine{
+    position:absolute;
+    left:47px;
+    top:48px;
+    bottom:40px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--gold-dim), var(--panel-border) 8%, var(--panel-border) 92%, transparent);
+  }
+  @media (max-width:640px){
+    .spine{left:23px;}
+  }
+
+  .entry{
+    position:relative;
+    padding-left:96px;
+    margin-bottom:6px;
+  }
+  @media (max-width:640px){
+    .entry{padding-left:52px;}
+  }
+
+  .node{
+    position:absolute;
+    left:36px;
+    top:6px;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--panel);
+    border:2px solid var(--panel-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    z-index:2;
+  }
+  @media (max-width:640px){
+    .node{left:12px;width:20px;height:20px;}
+  }
+  .entry.win .node{border-color:var(--win);box-shadow:0 0 0 4px var(--win-dim);}
+  .entry.loss .node{border-color:var(--loss);box-shadow:0 0 0 4px var(--loss-dim);}
+  .entry.pending .node{border-color:var(--pending);box-shadow:0 0 0 4px var(--pending-dim);}
+  .entry.neutral .node{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,75,0.15);}
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:20px 22px;
+    margin-bottom:28px;
+    position:relative;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    left:-9px;top:16px;
+    width:16px;height:16px;
+    background:var(--panel);
+    border-left:1px solid var(--panel-border);
+    border-bottom:1px solid var(--panel-border);
+    transform:rotate(45deg);
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+    letter-spacing:0.04em;
+  }
+  .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    padding:3px 9px;
+    border-radius:20px;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .entry.win .tag{background:var(--win-dim);color:var(--win);}
+  .entry.loss .tag{background:var(--loss-dim);color:var(--loss);}
+  .entry.pending .tag{background:var(--pending-dim);color:var(--pending);}
+  .entry.neutral .tag{background:rgba(201,162,75,0.12);color:var(--gold);}
+
+  .card h3{
+    font-family:'Noto Serif TC',serif;
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 8px;
+    color:#f2ede0;
+    line-height:1.5;
+  }
+  .card p{
+    font-size:14px;
+    line-height:1.85;
+    color:var(--parchment-dim);
+    margin:0;
+  }
+  .amount{
+    display:inline-flex;
+    align-items:baseline;
+    gap:6px;
+    margin-top:12px;
+    padding:8px 12px;
+    background:rgba(0,0,0,0.18);
+    border:1px solid var(--panel-border);
+    border-radius:6px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .amount .num{font-size:15px;color:var(--parchment);font-weight:500;}
+  .amount .label{font-size:11px;color:var(--parchment-dim);}
+
+  /* ---------- Section divider ---------- */
+  .era{
+    padding-left:96px;
+    margin:44px 0 20px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  @media (max-width:640px){.era{padding-left:52px;}}
+  .era::after{content:"";flex:1;height:1px;background:var(--panel-border);}
+
+  /* ---------- Footer summary ---------- */
+  .summary{
+    max-width:900px;
+    margin:60px auto 0;
+    padding:0 24px;
+  }
+  .summary-box{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:26px 24px;
+  }
+  .summary-box h4{
+    font-family:'Noto Serif TC',serif;
+    font-size:16px;
+    margin:0 0 14px;
+    color:var(--gold);
+  }
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:16px;
+  }
+  .stat{border-left:2px solid var(--panel-border);padding-left:12px;}
+  .stat .n{font-family:'IBM Plex Mono',monospace;font-size:19px;color:var(--parchment);}
+  .stat .l{font-size:12px;color:var(--parchment-dim);margin-top:3px;}
+  .disclaimer{
+    max-width:900px;margin:24px auto 0;padding:0 24px;
+    font-size:11.5px;color:var(--parchment-dim);line-height:1.8;
+    font-family:'IBM Plex Mono',monospace;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">ARBITRATION DOCKET — ICC CASE</div>
+  <h1>藥華藥 <span class="accent">×</span> AOP Orphan<br>跨國仲裁攻防時間軸</h1>
+  <p class="subhead">一份授權協議的破裂，如何演變成橫跨瑞士、奧地利、德國、美國四國法院的十年司法拉鋸。</p>
+  <div class="meta-row">
+    <div class="meta-item">當事人<b>藥華藥 (6446) vs. AOP Orphan Pharmaceuticals</b></div>
+    <div class="meta-item">仲裁機構<b>國際商會 (ICC) 國際仲裁院</b></div>
+    <div class="meta-item">爭議標的<b>Ropeg 罕見血癌新藥授權合約</b></div>
+  </div>
+</header>
+
+<div class="timeline-wrap">
+  <div class="spine"></div>
+
+  <div class="era">起因 — 合作與破裂</div>
+
+  <div class="entry neutral">
+    <div class="node">●</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2017</span><span class="tag">合作破裂</span></div>
+      <h3>雙方於臨床資料、銷售分潤上歧見加深</h3>
+      <p>藥華藥認為 AOP 遲交臨床數據，於年底提出解約並拒絕繼續供貨，多年授權合作關係就此破局。</p>
+    </div>
+  </div>
+
+  <div class="entry neutral">
+    <div class="node">●</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2018</span><span class="tag">仲裁啟動</span></div>
+      <h3>AOP 向 ICC 提出國際仲裁</h3>
+      <p>AOP 主張合約依然有效，向藥華藥求償。</p>
+      <div class="amount"><span class="num">€481,000,000</span><span class="label">AOP 求償金額</span></div>
+    </div>
+  </div>
+
+  <div class="era">第一回合 — ICC 判賠與各國撤銷戰</div>
+
+  <div class="entry loss">
+    <div class="node">✕</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2020.10</span><span class="tag">仲裁敗訴</span></div>
+      <h3>ICC 判定 AOP 勝訴</h3>
+      <p>仲裁庭判藥華藥須賠償 AOP，公司隨即展開跨國撤銷仲裁的法律行動。</p>
+      <div class="amount"><span class="num">€142,000,000</span><span class="label">≈ 新台幣48億元</span></div>
+    </div>
+  </div>
+
+  <div class="entry win">
+    <div class="node">✓</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2022.02</span><span class="tag">撤銷成功</span></div>
+      <h3>德國聯邦最高法院：無須支付 1.42 億歐元</h3>
+      <p>藥華藥 2020 年 12 月在德國提起法律行動後，終獲終審裁定免賠。</p>
+    </div>
+  </div>
+
+  <div class="entry win">
+    <div class="node">✓</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2022.03</span><span class="tag">跨國確認</span></div>
+      <h3>美國麻州聯邦地方法院裁定：免賠，撤銷專利移轉限制</h3>
+      <p>判決結果與德國最高法院一致。累計瑞士、奧地利、德國、美國四國法院均已撤銷賠償金額與專利移轉限制，第一回合訴訟落幕。</p>
+    </div>
+  </div>
+
+  <div class="era">第二回合 — 藥華藥反訴 AOP</div>
+
+  <div class="entry neutral">
+    <div class="node">●</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2020.11</span><span class="tag">反訴提起</span></div>
+      <h3>藥華藥向 ICC 提出反訴</h3>
+      <p>主張 AOP 應就遲延美國藥證申請所致的損失負責。</p>
+      <div class="amount"><span class="num">€2,000,000,000</span><span class="label">藥華藥求償金額</span></div>
+    </div>
+  </div>
+
+  <div class="entry loss">
+    <div class="node">✕</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2025.02.17</span><span class="tag">第一階段判斷</span></div>
+      <h3>ICC 駁回藥華藥求償，反認定藥華藥有遲延責任</h3>
+      <p>仲裁庭認定藥華藥遲延取得歐洲藥證、遲延供貨，與 AOP 積欠貨款相抵銷後，仍需負擔鉅額金額。</p>
+      <div class="amount"><span class="num">€31,319,250.27</span><span class="label">歐洲藥證遲延 5 個月</span></div>
+      <div class="amount"><span class="num">€34,561,864</span><span class="label">供貨遲延 4.5 個月</span></div>
+    </div>
+  </div>
+
+  <div class="entry pending">
+    <div class="node">◐</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2025.05.19</span><span class="tag">審理中</span></div>
+      <h3>董事會決議申請撤銷仲裁</h3>
+      <p>向德國法蘭克福高等法院申請撤銷第一階段部分終局仲裁判斷，並向仲裁庭申請暫停第二階段審理程序。目前由<b style="color:#f2ede0">德國聯邦最高法院</b>審理中，撤仲程序預估約需 2 年，尚未定讞。</p>
+    </div>
+  </div>
+
+  <div class="entry win">
+    <div class="node">✓</div>
+    <div class="card">
+      <div class="card-top"><span class="date">2026.08.07</span><span class="tag">第二階段判斷</span></div>
+      <h3>ICC 作出第二階段部分仲裁判斷</h3>
+      <p>裁定 AOP 應支付藥華藥 2019 至 2023 年上半年積欠的貨款及權利金；同時就藥品採購價格爭議，裁定藥華藥應退還部分款項。公司評估對財務業務無重大影響。</p>
+      <div class="amount"><span class="num">€17,000,000+</span><span class="label">AOP 應付藥華藥（有利）</span></div>
+      <div class="amount"><span class="num">€31,600,000</span><span class="label">藥華藥應退還 AOP（不利）</span></div>
+    </div>
+  </div>
+
+  <div class="era">現況</div>
+  <div class="entry pending">
+    <div class="node">◐</div>
+    <div class="card">
+      <div class="card-top"><span class="date">進行中</span><span class="tag">未定讞</span></div>
+      <h3>第一階段撤銷仲裁結果，為最大關鍵變數</h3>
+      <p>公司過去在德、瑞、奧、美四國撤銷程序上皆有勝訴紀錄，市場預期具一定參考意義，但本次結果仍待德國聯邦最高法院裁定。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="summary">
+  <div class="summary-box">
+    <h4>財務影響速覽（以 2025 年度查核數為基準）</h4>
+    <div class="summary-grid">
+      <div class="stat"><div class="n">319.8 億元</div><div class="l">母公司業主權益</div></div>
+      <div class="stat"><div class="n">約 5.4 億元</div><div class="l">第二階段淨支出（已知）</div></div>
+      <div class="stat"><div class="n">約 24.6 億元</div><div class="l">第一階段潛在賠償（未定讞）</div></div>
+      <div class="stat"><div class="n">＜ 9.4%</div><div class="l">最壞情況佔權益比重</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  註：歐元金額以近日匯率（約 1 EUR ≈ 37.3 TWD）換算，僅供估算參考；資產負債表數字取自藥華藥 114 年度（2025）合併財務報告（2026/03/02 董事會通過），2026 年最新一季核閱數字可能略有變動。仲裁進度請以公開資訊觀測站重大訊息為準。
+</div>
+
+</body>
+</html>
