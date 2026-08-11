@@ -191,24 +191,43 @@ description: "台股個股初步分析六步驟流程。當使用者提供台股
 ---
 ---
 
-## Git 版控與發布規則（貫穿全程）
+## GitHub 版控與總覽首頁維護規則（貫穿全程）
 
-每次對話代表一檔股票的完整分析，每完成一個步驟區塊、更新一次 HTML 報告，就要 git push 到 `https://github.com/{your-username}/{your-repo}`，讓使用者的分析歷程留在版控紀錄中，不只靠最後一次 present_files。
+Repo: `https://github.com/{your-username}/{your-repo}/`
+GitHub Pages 首頁: `http://{your-username}.github.io/{your-repo}/`
 
-**Token 使用規則**：
-- 使用者提供的 GitHub Personal Access Token 僅用於本次對話的 git push 認證，不寫入記憶、不留存跨對話。
-- 每次 push 前確認 token 仍在本次對話上下文中；若使用者換了新對話框但延續舊分析，仍要重新索取 token。
+每次對話代表一檔股票的完整分析，每完成一個步驟區塊、更新一次 HTML 報告，就要 git push，讓使用者的分析歷程留在版控紀錄中，不只靠最後一次 present_files。
 
-**檔名與路徑規則**：
-- 檔名格式比照 repo 既有慣例：`{股票代號}_{英文或拼音簡稱}_analysis.html`（例如台積電為 `2330_tsmc_analysis.html`），置於 repo 根目錄，不額外建子資料夾，避免破壞既有連結。
-- 同一檔股票的分析從第一步到最後一步，共用同一個檔名（呼應「所有步驟輸出集中在同一份 HTML 報告」規則），每次 push 是對同一檔案的更新提交，不要每步驟另開新檔。
+### 一、檔案存放規則
+- 所有個股分析報告一律存放在 `reports/` 子資料夾，檔名格式為 `{股票代號}_{英文代稱}_analysis.html`（例如 `reports/6239_powertech_analysis.html`）。
+- 主目錄只保留 README.md、SKILL.md、LICENSE、index.html 等專案層級檔案，不要把新報告直接放在根目錄。
+- 同一檔股票的分析從第一步到最後一步，共用同一個檔名，每次 push 是對同一檔案的更新提交，不要每步驟另開新檔。
 
-**push 後的回覆規則**：
-- 每次 push 成功後，附上兩種格式的 GitHub Pages 連結供使用者點閱，網址規則為 `http://{your-username}.github.io/{your-repo}/{檔名}`：
-  - 純網址：`http://{your-username}.github.io/{your-repo}/{檔名}`
-  - Markdown 連結：`[{檔名}](http://{your-username}.github.io/{your-repo}/{檔名})`
-- `{檔名}` 依當次分析的實際檔名代入，不同股票、不同對話會產生不同連結，不可沿用前一次分析的檔名。
-- push 失敗（如 token 過期、權限不足）時，如實告知失敗原因，不要假裝已推送成功。
+### 二、每次新增或更新報告時，必須同步做兩件事
+1. 產出報告檔案，git push 到 `reports/` 資料夾。
+2. 同時編輯根目錄的 `index.html`，在 REPORTS 陣列裡新增（或更新）一筆物件，欄位為：
+   - `ticker`（代號）
+   - `name`（公司簡稱）
+   - `title`（報告標題，與 html 內 `<title>` 一致）
+   - `file`（`"reports/檔名.html"`）
+   - `date`（YYYY-MM-DD，用當次 git commit 日期）
+   - `type`（`"analysis"` = 一般個股分析／`"special"` = 非六步驟框架的特別事件類報告）
+
+   新報告＋更新後的 index.html 用同一次或連續兩次 commit 一起推送，**不要漏掉 index.html 這一步**。
+
+### 三、Git Push 標準流程
+1. 主動詢問使用者要 push 的 GitHub Personal Access Token（不假設 token 仍記得或有效）。
+2. `git remote set-url origin` 帶入 token → `git fetch` + `git reset --hard origin/main` 同步遠端避免衝突 → `git add` → `git -c user.email/-c user.name commit` → `git push`。
+3. push 完成後，無論成功失敗，立即將 `remote set-url` 改回乾淨的 `https://github.com/{your-username}/{your-repo}.git`（不留 token）。
+4. push 前用 `curl -H "Authorization: token <TOKEN>" https://api.github.com/user` 快速驗證 token 是否有效，避免無效 token 浪費來回確認的步驟。
+5. 完成後提供 GitHub Pages 連結格式：
+   - 報告連結：`http://{your-username}.github.io/{your-repo}/reports/{檔名}`
+   - 首頁連結：`http://{your-username}.github.io/{your-repo}/`
+6. push 失敗（如 token 過期、權限不足）時，如實告知失敗原因，不要假裝已推送成功。
+
+### 四、安全提醒
+- Token 只在當次對話使用，不寫入記憶／Instructions；每次對話重新提供。
+- Token 一旦在對話中出現過，建議提醒使用者到 GitHub 設定撤銷或重新產生。
 
 ---
 
