@@ -229,6 +229,14 @@ GitHub Pages 首頁: `http://{your-username}.github.io/{your-repo}/`
 - Token 只在當次對話使用，不寫入記憶／Instructions；每次對話重新提供。
 - Token 一旦在對話中出現過，建議提醒使用者到 GitHub 設定撤銷或重新產生。
 
+### 五、報告計數器規則
+- 每份個股分析報告（`reports/{股票代號}_{英文代稱}_analysis.html`）在 `<title>` 下方或報告開頭處，都要加入訪客計數器徽章：
+  ```html
+  <img src="https://visitor-badge.laobi.icu/badge?page_id={your-username}.{your-repo}.{股票代號}" alt="Visitors" style="opacity:0.85;">
+  ```
+- `{股票代號}` 帶入該報告實際的股票代號（例如 6239）。
+- 首頁 `index.html` 沿用既有的計數器，`page_id` 為 `{your-username}.{your-repo}.index`，與各報告的 `page_id` 分開計數，不共用。
+
 ---
 
 ## 貫穿全程的規則
