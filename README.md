@@ -32,7 +32,8 @@
 |------|------|----------|
 | `SKILL.md` | Claude Skills 工具專屬版（含 create_file／git push 等自動化流程） | Claude.ai Skills 功能 |
 | `台股個股分析框架_通用版.md` | 拿掉Claude工具專屬指令的通用版 | ChatGPT、Gemini 等所有 AI 對話介面 |
-| `*_analysis.html` | 歷次分析報告範例（每檔股票一份，六步驟累加於同一檔案） | 瀏覽器直接開啟或 GitHub Pages |
+| `reports/*_analysis.html` | 歷次分析報告範例（每檔股票一份，六步驟累加於同一檔案） | 瀏覽器直接開啟或 GitHub Pages |
+| `index.html` | 所有報告的總覽首頁（可搜尋／篩選／依日期排序） | GitHub Pages 進站首頁 |
 | `README.md` | 本說明文件 | — |
 
 ---
