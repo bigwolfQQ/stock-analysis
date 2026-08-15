@@ -187,8 +187,8 @@
 </header>
 
 <nav class="stepnav" id="stepnav">
-  <a href="#step1" class="pad active" data-target="step1">① 現金流六大規則</a>
-  <a class="locked">② 基本資訊</a>
+  <a href="#step1" class="pad" data-target="step1">① 現金流六大規則</a>
+  <a href="#step2" class="pad" data-target="step2">② 基本資訊</a>
   <a class="locked">③ 法說會</a>
   <a class="locked">④ 營收趨勢</a>
   <a class="locked">⑤ 本益比預估</a>
@@ -463,10 +463,123 @@
 
 </section>
 
+<section id="step2">
+  <span class="progress-tag">【第 2 步／共 6 步：基本資訊查詢】</span>
+  <h2>基本資訊查詢（股價／EPS／殖利率／營收／法說會）</h2>
+
+  <div class="highlight-box">
+    <b>重要提醒：寶雅已於 2026/08/10 完成股票面額變更「1拆10」</b>（每股面額由 10 元變更為 1 元），流通股數由 1.06 億股增至 10.64 億股，資本額不變（10.64 億元）。<b>本節所有「每股」相關數字皆已標明是新（分割後）基礎還是舊（分割前）基礎，並附換算方式</b>，避免直接混用造成失真。
+  </div>
+
+  <h3>股價快照</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>收盤價</td><td><b>79.00 元</b></td><td>2026/08/14 收盤，跌 2.80 元（-3.42%），連 3 跌（累計 -9.30%）</td></tr>
+      <tr><td>當日區間</td><td>79.0 ～ 81.7 元</td><td>開盤 81.7、最高 81.7、最低 79.0（收在當日低點）</td></tr>
+      <tr><td>本益比（Yahoo 即時顯示）</td><td>23.24 倍</td><td>同業平均 43.04 倍</td></tr>
+    </tbody>
+  </table>
+  <p class="source-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/5904.TWO" target="_blank">Yahoo股市 寶雅(5904.TWO) 走勢圖</a>，查詢時間點快照為 2026/08/14 14:30。此為新股（分割後）基礎股價；正式交易請以看盤軟體/券商App即時報價為準。</p>
+
+  <h3>股票分割還原檢查（每股數字一致性）</h3>
+  <p>查證「5904 股票分割 換股比例」後確認：寶雅 2026/07/29 為舊股最後交易日，2026/08/10 換發新股恢復交易，<b>換股比例為 1 拆 10</b>，舊股每股面額 10 元→新股 1 元，流通股數 106,443,826 股 → 1,064,438,260 股（<b>剛好 10 倍</b>），資本額維持 10.64 億元不變，官方每股淨值同步由 59.98 元（舊）調整為 6.00 元（新，115Q1 基礎）。</p>
+  <p class="chart-note">因此，2026/08/10 之前查到的股價、EPS、每股淨值等「每股」數字，若要與目前 79 元的股價比較，都必須先除以 10 換算成新基礎，否則會出現「10 倍」等級的失真。</p>
+
+  <h3>EPS（近四季、近四年）</h3>
+  <table>
+    <thead><tr><th>期間</th><th>EPS（原始查得，舊基礎）</th><th>換算新基礎（÷10）</th></tr></thead>
+    <tbody>
+      <tr><td>2026 Q2</td><td>8.15 元</td><td>0.815 元</td></tr>
+      <tr><td>2026 Q1</td><td>9.30 元（YoY +25.7%）</td><td>0.930 元</td></tr>
+      <tr><td>2025 Q4</td><td>8.98 元</td><td>0.898 元</td></tr>
+      <tr><td>2025 Q3</td><td>7.59 元</td><td>0.759 元</td></tr>
+      <tr><td>近四季合計（TTM）</td><td>34.02 元</td><td class="posv">3.402 元</td></tr>
+      <tr><td>2025 全年</td><td>29.54 元（YoY +12.1%）</td><td>2.954 元</td></tr>
+      <tr><td>2024 全年</td><td>26.74 元</td><td>2.674 元</td></tr>
+      <tr><td>2023 全年</td><td>24.41 元</td><td>2.441 元</td></tr>
+      <tr><td>2022 全年</td><td>20.26 元</td><td>2.026 元</td></tr>
+    </tbody>
+  </table>
+  <p><b>自我驗證（一致性檢查）：</b>用「新基礎 TTM EPS 3.402 元」回推本益比＝79.00 ÷ 3.402 ≈ <b>23.2 倍</b>，與 Yahoo 頁面即時顯示的「23.24 倍」幾乎一致——確認上表 EPS 原始數字確實是「舊基礎」，換算後可與目前新股價正確搭配使用。</p>
+  <p class="source-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/5904.TWO/profile" target="_blank">Yahoo股市 寶雅基本資料頁</a>「最新四季每股盈餘／最近四年每股盈餘」；<a href="https://money.udn.com/money/story/11074/9655165" target="_blank">經濟日報（2026/07/28）</a>報導上半年稅後純益 18.58 億元、EPS（舊基礎，累計）17.45 元，可交叉核對 Q1+Q2 = 9.30+8.15=17.45 元，一致。</p>
+
+  <h3>每股淨值與股價淨值比（PBR）</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>Yahoo 顯示每股淨值</td><td>68.13 元</td><td class="negv">疑似仍為舊基礎未同步調整（詳下方說明）</td></tr>
+      <tr><td>換算新基礎（÷10）</td><td class="posv">約 6.81 元</td><td>與官方公告 115Q1 基礎 6.00 元方向一致（隨獲利累積逐季墊高）</td></tr>
+      <tr><td>推算股價淨值比</td><td>約 11.6 倍</td><td>= 79.00 ÷ 6.81（推算數字，非直接查得）</td></tr>
+    </tbody>
+  </table>
+  <p><b>查證與提醒：</b>Yahoo 頁面顯示的 2026 Q2 每股淨值「68.13 元」明顯偏高，與官方公告「面額變更後每股淨值 6.00 元（115Q1）」量級相差約 10 倍，判斷是第三方網站的每股淨值欄位尚未同步反映 8/10 的股本變動（<b>「數字差距接近整數倍，通常是股本變動未同步調整的訊號」</b>）。因此本報告改採「官方公告基礎 ÷10 換算」的 6.81 元推算值，股價淨值比同步採用推算後的 11.6 倍，僅供參考，建議之後以公開資訊觀測站最新財報之官方股東權益數字覆核。</p>
+  <p class="source-note">資料來源：<a href="https://finance.biggo.com.tw/news/twse_major_5904_1150702_165606" target="_blank">BigGo財經（轉載公開資訊觀測站重大訊息，2026/07/02）</a>；<a href="https://tw.stock.yahoo.com/quote/5904.TWO/profile" target="_blank">Yahoo股市基本資料頁</a>。</p>
+
+  <h3>現金股利與殖利率</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>2025 年度現金股利</td><td>25.50 元（舊基礎）</td><td>除息日 2026/07/16，發放日 2026/08/07（在股票分割之前發放）</td></tr>
+      <tr><td>換算新基礎（÷10）</td><td class="posv">2.55 元</td><td>與目前新股股數對應</td></tr>
+      <tr><td>殖利率（以現價 79.00 元計算）</td><td class="posv">約 3.23%</td><td>= 2.55 ÷ 79.00（推算數字）</td></tr>
+      <tr><td>近 5 年平均現金殖利率</td><td>3.75%</td><td>已連續 26 年發放股利，累計合計 214.66 元（舊基礎）</td></tr>
+    </tbody>
+  </table>
+  <p class="source-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/5904.TWO/dividend" target="_blank">Yahoo股市 寶雅股利政策頁</a>；<a href="https://www.sinotrade.com.tw/richclub/hotstock/%E5%AF%B6%E9%9B%85-5904-EPS%E9%80%A3%E4%B8%89%E5%B9%B4%E5%89%B5%E9%AB%98-%E5%AE%A3%E4%BD%88%E9%85%8D%E6%81%AF5-6--%E4%B8%A6%E6%8B%8D%E6%9D%BF%E8%82%A1%E7%A5%A81%E6%8B%8610-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-699d36f184092b4b9eb40dc7" target="_blank">豐雲學堂（2026/02/24）</a>：以公告當日收盤價 458 元（舊基礎）計算，原始殖利率約 5.6%（該次計算基準是分割前股價，與本表現價基礎不同，僅供對照）。</p>
+
+  <h3>近期營收</h3>
+  <table>
+    <thead><tr><th>期間</th><th>合併營收</th><th>年增率</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>2026 年 7 月（單月）</td><td>24.72 億元</td><td class="posv">+19.22%</td><td>創歷史新高</td></tr>
+      <tr><td>2026 年 1～7 月（累計）</td><td>164.99 億元</td><td class="posv">+14.47%</td><td>累月營收同創新高</td></tr>
+      <tr><td>2026 Q2（單季）</td><td>69.32 億元</td><td class="posv">+14.69%</td><td>QoQ -2.29%</td></tr>
+      <tr><td>2026 H1（上半年累計）</td><td>140.27 億元</td><td class="posv">+13.67%</td><td>稅後純益 18.58 億元，YoY +34.7%</td></tr>
+    </tbody>
+  </table>
+  <p class="source-note">資料來源：<a href="https://www.ptt.cc/bbs/Stock/M.1786346368.A.CA1.html" target="_blank">經濟日報（2026/08/10）轉載</a>；<a href="https://today.line.me/tw/v3/article/ML7enay" target="_blank">MoneyDJ理財網（2026/08/11）</a>；<a href="https://www.cmoney.tw/notes/note-detail.aspx?nid=1241213" target="_blank">CMoney（26Q2財報公告）</a>。</p>
+
+  <h3>展店概況</h3>
+  <p>截至 2026 年 7 月底，全台門市共 <b>485 家</b>，公司目標今年（2026）達到 <b>520 家</b>，並持續提高 <b>Poya Beauty</b>（寶雅美妝）店型占比（法說會簡報顯示：2024 年美妝店占比 24% → 2025 年 34% → 2026 年預估 42%）。同時擴大導入自動收銀機（約 100 家門市），預期有助降低營運費用率。</p>
+  <p class="source-note">資料來源：<a href="https://today.line.me/tw/v3/article/ML7enay" target="_blank">MoneyDJ理財網（2026/08/11）</a>；<a href="https://poorstock.com/earningcall/5904" target="_blank">散戶鬥嘴鼓法說會整理頁</a>（引用 2026/06/04 法說會簡報內容）。</p>
+
+  <h3>股票面額變更（1拆10）大事記</h3>
+  <table>
+    <thead><tr><th>日期</th><th>事項</th></tr></thead>
+    <tbody>
+      <tr><td>2026/02/23</td><td>董事會通過 2025 年度財報，同時通過股票面額變更（1拆10）決議</td></tr>
+      <tr><td>2026/07/16</td><td>除息（現金股利 25.50 元，舊基礎）</td></tr>
+      <tr><td>2026/07/29</td><td>舊股票最後交易日，收盘 720 元（舊基礎）</td></tr>
+      <tr><td>2026/07/30～08/07</td><td>停止交易</td></tr>
+      <tr><td>2026/08/07</td><td>換股基準日，現金股利發放日</td></tr>
+      <tr><td>2026/08/10</td><td>新股（寶雅*）恢復上櫃交易，開盤即漲停 79.2 元（等值舊基礎 792 元）</td></tr>
+      <tr><td>2026/08/11</td><td>再度跳空漲停，來到 87.1 元</td></tr>
+      <tr><td>2026/08/14</td><td>收盤 79.00 元，連 3 跌</td></tr>
+    </tbody>
+  </table>
+  <p><b>法人參考目標價：</b>本土法人先前（分割前）給予目標價 800 元，換算新基礎約 <b>80 元</b>，與目前股價 79.00 元相當接近——此數字將在第 5 步（前瞻本益比／EPS 預估）進一步討論，此處僅先記錄來源與換算基礎。</p>
+  <p class="source-note">資料來源：<a href="https://money.udn.com/money/story/11074/9655165" target="_blank">經濟日報（2026/07/28）</a>；<a href="https://www.businesstoday.com.tw/article/category/183008/post/202608100022/" target="_blank">今周刊（2026/08/10）</a>。</p>
+
+  <h3>最近一次法人說明會</h3>
+  <table>
+    <thead><tr><th>日期</th><th>地點</th><th>主辦／場合</th></tr></thead>
+    <tbody>
+      <tr><td>2026/06/04 12:00</td><td>台北 W Hotel</td><td>花旗證券「Citi 2026 Taiwan Conference」</td></tr>
+    </tbody>
+  </table>
+  <p>官方簡報 PDF：<a href="https://mopsov.twse.com.tw/nas/STR/590420260602M001.pdf" target="_blank">公開資訊觀測站簡報連結</a>（內容涵蓋 1Q26 經營績效，MOPS 官網有 robots.txt 限制，Claude 無法直接讀取此 PDF 內容進行分析，僅提供連結供您自行開啟）。</p>
+  <p class="source-note">資料來源：<a href="https://poorstock.com/earningcall/5904" target="_blank">散戶鬥嘴鼓（poorstock.com）法說會整理頁</a>，資料轉引自公開資訊觀測站。</p>
+
+  <div class="highlight-box">
+    <b>第 2 步小結：</b>基本面數據與第 1 步現金流結論一致——營收、獲利連續多季雙位數成長，展店計畫穩健推進，股票分割屬技術性調整（面額變更），不影響股東權益與獲利本質。目前股價 79.00 元、新基礎 TTM 本益比約 23.2 倍，落在同業平均（43 倍）以下。
+  </div>
+</section>
+
 </main>
 
 <footer class="meta">
-  報告版本 v1.0（第 1 步）｜產生時間：2026-08-15｜資料來源：使用者提供之 Goodinfo 現金流量表截圖，非本次搜尋所得<br>
+  報告版本 v2.0（第 1～2 步）｜產生時間：2026-08-15｜第1步資料來源：使用者提供之 Goodinfo 現金流量表截圖；第2步資料來源：Yahoo股市、經濟日報、MoneyDJ、CMoney、散戶鬥嘴鼓等公開網路資訊（詳各段落引用連結）<br>
   股票代號：5904 寶雅生活館
 </footer>
 
