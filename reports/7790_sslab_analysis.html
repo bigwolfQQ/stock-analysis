@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7790 個股初步分析｜現金流量表六大規則檢核</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16232E;
+    --ink-soft:#3C4A56;
+    --paper:#F3F1E8;
+    --paper-raised:#FBFAF4;
+    --line:#D8D2C0;
+    --jade:#2F6E5D;
+    --jade-soft:#E4EEE9;
+    --brick:#A8412E;
+    --brick-soft:#F5E6E1;
+    --gold:#B4832E;
+    --gold-soft:#F1E6CC;
+    --rose:#C97A6D;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans TC","Noto Sans",sans-serif;
+    line-height:1.7;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+  header.hero{
+    background:var(--ink);
+    color:var(--paper-raised);
+    padding:40px 24px 28px;
+    margin-bottom:0;
+  }
+  .hero-inner{max-width:920px;margin:0 auto;}
+  .ticker{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    color:#C9B98A;
+    text-transform:uppercase;
+    display:flex;gap:14px;align-items:center;margin-bottom:14px;
+  }
+  .ticker .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+  h1{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    font-size:clamp(28px,5vw,42px);
+    margin:0 0 6px;
+    letter-spacing:.01em;
+  }
+  .sub{color:#B9C4CC;font-size:15px;margin:0;}
+  .badge-row{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  img.visitor{opacity:.85;}
+
+  nav.stepnav{
+    background:var(--paper-raised);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:50;
+    overflow-x:auto;
+    box-shadow:0 2px 8px rgba(22,35,46,.06);
+  }
+  .stepnav-inner{
+    max-width:920px;margin:0 auto;padding:0 24px;
+    display:flex;gap:2px;
+  }
+  .pad{
+    flex:1;min-width:110px;text-align:center;
+    padding:14px 6px 12px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:.03em;
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+    transition:background .15s ease;
+    white-space:nowrap;
+  }
+  .pad .n{display:block;font-size:10px;color:#8B8570;margin-bottom:2px;}
+  .pad:hover{background:var(--paper);}
+  .pad.active{border-bottom-color:var(--gold);color:var(--ink);font-weight:600;background:var(--gold-soft);}
+  .pad.locked{color:#B7B2A0;cursor:default;pointer-events:none;}
+  .pad.locked:hover{background:none;}
+
+  section.step{padding:44px 0 8px;border-bottom:1px solid var(--line);}
+  section.step:last-of-type{border-bottom:none;}
+  .step-label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:.1em;color:var(--gold);
+    text-transform:uppercase;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Noto Serif TC",serif;
+    font-size:26px;font-weight:700;margin:0 0 18px;
+    color:var(--ink);
+  }
+  h3{
+    font-family:"Noto Serif TC",serif;
+    font-size:18px;font-weight:700;margin:28px 0 10px;
+  }
+  p{margin:0 0 14px;color:var(--ink-soft);}
+  .callout{
+    background:var(--gold-soft);
+    border-left:4px solid var(--gold);
+    padding:14px 18px;border-radius:2px;
+    margin:0 0 22px;
+  }
+  .callout p{margin:0;color:var(--ink);}
+  .callout b{color:var(--ink);}
+
+  table{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:14px;background:var(--paper-raised);}
+  caption{text-align:left;font-size:13px;color:var(--ink-soft);margin-bottom:6px;font-weight:500;}
+  th,td{
+    padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace;font-size:13px;
+  }
+  th:first-child,td:first-child{text-align:left;font-family:"Noto Sans TC",sans-serif;}
+  thead th{
+    background:var(--ink);color:var(--paper-raised);
+    font-family:"Noto Sans TC",sans-serif;font-weight:500;font-size:13px;
+  }
+  tbody tr:nth-child(even){background:#EFEBDD;}
+  .posv{color:var(--jade);}
+  .negv{color:var(--brick);font-weight:700;}
+  .tag{
+    display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    padding:2px 8px;border-radius:10px;margin-left:6px;
+  }
+  .tag.pass{background:var(--jade-soft);color:var(--jade);}
+  .tag.warn{background:var(--brick-soft);color:var(--brick);}
+  .tag.tentative{background:var(--gold-soft);color:var(--gold);}
+
+  .rule-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 22px 12px;
+    margin-bottom:22px;
+  }
+  .rule-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .rule-head h3{margin:0;}
+  .score{
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:20px;
+  }
+  .score.mid{color:var(--gold);}
+  .score.high{color:var(--jade);}
+  .score.low{color:var(--brick);}
+
+  svg.chart{width:100%;height:auto;display:block;margin:10px 0 4px;}
+  .axis-line{stroke:var(--line);stroke-width:1;}
+  .zero-line{stroke:var(--ink-soft);stroke-width:1.4;}
+  .grid-label{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:#8B8570;}
+  .bar-label{font-family:"IBM Plex Mono",monospace;font-size:12px;fill:var(--ink);font-weight:600;}
+  .year-label{font-family:"IBM Plex Mono",monospace;font-size:12px;fill:var(--ink-soft);}
+  .bar-neg{fill:var(--brick);opacity:.82;}
+  .bar-pos{fill:var(--jade);opacity:.82;}
+  .bar-b{fill:var(--brick);opacity:.82;}
+  .bar-c{fill:var(--gold);opacity:.9;}
+  .c-peak{fill:var(--gold);opacity:1;}
+  .c-trough{fill:var(--rose);opacity:1;}
+  .chart-note{font-size:12px;color:#8B8570;margin-top:-2px;}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--ink-soft);margin:4px 0 8px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:11px;height:11px;border-radius:2px;display:inline-block;}
+
+  .score-summary{
+    display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+    background:var(--ink);color:var(--paper-raised);
+    padding:24px 26px;border-radius:6px;margin:26px 0;
+  }
+  .score-ring{
+    font-family:"IBM Plex Mono",monospace;font-size:38px;font-weight:600;color:var(--gold);
+    border:2px solid var(--gold);border-radius:50%;
+    width:96px;height:96px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .score-summary .txt p{color:#C9CDD1;margin:0 0 4px;}
+  .score-summary .txt b{color:#fff;}
+
+  .footnote{font-size:12px;color:#8B8570;margin-top:30px;padding-top:14px;border-top:1px dashed var(--line);}
+  .snap-note{font-size:12px;color:#8B8570;margin:-8px 0 18px;font-style:italic;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="ticker"><span class="dot"></span>台股個股初步分析 · TICKER 7790</div>
+    <h1>7790 現金流健檢報告</h1>
+    <p class="sub">思必瑞特生技股份有限公司　興櫃・生技醫療業　｜　報告版本 v1.1</p>
+    <div class="badge-row">
+      <img class="visitor" src="https://visitor-badge.laobi.icu/badge?page_id=mjib007.stock-analysis.7790" alt="Visitors">
+    </div>
+  </div>
+</header>
+
+<nav class="stepnav">
+  <div class="stepnav-inner">
+    <a href="#step1" class="pad active" data-step="1"><span class="n">STEP 1</span>現金流六規則</a>
+    <a href="#step2" class="pad" data-step="2"><span class="n">STEP 2</span>基本資訊</a>
+    <a href="#step3" class="pad" data-step="3"><span class="n">STEP 3</span>法說會</a>
+    <a href="#step4" class="pad" data-step="4"><span class="n">STEP 4</span>營收趨勢</a>
+    <a href="#step5" class="pad" data-step="5"><span class="n">STEP 5</span>前瞻本益比</a>
+    <a href="#step6" class="pad" data-step="6"><span class="n">STEP 6</span>投資決策</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section class="step" id="step1">
+  <div class="step-label">【第 1 步／共 6 步】現金流量表六大規則分析（盲測階段）</div>
+  <h2>現金流是這檔股票的「體檢單」</h2>
+
+  <div class="callout">
+    <p><b>本步驟尚未查詢股價、EPS、產業地位或新聞背景</b>，只根據你提供的現金流量數字做客觀判斷，避免先入為主。表格中的股價、獲利欄位僅為你原始截圖所附帶的資訊，評分過程刻意不採用。</p>
+  </div>
+
+  <p class="snap-note">資料來源：使用者提供截圖（2022–2025 年度資料，2026 年僅有股價、尚無完整年度現金流量資料，故不納入計分）。目前僅取得 A/B/C/D/E 總表，尚未取得投資活動與融資活動細項。</p>
+
+  <h3>原始現金流量數據（單位：億元）</h3>
+  <table>
+    <caption>A 營業活動｜B 投資活動｜C 融資活動｜D 稅前淨利｜E 期末現金餘額</caption>
+    <thead>
+      <tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>其他活動</th><th>D 稅前淨利</th><th>E 期初餘額</th><th>E 期末餘額</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2022</td><td class="posv">0.27</td><td class="negv">-0.15</td><td class="posv">0.08</td><td>0.00</td><td class="posv">0.06</td><td>0.77</td><td>0.98</td></tr>
+      <tr><td>2023</td><td class="posv">0.20</td><td class="negv">-0.11</td><td class="posv">1.70</td><td class="negv">-0.01</td><td class="posv">0.08</td><td>0.98</td><td>2.76</td></tr>
+      <tr><td>2024</td><td class="posv">0.22</td><td class="negv">-0.66</td><td class="posv">0.32</td><td class="negv">-0.01</td><td class="posv">0.10</td><td>2.76</td><td>2.62</td></tr>
+      <tr><td>2025</td><td class="posv">0.48</td><td class="negv">-0.05</td><td class="posv">0.02</td><td class="negv">-0.01</td><td class="posv">0.26</td><td>2.62</td><td>3.05</td></tr>
+    </tbody>
+  </table>
+  <p class="chart-note">⚠️ 僅有 4 個完整年度資料，短於建議的 5–10 年觀察區間，趨勢判讀（尤其規則一、三）僅供初步參考。</p>
+
+  <!-- RULE 1 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則一・A 逐年成長趨勢<span class="tag pass">近況轉強</span></h3>
+      <span class="score mid">65<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p>營業活動現金流從 2022 年 <b>0.27 億</b>先降到 2023 年 <b>0.20 億</b>，2024 年小幅回升至 <b>0.22 億</b>，2025 年跳升到 <b>0.48 億</b>（較前一年成長超過一倍）。屬於「先蹲後跳」型：中間兩年造血能力偏弱、幾乎持平，直到最新一年才明顯放量。由於資料只有 4 年，這個放量是否能延續，還需要更多年度驗證。</p>
+    <svg class="chart" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="90" y1="20" x2="90" y2="260" class="axis-line"/>
+      <line x1="90" y1="260" x2="680" y2="260" class="zero-line"/>
+      <text x="82" y="264" text-anchor="end" class="grid-label">0</text>
+      <line x1="90" y1="212" x2="680" y2="212" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="216" text-anchor="end" class="grid-label">0.1</text>
+      <line x1="90" y1="164" x2="680" y2="164" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="168" text-anchor="end" class="grid-label">0.2</text>
+      <line x1="90" y1="116" x2="680" y2="116" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="120" text-anchor="end" class="grid-label">0.3</text>
+      <line x1="90" y1="68" x2="680" y2="68" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="72" text-anchor="end" class="grid-label">0.4</text>
+      <line x1="90" y1="20" x2="680" y2="20" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="24" text-anchor="end" class="grid-label">0.5</text>
+
+      <rect x="129" y="130.4" width="70" height="129.6" class="bar-pos"/>
+      <text x="164" y="122" text-anchor="middle" class="bar-label">0.27</text>
+      <text x="164" y="280" text-anchor="middle" class="year-label">2022</text>
+
+      <rect x="276" y="164" width="70" height="96" class="bar-neg" style="opacity:.82" fill="var(--rose)"/>
+      <text x="311" y="156" text-anchor="middle" class="bar-label">0.20</text>
+      <text x="311" y="280" text-anchor="middle" class="year-label">2023</text>
+
+      <rect x="424" y="154.4" width="70" height="105.6" class="bar-pos"/>
+      <text x="459" y="146" text-anchor="middle" class="bar-label">0.22</text>
+      <text x="459" y="280" text-anchor="middle" class="year-label">2024</text>
+
+      <rect x="571" y="29.6" width="70" height="230.4" class="c-peak"/>
+      <text x="606" y="22" text-anchor="middle" class="bar-label">0.48</text>
+      <text x="606" y="280" text-anchor="middle" class="year-label">2025</text>
+    </svg>
+    <div class="legend"><span><span class="swatch" style="background:var(--gold)"></span>高峰</span><span><span class="swatch" style="background:var(--rose)"></span>谷底</span></div>
+  </div>
+
+  <!-- RULE 2 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則二・B 投資紀律評估<span class="tag tentative">暫定</span></h3>
+      <span class="score mid">60<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p>B 連續四年皆為負值（持續投資中），屬正常現象。但金額很不平均：2022–2023 年每年僅 <b>0.11～0.15 億</b>的小額投資，2024 年卻暴增到 <b>0.66 億</b>（是前一年的 6 倍），2025 年又驟降回 <b>0.05 億</b>。這種「多數年份小額、單一年份重砲」的型態，比較像「老將自費特訓型」——不是穩定的產能擴張節奏，而是抓準某個時間點的一次性重壓，效果需要靠規則三驗證，不能保證。</p>
+    <p><b>此評分為暫定</b>：尚未取得投資活動細項（固定資產增減／子公司併購／金融資產調度），2024 年的 0.66 億究竟是廠房設備支出還是理財調度，會直接影響這項評分，待你提供細項截圖後校正。</p>
+    <svg class="chart" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="90" y1="20" x2="680" y2="20" class="zero-line"/>
+      <text x="82" y="24" text-anchor="end" class="grid-label">0</text>
+      <line x1="90" y1="54.3" x2="680" y2="54.3" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="58" text-anchor="end" class="grid-label">-0.1</text>
+      <line x1="90" y1="88.6" x2="680" y2="88.6" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="92" text-anchor="end" class="grid-label">-0.2</text>
+      <line x1="90" y1="122.9" x2="680" y2="122.9" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="127" text-anchor="end" class="grid-label">-0.3</text>
+      <line x1="90" y1="157.1" x2="680" y2="157.1" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="161" text-anchor="end" class="grid-label">-0.4</text>
+      <line x1="90" y1="191.4" x2="680" y2="191.4" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="195" text-anchor="end" class="grid-label">-0.5</text>
+      <line x1="90" y1="225.7" x2="680" y2="225.7" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="230" text-anchor="end" class="grid-label">-0.6</text>
+      <line x1="90" y1="260" x2="680" y2="260" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="264" text-anchor="end" class="grid-label">-0.7</text>
+
+      <rect x="129" y="20" width="70" height="51.4" class="c-trough" fill="var(--rose)"/>
+      <text x="164" y="85" text-anchor="middle" class="bar-label">-0.15</text>
+      <text x="164" y="280" text-anchor="middle" class="year-label">2022</text>
+
+      <rect x="276" y="20" width="70" height="37.7" fill="var(--rose)"/>
+      <text x="311" y="70" text-anchor="middle" class="bar-label">-0.11</text>
+      <text x="311" y="280" text-anchor="middle" class="year-label">2023</text>
+
+      <rect x="424" y="20" width="70" height="226.3" class="c-peak" fill="var(--brick)"/>
+      <text x="459" y="260" text-anchor="middle" class="bar-label" fill="#fff">-0.66</text>
+      <text x="459" y="280" text-anchor="middle" class="year-label">2024</text>
+
+      <rect x="571" y="20" width="70" height="17.1" fill="var(--rose)"/>
+      <text x="606" y="50" text-anchor="middle" class="bar-label">-0.05</text>
+      <text x="606" y="280" text-anchor="middle" class="year-label">2025</text>
+    </svg>
+    <p class="chart-note">深紅色＝投資規模最大的年度（2024）；此圖 y 軸向下代表投資金額擴大。</p>
+  </div>
+
+  <!-- RULE 3 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則三・B 投資效益分析<span class="tag tentative">暫定</span></h3>
+      <span class="score mid">55<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p>核心看投資後 1–2 年 A 是否轉強。2023 年小額投資（-0.11）後，2024 年 A 僅從 0.20 微升至 0.22，效果不明顯；但 2024 年重度投資（-0.66）後，2025 年 A 大幅跳升至 0.48（成長 118%），時間點上吻合「投資轉化為造血能力」的訊號。不過只有一次重度投資的樣本，還無法判斷是否為可重複的模式，需要再觀察 2026、2027 年 A 是否維持在高檔，而不是曇花一現。</p>
+    <table>
+      <caption>投資年度 vs. 隔年營業現金流（A）對照</caption>
+      <thead><tr><th>投資年度</th><th>當年 B</th><th>隔年 A</th><th>隔年 A 變化</th></tr></thead>
+      <tbody>
+        <tr><td>2022</td><td class="negv">-0.15</td><td>0.20（2023）</td><td class="negv">-26%</td></tr>
+        <tr><td>2023</td><td class="negv">-0.11</td><td>0.22（2024）</td><td class="posv">+10%</td></tr>
+        <tr><td>2024</td><td class="negv">-0.66</td><td>0.48（2025）</td><td class="posv">+118%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULE 4 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則四・C 融資活動合理性<span class="tag warn">需留意</span></h3>
+      <span class="score low">40<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p><b>連續四年、每一年都是「B 投資負值＋C 融資正值」的組合</b>——也就是每年都伴隨對外取得資金的動作。其中 2023 年最異常：當年投資僅 <b>0.11 億</b>，融資活動卻進帳高達 <b>1.70 億</b>，融資金額是投資金額的 <b>15 倍以上</b>，明顯不是「借錢剛好支應這筆投資」的規模，代表這筆資金另有用途（可能是還舊債、充實營運資金，或單純的股權募資）。2024 年融資 0.32 億對投資 0.66 億，比例上較合理。2025 年兩者金額都已明顯縮小，訊號趨緩。</p>
+    <p><b>此評分為暫定且是本次分析最大的不確定項</b>：目前尚未取得融資活動細項（現金增資 vs. 短期借款／公司債／長期借款），無法判斷 2023 年的 1.70 億主要來自股權募資（風險較低）還是舉債（風險較高）。若是股權募資，這項分數應上修；若主要是舉債，2023 年應被視為較嚴重的警訊年度。<b>強烈建議提供融資活動細項後再校正此項分數。</b></p>
+    <svg class="chart" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+      <rect x="237.5" y="20" width="147.5" height="290" fill="var(--brick-soft)" opacity="0.5"/>
+      <line x1="90" y1="214" x2="680" y2="214" class="zero-line"/>
+      <text x="82" y="218" text-anchor="end" class="grid-label">0</text>
+      <line x1="90" y1="171" x2="680" y2="171" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="175" text-anchor="end" class="grid-label">0.4</text>
+      <line x1="90" y1="128" x2="680" y2="128" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="132" text-anchor="end" class="grid-label">0.8</text>
+      <line x1="90" y1="85" x2="680" y2="85" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="89" text-anchor="end" class="grid-label">1.2</text>
+      <line x1="90" y1="42" x2="680" y2="42" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="46" text-anchor="end" class="grid-label">1.6</text>
+      <line x1="90" y1="257" x2="680" y2="257" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="261" text-anchor="end" class="grid-label">-0.4</text>
+
+      <rect x="108.75" y="214" width="50" height="16.2" class="bar-b"/>
+      <text x="133.75" y="245" text-anchor="middle" class="bar-label" style="fill:var(--brick)">-0.15</text>
+      <rect x="168.75" y="205.4" width="50" height="8.6" class="bar-c"/>
+      <text x="193.75" y="200" text-anchor="middle" class="bar-label" style="fill:var(--gold)">0.08</text>
+      <text x="164" y="300" text-anchor="middle" class="year-label">2022</text>
+
+      <rect x="256.25" y="214" width="50" height="11.8" class="bar-b"/>
+      <text x="281.25" y="243" text-anchor="middle" class="bar-label" style="fill:var(--brick)">-0.11</text>
+      <rect x="316.25" y="30.9" width="50" height="183.1" class="bar-c"/>
+      <text x="341.25" y="25" text-anchor="middle" class="bar-label" style="fill:var(--gold)">1.70</text>
+      <text x="311" y="300" text-anchor="middle" class="year-label">2023 ⚠</text>
+
+      <rect x="403.75" y="214" width="50" height="71.1" class="bar-b"/>
+      <text x="428.75" y="228" text-anchor="middle" class="bar-label" style="fill:#fff">-0.66</text>
+      <rect x="463.75" y="179.5" width="50" height="34.5" class="bar-c"/>
+      <text x="488.75" y="174" text-anchor="middle" class="bar-label" style="fill:var(--gold)">0.32</text>
+      <text x="459" y="300" text-anchor="middle" class="year-label">2024</text>
+
+      <rect x="551.25" y="214" width="50" height="5.4" class="bar-b"/>
+      <text x="576.25" y="234" text-anchor="middle" class="bar-label" style="fill:var(--brick)">-0.05</text>
+      <rect x="611.25" y="211.8" width="50" height="2.2" class="bar-c"/>
+      <text x="636.25" y="206" text-anchor="middle" class="bar-label" style="fill:var(--gold)">0.02</text>
+      <text x="606" y="300" text-anchor="middle" class="year-label">2025</text>
+    </svg>
+    <div class="legend"><span><span class="swatch" style="background:var(--brick)"></span>B 投資活動</span><span><span class="swatch" style="background:var(--gold)"></span>C 融資活動</span><span>粉底＝融資規模明顯偏離投資規模的年度</span></div>
+  </div>
+
+  <!-- RULE 5 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則五・A ＞ D 現金流品質<span class="tag pass">全數通過</span></h3>
+      <span class="score high">100<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p>採嚴格二分法逐年檢查「營業現金流 A」是否大於「稅前淨利 D」——連續四年皆通過，帳上賺的錢確實有轉換成現金收進來，沒有「膨風灌水」的跡象。</p>
+    <table>
+      <thead><tr><th>年度</th><th>A</th><th>D</th><th>A ＞ D？</th></tr></thead>
+      <tbody>
+        <tr><td>2022</td><td>0.27</td><td>0.06</td><td class="posv">✓ 通過</td></tr>
+        <tr><td>2023</td><td>0.20</td><td>0.08</td><td class="posv">✓ 通過</td></tr>
+        <tr><td>2024</td><td>0.22</td><td>0.10</td><td class="posv">✓ 通過</td></tr>
+        <tr><td>2025</td><td>0.48</td><td>0.26</td><td class="posv">✓ 通過</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULE 6 -->
+  <div class="rule-card">
+    <div class="rule-head">
+      <h3>規則六・E 期末現金餘額穩定性<span class="tag tentative">暫定</span></h3>
+      <span class="score mid">65<span style="font-size:12px;color:#8B8570;">/100</span></span>
+    </div>
+    <p>期末現金餘額從 2022 年 <b>0.98 億</b>一路成長到 2025 年 <b>3.05 億</b>，表面上是穩健向上的「體質變好」型。但要留意：2022→2023 這一段 <b>+182% 的躍升，主要來自規則四提到的 1.70 億融資活動，而非本業造血（A）的自然累積</b>。2023 年之後（2.76→2.62→3.05），餘額才轉為相對平穩、貼近本業表現的成長。換句話說，目前的現金水位有一部分是「借來的安全感」，不完全是靠營運自己賺出來的，這點會在確認融資細項後一併校正解讀。</p>
+    <svg class="chart" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="90" y1="20" x2="90" y2="260" class="axis-line"/>
+      <line x1="90" y1="260" x2="680" y2="260" class="zero-line"/>
+      <text x="82" y="264" text-anchor="end" class="grid-label">0</text>
+      <line x1="90" y1="225.7" x2="680" y2="225.7" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="230" text-anchor="end" class="grid-label">0.5</text>
+      <line x1="90" y1="191.4" x2="680" y2="191.4" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="195" text-anchor="end" class="grid-label">1.0</text>
+      <line x1="90" y1="157.1" x2="680" y2="157.1" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="161" text-anchor="end" class="grid-label">1.5</text>
+      <line x1="90" y1="122.9" x2="680" y2="122.9" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="127" text-anchor="end" class="grid-label">2.0</text>
+      <line x1="90" y1="88.6" x2="680" y2="88.6" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="92" text-anchor="end" class="grid-label">2.5</text>
+      <line x1="90" y1="54.3" x2="680" y2="54.3" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="58" text-anchor="end" class="grid-label">3.0</text>
+      <line x1="90" y1="20" x2="680" y2="20" class="axis-line" stroke-dasharray="3,3"/>
+      <text x="82" y="24" text-anchor="end" class="grid-label">3.5</text>
+
+      <rect x="129" y="192.8" width="70" height="67.2" class="c-trough" fill="var(--rose)"/>
+      <text x="164" y="185" text-anchor="middle" class="bar-label">0.98</text>
+      <text x="164" y="280" text-anchor="middle" class="year-label">2022</text>
+
+      <rect x="276" y="70.7" width="70" height="189.3" class="bar-pos"/>
+      <text x="311" y="63" text-anchor="middle" class="bar-label">2.76</text>
+      <text x="311" y="280" text-anchor="middle" class="year-label">2023</text>
+
+      <rect x="424" y="80.3" width="70" height="179.7" class="bar-pos"/>
+      <text x="459" y="73" text-anchor="middle" class="bar-label">2.62</text>
+      <text x="459" y="280" text-anchor="middle" class="year-label">2024</text>
+
+      <rect x="571" y="50.9" width="70" height="209.1" class="c-peak"/>
+      <text x="606" y="43" text-anchor="middle" class="bar-label">3.05</text>
+      <text x="606" y="280" text-anchor="middle" class="year-label">2025</text>
+    </svg>
+    <div class="legend"><span><span class="swatch" style="background:var(--gold)"></span>高峰</span><span><span class="swatch" style="background:var(--rose)"></span>谷底</span></div>
+  </div>
+
+  <h3>總評分與關卡建議</h3>
+  <div class="score-summary">
+    <div class="score-ring">64</div>
+    <div class="txt">
+      <p><b>六項平均約 64 分，落在「良好」區間（60–79%），但非高分空間</b>——現金流體質基本可以繼續看下去，未觸發「A為負＋重度投資＋疑似舉債」三重疊加的最嚴重警訊。</p>
+      <p>不過<b>規則四（融資合理性）分數偏低，且規則二、三、四目前都僅依總額判斷、屬暫定分數</b>，尤其 2023 年融資活動 1.70 億的資金性質（股權 vs. 舉債）待確認，會直接牽動總分是上修還是下修。</p>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p><b>建議：</b>現金流體質可以繼續看下去，接著自然進入第 2 步查詢基本資訊。同時建議你補充投資活動與融資活動細項截圖（Goodinfo 現金流量表頁面往下捲動即有），特別是釐清 2023 年 1.70 億融資活動的資金來源，我會回頭校正規則二、三、四的分數。</p>
+  </div>
+
+  <p class="footnote">
+    報告版本：v1.0　｜　產生時間：2026-08-16　｜　資料來源：使用者提供截圖（2022–2025 年度現金流量表），非本次搜尋所得，數字尚未經 Claude 逐項覆核。<br>
+    此步驟為盲測階段分析，尚未查詢或引用 7790 之股價、EPS、產業地位、新聞背景，相關內容將於第 2 步後補充。
+  </p>
+</section>
+
+<section class="step" id="step2">
+  <div class="step-label">【第 2 步／共 6 步】基本資訊查詢</div>
+  <h2>思必瑞特生技（7790）是誰？</h2>
+
+  <div class="callout">
+    <p><b>思必瑞特生技股份有限公司</b>，2020 年 12 月成立，2024 年 12 月 27 日以參考價 70 元登錄興櫃（生技醫療業），核心技術為 BMLT® 生物材料凍晶技術，主力產品是血小板（PLT）相關再生醫療製備服務／生長因子凍晶相關產品，應用於抗老化與再生醫學，客戶端每季處理約 2,000 件以上訂單。董事長暨總經理為林道隆。</p>
+  </div>
+
+  <h3>股價快照</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th><th>查詢時間</th></tr></thead>
+    <tbody>
+      <tr><td>收盤價</td><td>47.80 元（跌 0.26／-0.55%）</td><td>2026/08/14 14:54</td></tr>
+      <tr><td>52 週高／低</td><td>87.30／46.00 元</td><td>查詢於 2026/07/15 資料</td></tr>
+      <tr><td>市值</td><td>約 9.2 億元</td><td>查詢於 2026/07/15 資料</td></tr>
+      <tr><td>發行股數</td><td>約 1,770 萬股（實收資本額約 1.77 億）</td><td>查詢於 2026/07/15 資料</td></tr>
+    </tbody>
+  </table>
+  <p class="chart-note">⚠️ 股價、市值、52 週高低屬即時報價類欄位，會隨盤中跳動，以上僅為各自查詢當下的單一數字快照，非官方公布的區間，正式交易請以看盤軟體／券商 App 即時報價為準。目前股價 47.80 元已相當貼近 52 週低點 46.00 元，較 52 週高點回落約 45%，也與你先前提供表格中「2026 年較 2025 年收盤下跌 32%」的走勢一致，但目前查無明確單一利空消息可解釋此波下跌，暫不強行歸因。</p>
+
+  <h3>獲利與股利</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>近四季 EPS</td><td>1.09 元（查詢於 2026/07/15）</td></tr>
+      <tr><td>當季 EPS</td><td>0.05 元（查詢於 2026/07/15）</td></tr>
+      <tr><td>2025 全年 EPS</td><td>1.14 元（法說會公布，2025 全年）</td></tr>
+      <tr><td>毛利率</td><td>約 80%，近三年穩定維持在 80% 以上</td></tr>
+      <tr><td>淨利率</td><td>1.64%（查詢於 2026/07/15）</td></tr>
+      <tr><td>年股利／殖利率</td><td>0.60 元／1.16%（查詢於 2026/07/15）</td></tr>
+      <tr><td>本益比</td><td>47.79 倍（查詢於 2026/07/15，股價 52.10 元時）</td></tr>
+    </tbody>
+  </table>
+  <p class="chart-note">推算數字：以最新收盤 47.80 元 ÷ 近四季 EPS 1.09 元，估算本益比約為 <b>43.9 倍</b>（此為自行換算，非直接查得的公告數字，且分母 EPS 仍是 07/15 當時的近四季數字，非同步最新）。</p>
+
+  <h3>營收表現</h3>
+  <div class="callout" style="background:var(--jade-soft);border-left-color:var(--jade);">
+    <p>2025 全年營收達 <b>2.73 億元，年增 21%，創歷史新高</b>；本期淨利 2,006 萬元，年增近 3 倍。2023 全年營收 1.79 億元，2024 上半年營收已達 1.04 億元，呈現逐季成長趨勢。這組營收與淨利趨勢，和第 1 步規則一觀察到「2025 年 A 大幅跳升」的現象方向一致，互相印證。</p>
+  </div>
+
+  <h3>海外布局</h3>
+  <p>公司於日本建置符合 CPC（細胞處理中心）認證的實驗室，規劃取得 PMDA（日本藥品與醫療器械管理局）認證，作為海外市場首站布局，預期最快於隔年下半年開始貢獻營運動能——這部分屬於尚未兌現的未來計畫，非已確認的營收貢獻。</p>
+
+  <h3>關於第 1 步規則四疑點的初步線索（尚待細項證實）</h3>
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p>目前查到的公開資訊顯示，思必瑞特於 2024 年 12 月才登錄興櫃，且董事會確實有辦理過「私募普通股或私募國內可轉換公司債」的決議紀錄（但該筆決議公告時間為 2026 年 4 月，不是 2023 年）。<b>這只能作為「公司慣用股權類籌資工具」的背景參考，不能直接當成 2023 年那筆 1.70 億融資活動的來源證明</b>——2023 年當時公司尚未登錄興櫃，若要精確判斷該筆資金是增資、私募股權還是舉債，仍需要你提供的融資活動細項，或進一步查詢公開資訊觀測站（MOPS）2023 年度的重大訊息公告才能確認，目前不足以校正規則四的分數，維持第 1 步的暫定 40 分不變。</p>
+  </div>
+
+  <p class="footnote">
+    資料來源：<a href="https://tw.stock.yahoo.com/quote/7790.TWO" target="_blank">Yahoo股市 7790 個股頁面</a>（股價快照）｜<a href="https://www.cnyes.com/twstock/7790" target="_blank">鉅亨網 7790 總覽</a>（EPS／毛利率／殖利率）｜<a href="https://www.wantgoo.com/stock/7790/company-profile" target="_blank">玩股網 7790 公司資料</a>（公司基本資料）｜<a href="https://money.udn.com/money/story/11074/8442783" target="_blank">經濟日報／工商時報 興櫃掛牌報導</a>（營收、技術、海外布局）｜<a href="https://news.gbimonthly.com/tw/invest/show2.php?num=684" target="_blank">環球生技月刊／公開資訊觀測站重訊彙整</a>（法說會摘要、私募決議紀錄）｜<a href="https://webpro.twse.com.tw/WebPortal/vod/101/" target="_blank">證交所法人說明會影音專區</a>（第 3 步法說會資料查詢入口）。以上數字多為不同時間點查詢之快照，已於表格中個別標註查詢時間，非同一時間點的官方彙總數字。
+  </p>
+</section>
+
+<section class="step" id="step3">
+  <div class="step-label">【第 3 步／共 6 步】法說會資料深入討論</div>
+  <h2>法說會說了什麼，能否解開規則四的疑點？</h2>
+
+  <div class="callout">
+    <p>目前查無 7790 最新場次法說會的完整簡報 PDF 或逐字稿，改以財經媒體（環球生技月刊）對 <b>2026/04/13 凱基證券舉辦法人說明會</b> 的重點摘要報導補足。這場法說會主要公布 2025（民國114）全年度成果，是目前資訊量最完整的場次。</p>
+  </div>
+
+  <h3>法說會揭露重點</h3>
+  <table>
+    <thead><tr><th>項目</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td>時間／主辦</td><td>2026/04/13，凱基證券舉辦</td></tr>
+      <tr><td>2025 全年營收</td><td>2.73 億元，年增 21%，創歷史新高</td></tr>
+      <tr><td>2025 本期淨利</td><td>2,006 萬元，年增近 3 倍</td></tr>
+      <tr><td>2025 EPS</td><td>1.14 元</td></tr>
+      <tr><td>成長動能（董事長說明）</td><td>血小板相關再生醫療製備服務在台灣市場快速擴張；核心 BMLT® 生物材料凍晶技術搭上再生醫療法規逐步明朗化</td></tr>
+    </tbody>
+  </table>
+
+  <h3>更新後的最新一期資訊（超出原本 4 年區間，僅供參考）</h3>
+  <p>查到公司已揭露 <b>2026 年上半年（115年上半年）合併獲利 331 萬元，每股稅後 0.18 元</b>（2026/08/13 公告），相較 2025 全年 EPS 1.14 元明顯放緩，這與第 2 步觀察到的股價走弱（從 87.3 高點回落到目前 47.8 附近）在時間點上有對應關係，但目前查無法說會或重訊明確解釋上半年獲利放緩的具體原因，僅能如實呈現這個對照，不做過度推論。</p>
+
+  <h3>與規則四相關的新線索</h3>
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p><b>仍未找到能直接證實 2023 年那筆 1.70 億融資活動性質的資料。</b>目前查到與籌資／投資相關的公開紀錄，時間點都集中在 2026 年，與 2023 年無關：</p>
+    <ul style="color:var(--ink-soft);">
+      <li>2026/01/22 公告取得新北市汐止區不動產，金額約 1.34 億元（這會是「2026 年」B 投資活動的重要項目，不影響本次分析的 2022–2025 區間）</li>
+      <li>2026/04/16 董事會決議辦理私募普通股或私募國內可轉換公司債，上限 200 萬股（顯示公司持續偏好股權類籌資工具，可作為「風格參考」，但同樣不是 2023 年那筆的直接證據）</li>
+    </ul>
+    <p>由於 7790 直到 2024 年 12 月才登錄興櫃，2023 年當時屬未公開發行前的私人公司階段，重大訊息揭露義務與現在不同，一般財經媒體與 MOPS 重訊資料庫也難以查到當時的私募或增資細節。<b>規則四維持第 1 步的暫定 40 分，這點需要你提供的融資活動細項截圖才能真正校正，網路公開資訊已查到能查的極限。</b></p>
+  </div>
+
+  <h3>其他背景備註</h3>
+  <p class="chart-note">查證中發現一處資料出入：公司登記成立日期為 2020/12/18，但 2025 年 7 月的一篇報導提及公司「成立於 2015 年、邁向 10 週年」。推測是思必瑞特作為 Spirit Scientific 旗下事業單位的技術開發起點（2015 年）與現在的法人登記日期（2020 年）不同基準，兩者皆為真實但屬不同時間點的版本，如實並陳，不代表任何一方有誤。</p>
+
+  <p class="footnote">
+    資料來源：<a href="https://news.gbimonthly.com/tw/invest/show2.php?num=684" target="_blank">環球生技月刊 7790 公司頁（含歷年重訊彙整）</a>，內含法說會摘要（2026/04/13 場次）、2026 上半年獲利公告（2026/08/13）、不動產取得公告（2026/01/22）、私募決議公告（2026/04/16）等具體條目連結。查無官方簡報 PDF，以上均為財經媒體對公開資訊觀測站重訊之整理報導。
+  </p>
+</section>
+
+<section class="step" id="step4">
+  <div class="step-label">【第 4 步／共 6 步】營收趨勢視覺化</div>
+  <h2>近 12 期月營收：2025 強勢成長後，2026 明顯降溫</h2>
+
+  <div class="callout">
+    <p>由 Claude 搜尋取得，取近 12 期（2025/08–2026/07）月營收資料。<b>2026 年前 7 個月累計營收 1.44 億元，年減 14.0%</b>，與第 3 步觀察到的「2026 上半年 EPS 明顯放緩至 0.18 元」方向一致，兩者互相印證：2025 年的高成長動能到 2026 年並未延續。</p>
+  </div>
+
+  <svg class="chart" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
+    <line x1="90" y1="20" x2="90" y2="260" class="axis-line"/>
+    <line x1="90" y1="260" x2="860" y2="260" class="zero-line"/>
+    <text x="82" y="264" text-anchor="end" class="grid-label">0</text>
+    <line x1="90" y1="220" x2="860" y2="220" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="224" text-anchor="end" class="grid-label">0.05</text>
+    <line x1="90" y1="180" x2="860" y2="180" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="184" text-anchor="end" class="grid-label">0.10</text>
+    <line x1="90" y1="140" x2="860" y2="140" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="144" text-anchor="end" class="grid-label">0.15</text>
+    <line x1="90" y1="100" x2="860" y2="100" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="104" text-anchor="end" class="grid-label">0.20</text>
+    <line x1="90" y1="60" x2="860" y2="60" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="64" text-anchor="end" class="grid-label">0.25</text>
+    <line x1="90" y1="20" x2="860" y2="20" class="axis-line" stroke-dasharray="3,3"/>
+    <text x="82" y="24" text-anchor="end" class="grid-label">0.30</text>
+
+    <rect x="102.08" y="84.0" width="40" height="176.0" class="bar-pos"/>
+    <text x="122.08" y="76" text-anchor="middle" class="bar-label" style="font-size:11px;">0.22</text>
+    <text x="122.08" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">25/08</text>
+
+    <rect x="166.25" y="76.0" width="40" height="184.0" class="bar-pos"/>
+    <text x="186.25" y="68" text-anchor="middle" class="bar-label" style="font-size:11px;">0.23</text>
+    <text x="186.25" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">25/09</text>
+
+    <rect x="230.42" y="108.0" width="40" height="152.0" class="bar-pos"/>
+    <text x="250.42" y="100" text-anchor="middle" class="bar-label" style="font-size:11px;">0.19</text>
+    <text x="250.42" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">25/10</text>
+
+    <rect x="294.58" y="108.0" width="40" height="152.0" class="bar-pos"/>
+    <text x="314.58" y="100" text-anchor="middle" class="bar-label" style="font-size:11px;">0.19</text>
+    <text x="314.58" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">25/11</text>
+
+    <rect x="358.75" y="76.0" width="40" height="184.0" class="bar-pos"/>
+    <text x="378.75" y="68" text-anchor="middle" class="bar-label" style="font-size:11px;">0.23</text>
+    <text x="378.75" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">25/12</text>
+
+    <rect x="422.92" y="60.0" width="40" height="200.0" class="c-peak"/>
+    <text x="442.92" y="52" text-anchor="middle" class="bar-label" style="font-size:11px;">0.25</text>
+    <text x="442.92" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/01</text>
+
+    <rect x="487.08" y="164.0" width="40" height="96.0" class="c-trough" fill="var(--rose)"/>
+    <text x="507.08" y="156" text-anchor="middle" class="bar-label" style="font-size:11px;">0.12</text>
+    <text x="507.08" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/02</text>
+
+    <rect x="551.25" y="60.0" width="40" height="200.0" class="c-peak"/>
+    <text x="571.25" y="52" text-anchor="middle" class="bar-label" style="font-size:11px;">0.25</text>
+    <text x="571.25" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/03</text>
+
+    <rect x="615.42" y="100.0" width="40" height="160.0" class="bar-pos"/>
+    <text x="635.42" y="92" text-anchor="middle" class="bar-label" style="font-size:11px;">0.20</text>
+    <text x="635.42" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/04</text>
+
+    <rect x="679.58" y="92.0" width="40" height="168.0" class="bar-pos"/>
+    <text x="699.58" y="84" text-anchor="middle" class="bar-label" style="font-size:11px;">0.21</text>
+    <text x="699.58" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/05</text>
+
+    <rect x="743.75" y="100.0" width="40" height="160.0" class="bar-pos"/>
+    <text x="763.75" y="92" text-anchor="middle" class="bar-label" style="font-size:11px;">0.20</text>
+    <text x="763.75" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/06</text>
+
+    <rect x="807.92" y="92.0" width="40" height="168.0" class="bar-pos"/>
+    <text x="827.92" y="84" text-anchor="middle" class="bar-label" style="font-size:11px;">0.21</text>
+    <text x="827.92" y="278" text-anchor="middle" class="year-label" style="font-size:11px;">26/07</text>
+  </svg>
+  <div class="legend"><span><span class="swatch" style="background:var(--gold)"></span>高峰（並列）</span><span><span class="swatch" style="background:var(--rose)"></span>谷底</span><span>單位：億元</span></div>
+
+  <h3>逐月年增率對照</h3>
+  <table>
+    <caption>月營收年增率（YoY），可看出 2026 年轉為多數負成長</caption>
+    <thead><tr><th>月份</th><th>25/08</th><th>25/09</th><th>25/10</th><th>25/11</th><th>25/12</th><th>26/01</th><th>26/02</th><th>26/03</th><th>26/04</th><th>26/05</th><th>26/06</th><th>26/07</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>年增率</td>
+        <td class="posv">+21.3%</td><td class="posv">+18.8%</td><td class="negv">-14.1%</td><td class="negv">-14.1%</td><td class="posv">+0.9%</td>
+        <td class="posv">+21.3%</td><td class="negv">-45.0%</td><td class="posv">+16.0%</td><td class="posv">+4.9%</td><td class="negv">-21.2%</td><td class="negv">-41.5%</td><td class="negv">-11.2%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>2025 年多數月份維持雙位數年增，全年營收創高；但進入 2026 年後，除了 1 月、3 月、4 月仍正成長，<b>2 月出現單月 -45% 的深跌（推測與農曆春節工作天數較少的季節性因素有關，但目前查無公司官方說明證實）</b>，5、6 月更連續出現 -21.2%、-41.5% 的年減，7 月雖收斂到 -11.2%，仍未轉正。這個降溫走勢與第 2 步觀察到「股價從 87.3 元高點回落到 47.8 元附近」、第 3 步「2026 上半年 EPS 僅 0.18 元」的訊號方向一致，三者互相呼應，指向 2026 年營運動能較 2025 年明顯轉弱，而非單一資料的雜訊。</p>
+
+  <p class="footnote">
+    資料來源：<a href="https://www.nstock.tw/stock_info?stock_id=7790&status=2" target="_blank">nStock股市資訊 7790 月營收頁面</a>，查詢於 2026/08/14。原始資料以「營收(億)／年增／年累(億)／累積年增」四欄呈現，月營收數字經四捨五入至小數點後兩位，年增率為原始網頁數字，加總月營收與官方年累數字可能有 ±0.01 億的四捨五入誤差。
+  </p>
+</section>
+
+<section class="step" id="step5">
+  <div class="step-label">【第 5 步／共 6 步】前瞻本益比／EPS 預估</div>
+  <h2>現在貴不貴？合理價可能落在哪？</h2>
+
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p><b>誠實告知：查無市場法人（券商分析師）對 7790 次一年度、次二年度 EPS 的正式預估共識。</b>7790 屬興櫃生技醫療業微型股，目前只查到「受邀參加凱基證券法人說明會」的紀錄，沒有查到凱基或其他券商發布的正式預估報告或目標價。這是興櫃階段微型股常見狀況——沒有穩定的法人覆蓋，以下改用你已有的實際數字做敏感度試算，而非市場共識預測。</p>
+  </div>
+
+  <h3>現在貴不貴：以已知實際 EPS 回推隱含本益比</h3>
+  <table>
+    <thead><tr><th>基準 EPS</th><th>數值</th><th>目前股價 47.80 元 隱含本益比</th></tr></thead>
+    <tbody>
+      <tr><td>2025 全年實際 EPS（已confirm）</td><td>1.14 元</td><td class="negv">約 41.9 倍</td></tr>
+      <tr><td>近四季 EPS（查詢於 2026/07/15）</td><td>1.09 元</td><td class="negv">約 43.9 倍（推算數字）</td></tr>
+    </tbody>
+  </table>
+  <p class="chart-note">兩種基準算出的隱含本益比都在 40 倍上下，這是「已知股價求隱含倍數」的用法，回答「現在貴不貴」；下一段的目標價試算則是反過來，「已知倍數求目標價」，兩者是同一公式的不同用法，不是同一件事。</p>
+
+  <h3>合理價可能落在哪：目標本益比法敏感度試算</h3>
+  <p>以 2025 全年實際 EPS 1.14 元為基礎，分別代入 20／25／30 倍三組假設倍數（<b>這三組倍數僅為敏感度試算的常見級距，並非查證得來的同業本益比區間，也不是任何分析師給的倍數</b>），回推目標價區間：</p>
+  <table>
+    <thead><tr><th>假設本益比</th><th>目標價（EPS 1.14 × 倍數）</th><th>相對目前股價 47.80 元</th></tr></thead>
+    <tbody>
+      <tr><td>20 倍</td><td>22.8 元</td><td class="negv">低約 52%</td></tr>
+      <tr><td>25 倍</td><td>28.5 元</td><td class="negv">低約 40%</td></tr>
+      <tr><td>30 倍</td><td>34.2 元</td><td class="negv">低約 28%</td></tr>
+    </tbody>
+  </table>
+  <p class="chart-note">⚠️ 這個試算對「倍數怎麼選」高度敏感，沒有標準答案，只是數學上的敏感度呈現，不是目標價預測。即使套用相對寬鬆的 30 倍，算出的目標價仍明顯低於目前股價，代表市場目前給予的本益比（約 42–44 倍）比這三組假設倍數都高出不少——這反映市場對後續成長性的期待，但也代表股價對獲利成長是否能延續相當敏感。</p>
+
+  <h3>不確定性：近四季 EPS 波動劇烈，且 2026 上半年動能已轉弱</h3>
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p><b>7790 的 EPS 過去一年出現大幅波動</b>：查詢於 2025/07 時，近四季 EPS 僅約 0.32 元；到 2026/07 時，近四季 EPS 已成長到 1.09 元；但第 3、4 步已確認 <b>2026 上半年 EPS 僅 0.18 元</b>，且第 4 步月營收年增率多數月份轉負。若簡單將 2026 上半年 EPS 直接乘以 2（0.18×2=0.36 元，<b>這是最粗略的線性年化推算，未考慮季節性或下半年可能的反轉，僅供對照參考</b>），套用同樣 20–30 倍區間，目標價會落在 7.2–10.8 元，與前面用 2025 實際 EPS 算出的 22.8–34.2 元差距懸殊。</p>
+    <p>這個對照凸顯：<b>2026 全年 EPS 究竟會貼近 2025 年的高成長，還是貼近上半年的放緩速度，會讓合理價估算結果差非常多</b>，目前沒有足夠資訊判斷哪一種情境更可能發生，建議保守看待任何單一目標價數字，優先關注下半年營收與獲利是否止穩。</p>
+  </div>
+
+  <p class="footnote">
+    資料來源：<a href="https://www.cnyes.com/twstock/7790" target="_blank">鉅亨網 7790 總覽</a>（EPS 數字，含歷史快照對照）｜<a href="https://news.gbimonthly.com/tw/invest/show2.php?num=684" target="_blank">環球生技月刊重訊彙整</a>（2025 全年 EPS、2026H1 EPS）｜本步驟未查得任何券商正式預估報告，20/25/30 倍為分析框架建議之敏感度試算級距，非查證所得之同業或機構倍數。
+  </p>
+</section>
+
+<section class="step" id="step6">
+  <div class="step-label">【第 6 步／共 6 步】投資決策推理</div>
+  <h2>會不會投資？續抱還是賣出？</h2>
+
+  <div class="callout">
+    <p>⚠️ <b>以下是推理與觀點，不是專業投資建議</b>，Claude 不是理財顧問。分別回答「尚未持有會不會進場」與「已持有會續抱還是賣出」兩種情境，核心切入點呼應第 1 步的現金流分析結論。</p>
+  </div>
+
+  <h3>核心邏輯回顧</h3>
+  <p>第 1 步現金流體質約 64 分（良好但非高分），規則五（A>D 現金流品質）滿分、規則一（A 趨勢）近況轉強，是正面基礎；但規則四（融資合理性）僅 40 分且<b>2023 年那筆 1.70 億融資的性質至今未解</b>，加上第 4、5 步確認 <b>2026 上半年營運動能明顯轉弱</b>（EPS 僅 0.18 元、月營收多數轉負）、目前隱含本益比仍高達 42–44 倍——獲利成長放緩但股價估值仍偏高，這是目前最大的矛盾點。</p>
+
+  <h3>若尚未持有：會不會進場？</h3>
+  <div class="callout" style="border-left-color:var(--brick);background:var(--brick-soft);">
+    <p><b>傾向不急著進場。</b>理由：現在的股價（47.80 元）隱含本益比明顯高於用 2025 實際 EPS 試算出的合理價區間（22.8–34.2 元），代表市場仍在為「延續 2025 高成長」的假設付錢，但第 4、5 步的數據顯示 2026 上半年動能已經在放緩，兩者之間存在落差，進場的風險報酬不對稱。</p>
+    <p><b>具體、可驗證的觀察訊號（尚未發生，需等待確認）：</b></p>
+    <ul style="color:var(--ink-soft);">
+      <li>2026 年 8、9 月月營收年增率是否重新轉正（第 4 步顯示 7 月仍為 -11.2%）</li>
+      <li>2026 年第三季財報（預計 11 月前後公告）EPS 是否較上半年單季 0.09 元（0.18÷2 概算）明顯回升</li>
+      <li>若你日後取得融資活動細項，規則四校正後總分是否回到 70 分以上（目前暫定 40 分是主要扣分項）</li>
+    </ul>
+  </div>
+
+  <h3>若已持有：續抱還是賣出？</h3>
+  <div class="callout">
+    <p><b>傾向續抱觀察，但設定明確的停損檢查點，不做無條件長抱。</b>理由：規則五現金流品質仍全數通過、日本 PMDA 認證等海外布局屬於長期正面因子，體質沒有惡化到規則四提到的「A為負＋重度投資＋疑似舉債」三重警訊等級，不需要恐慌性出場；但目前的獲利放緩若持續到年底，目前的估值水準會愈來愈難支撐。</p>
+    <p><b>具體、可驗證的觀察訊號（尚未發生，需等待確認）：</b></p>
+    <ul style="color:var(--ink-soft);">
+      <li>若 2026 年第三、四季月營收年增率連續兩季維持負值，代表放緩不是單季雜訊，應考慮減碼</li>
+      <li>若之後取得的融資活動細項顯示 2023 年那筆 1.70 億主要來自舉債而非股權，應下修對規則四與整體現金流體質的評價，重新評估持股</li>
+      <li>若下半年財報顯示 A（營業現金流）由正轉負，同時融資活動又轉為正值，觸及規則四定義的最高警戒訊號，應立即重新檢視</li>
+    </ul>
+  </div>
+
+  <p class="footnote">
+    本步驟為 Claude 依據前五步分析數據做的推理，非投資建議，不構成任何買賣邀約。7790 為興櫃微型股，成交量低、波動大，任何決策請自行查證最新資訊並衡量自身風險承受度。
+  </p>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var pads = document.querySelectorAll('.pad:not(.locked)');
+  pads.forEach(function(pad){
+    pad.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = pad.getAttribute('href');
+      var target = document.querySelector(id);
+      if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  var sections = document.querySelectorAll('section.step');
+  var allPads = document.querySelectorAll('.pad');
+  if('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id = entry.target.getAttribute('id');
+          allPads.forEach(function(p){
+            if(p.classList.contains('locked')) return;
+            if(p.getAttribute('href') === '#' + id){
+              p.classList.add('active');
+            } else {
+              p.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, {rootMargin: '-40% 0px -50% 0px', threshold: 0});
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
