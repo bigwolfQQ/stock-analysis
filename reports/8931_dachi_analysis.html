@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>8931 大汽電｜個股初步分析報告</title>
+<style>
+:root{
+  --bg:#0f1a1f;
+  --panel:#152631;
+  --panel2:#1b2f3b;
+  --ink:#eaf2f2;
+  --ink-dim:#9db3ba;
+  --line:#274653;
+  --accent:#e0a458;      /* 銅色/能源意象 */
+  --c-pos:#4fb3a9;       /* 青綠：正常/穩健 */
+  --c-peak:#e0a458;      /* 銅金：高峰 */
+  --c-trough:#e0607a;    /* 玫瑰紅：谷底/警示 */
+  --c-quarter:#6c8a93;   /* 灰藍：單季參考 */
+  --negv:#e0607a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;
+  line-height:1.7;
+}
+header{
+  padding:32px 24px 20px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#0c151a,var(--bg));
+}
+header .code{color:var(--accent);font-size:14px;letter-spacing:2px;}
+header h1{margin:6px 0 4px;font-size:28px;}
+header .sub{color:var(--ink-dim);font-size:13px;}
+nav.stepnav{
+  display:flex;flex-wrap:wrap;gap:6px;
+  padding:12px 24px;background:var(--panel);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:10;
+}
+nav.stepnav a, nav.stepnav span{
+  font-size:12px;padding:6px 12px;border-radius:20px;
+  border:1px solid var(--line);color:var(--ink-dim);
+  text-decoration:none;white-space:nowrap;
+}
+nav.stepnav a.active{background:var(--accent);color:#20140a;border-color:var(--accent);font-weight:600;}
+nav.stepnav a:hover{border-color:var(--accent);color:var(--accent);}
+nav.stepnav span.locked{opacity:.4;cursor:not-allowed;}
+main{max-width:920px;margin:0 auto;padding:24px;}
+section{padding:28px 0;border-bottom:1px dashed var(--line);}
+.step-tag{
+  display:inline-block;font-size:12px;color:var(--accent);
+  border:1px solid var(--accent);padding:3px 10px;border-radius:14px;margin-bottom:10px;
+}
+h2{font-size:20px;margin:6px 0 14px;}
+h3{font-size:16px;margin:26px 0 10px;color:var(--accent);}
+.callout{
+  border-left:4px solid var(--accent);
+  background:var(--panel2);
+  padding:14px 18px;border-radius:0 8px 8px 0;
+  margin:14px 0 20px;font-size:14.5px;
+}
+.callout b{color:var(--accent);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+th{color:var(--ink-dim);font-weight:600;background:var(--panel2);}
+tr:hover td{background:#182a34;}
+.negv{color:var(--negv);font-weight:600;}
+.posv{color:var(--c-pos);font-weight:600;}
+.quarter-row td{color:var(--c-quarter);font-style:italic;}
+.chart-wrap{background:var(--panel2);border-radius:10px;padding:16px;margin:14px 0;}
+.chart-note{font-size:12px;color:var(--ink-dim);margin-top:6px;}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--ink-dim);margin-top:8px;flex-wrap:wrap;}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+.scorebox{
+  display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;
+}
+.scorecard{
+  flex:1;min-width:140px;background:var(--panel2);border-radius:10px;
+  padding:14px 16px;border:1px solid var(--line);
+}
+.scorecard .n{font-size:26px;font-weight:700;color:var(--accent);}
+.scorecard .l{font-size:12px;color:var(--ink-dim);}
+.verdict{
+  background:linear-gradient(135deg,#1b2f24,#152631);
+  border:1px solid var(--c-pos);border-radius:10px;padding:18px 20px;margin-top:16px;
+}
+.verdict .big{font-size:22px;color:var(--c-pos);font-weight:700;}
+.source-note{font-size:12px;color:var(--ink-dim);margin-top:8px;}
+footer{padding:20px 24px;color:var(--ink-dim);font-size:12px;text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=mjib007.stock-analysis.8931" alt="Visitors" style="opacity:0.85;margin-bottom:6px;display:block;">
+  <div class="code">STOCK 8931</div>
+  <h1>大汽電｜個股初步分析報告</h1>
+  <div class="sub">大園汽電共生股份有限公司（英文簡稱 TYC）・報告版本 v6・六步驟已完成</div>
+</header>
+
+<nav class="stepnav" id="stepnav">
+  <a href="#step1">① 現金流六大規則</a>
+  <a href="#step2">② 基本資訊</a>
+  <a href="#step3">③ 法說會</a>
+  <a href="#step4">④ 營收趨勢</a>
+  <a href="#step5">⑤ 前瞻本益比</a>
+  <a href="#step6" class="active">⑥ 投資決策</a>
+</nav>
+
+<main>
+
+<section id="step1">
+  <div class="step-tag">第 1 步／共 6 步：現金流量表六大規則分析（盲測階段）</div>
+  <h2>現金流量表六大規則分析</h2>
+
+  <div class="callout">
+    <b>重點結論：</b>總分約 <b>71.2 分</b>（良好，60–79% 區間），現金流體質可以繼續往下看基本面。
+    最大亮點是規則五（A&gt;D 現金流品質）達 <b>85.7%</b>、七年僅 2019 一年未過關；
+    需留意的是 <b>2019、2020、2024、2025</b> 四個年度都出現「重度投資（B大幅負值）＋融資活動為正（疑似舉債支應）」的組合，
+    屬於重複出現的模式而非單一特例，但因為這七年 <b>A（營業活動現金流）從未轉負</b>，避開了最嚴重的警戒訊號。
+    規則二、三、四目前僅依總額判斷，<b>投資與融資活動細項尚未取得，這幾項評分屬於暫定</b>，建議後續提供細項截圖以校正。
+  </div>
+
+  <h3>現金流量數據表（單位：億元）</h3>
+  <table>
+    <thead>
+      <tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>期初餘額</th><th>E 期末餘額</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2019</td><td class="posv">1.03</td><td class="negv">-7.45</td><td class="posv">4.64</td><td>1.83</td><td>5.57</td><td>3.78</td></tr>
+      <tr><td>2020</td><td class="posv">4.96</td><td class="negv">-5.41</td><td class="posv">2.81</td><td>2.14</td><td>3.78</td><td>6.14</td></tr>
+      <tr><td>2021</td><td class="posv">2.17</td><td class="negv">-1.38</td><td class="negv">-1.72</td><td>2.12</td><td>6.14</td><td>5.20</td></tr>
+      <tr><td>2022</td><td class="posv">5.42</td><td class="negv">-3.52</td><td class="negv">-3.61</td><td>4.42</td><td>5.20</td><td>3.49</td></tr>
+      <tr><td>2023</td><td class="posv">7.14</td><td class="negv">-5.71</td><td class="negv">-1.78</td><td>3.53</td><td>3.49</td><td>3.13</td></tr>
+      <tr><td>2024</td><td class="posv">4.79</td><td class="negv">-6.27</td><td class="posv">1.59</td><td>3.53</td><td>3.13</td><td>3.25</td></tr>
+      <tr><td>2025</td><td class="posv">6.79</td><td class="negv">-6.94</td><td class="posv">0.36</td><td>2.54</td><td>3.25</td><td>3.47</td></tr>
+      <tr class="quarter-row"><td>26Q2（單季）</td><td>2.28</td><td>-1.93</td><td>-0.63</td><td>1.04</td><td>3.47</td><td>3.18</td></tr>
+    </tbody>
+  </table>
+  <div class="source-note">資料來源：使用者提供截圖（財報數據表）。26Q2 為單季資料，僅供參考，不列入計分。</div>
+
+  <!-- 規則一 -->
+  <h3>規則一：A 逐季與逐年成長趨勢</h3>
+  <p>大汽電的營業活動現金流從 2019 年僅 <b>1.03 億</b>，一路成長到 2023 年高峰 <b>7.14 億</b>，中間雖有 2021、2024 兩次回落，但整體呈現「進兩步、退一步」的向上格局，屬於<b>「穩健造血、偶爾喘息」型</b>：本業現金創造能力持續增強，短期回落尚不構成趨勢反轉。</p>
+  <div class="chart-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="30" x2="60" y2="280" stroke="var(--line)"/>
+      <line x1="60" y1="280" x2="680" y2="280" stroke="var(--line)"/>
+      <g font-size="11" fill="#9db3ba">
+        <text x="52" y="284" text-anchor="end">0</text>
+        <line x1="55" y1="280" x2="680" y2="280" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="221.5" text-anchor="end">2</text>
+        <line x1="55" y1="217.5" x2="680" y2="217.5" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="159" text-anchor="end">4</text>
+        <line x1="55" y1="155" x2="680" y2="155" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="96.5" text-anchor="end">6</text>
+        <line x1="55" y1="92.5" x2="680" y2="92.5" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="34" text-anchor="end">8</text>
+      </g>
+      <!-- bars: zero_y=280, unit=31.25px -->
+      <g>
+        <rect x="76" y="247.8" width="45" height="32.2" fill="var(--c-trough)"/>
+        <text x="98.5" y="242" text-anchor="middle" font-size="11" fill="var(--ink)">1.03</text>
+        <text x="98.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2019</text>
+
+        <rect x="154" y="125.0" width="45" height="155.0" fill="var(--c-pos)"/>
+        <text x="176.5" y="119" text-anchor="middle" font-size="11" fill="var(--ink)">4.96</text>
+        <text x="176.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2020</text>
+
+        <rect x="231" y="212.2" width="45" height="67.8" fill="var(--c-pos)"/>
+        <text x="253.5" y="206" text-anchor="middle" font-size="11" fill="var(--ink)">2.17</text>
+        <text x="253.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2021</text>
+
+        <rect x="309" y="110.6" width="45" height="169.4" fill="var(--c-pos)"/>
+        <text x="331.5" y="104" text-anchor="middle" font-size="11" fill="var(--ink)">5.42</text>
+        <text x="331.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2022</text>
+
+        <rect x="386" y="56.9" width="45" height="223.1" fill="var(--c-peak)"/>
+        <text x="408.5" y="51" text-anchor="middle" font-size="11" fill="var(--ink)">7.14</text>
+        <text x="408.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2023</text>
+
+        <rect x="464" y="130.3" width="45" height="149.7" fill="var(--c-pos)"/>
+        <text x="486.5" y="124" text-anchor="middle" font-size="11" fill="var(--ink)">4.79</text>
+        <text x="486.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2024</text>
+
+        <rect x="541" y="67.8" width="45" height="212.2" fill="var(--c-pos)"/>
+        <text x="563.5" y="61.8" text-anchor="middle" font-size="11" fill="var(--ink)">6.79</text>
+        <text x="563.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2025</text>
+
+        <rect x="619" y="208.7" width="45" height="71.3" fill="none" stroke="var(--c-quarter)" stroke-dasharray="4,3" stroke-width="1.5" opacity="0.85"/>
+        <text x="641.5" y="202.7" text-anchor="middle" font-size="10" fill="var(--c-quarter)" font-style="italic">2.28</text>
+        <text x="641.5" y="298" text-anchor="middle" font-size="10" fill="var(--c-quarter)" font-style="italic">26Q2</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--c-peak)"></span>高峰年度</span>
+      <span><span class="dot" style="background:var(--c-trough)"></span>谷底年度</span>
+      <span><span class="dot" style="background:var(--c-pos)"></span>一般年度</span>
+      <span><span class="dot" style="border:1px dashed var(--c-quarter);background:none"></span>虛線框為 26Q2 單季，僅供參考不列入計分</span>
+    </div>
+  </div>
+
+  <!-- 規則二 -->
+  <h3>規則二：B 投資紀律評估</h3>
+  <p>B 連續七年皆為負值（持續投資中），2019 年投資規模達 <b>-7.45 億</b>，為近七年最大手筆；2021 年則收斂到 <b>-1.38 億</b>，為投資力道最保守的一年。大汽電屬汽電共生（電力/能源）產業，資本密集為常態，|B|多數年度接近或超過 A 屬合理現象，暫不因此過度扣分；<b>惟目前僅有投資活動總額，尚未取得「固定資產增減」「金融資產調度」「子公司收購」等細項拆解，此項評分暫定為 70 分，待細項截圖後校正。</b></p>
+
+  <!-- 規則三 -->
+  <h3>規則三：B 投資效益分析（投資年度 vs. 隔年 A 是否轉強）</h3>
+  <table>
+    <thead><tr><th>投資年度</th><th>該年 B</th><th>隔年 A</th><th>較前一年 A 變化</th><th>效益判讀</th></tr></thead>
+    <tbody>
+      <tr><td>2019</td><td class="negv">-7.45</td><td>2020：4.96</td><td class="posv">＋3.93（自 1.03）</td><td class="posv">轉強</td></tr>
+      <tr><td>2020</td><td class="negv">-5.41</td><td>2021：2.17</td><td class="negv">－2.79（自 4.96）</td><td class="negv">回落</td></tr>
+      <tr><td>2021</td><td class="negv">-1.38</td><td>2022：5.42</td><td class="posv">＋3.25（自 2.17）</td><td class="posv">轉強</td></tr>
+      <tr><td>2022</td><td class="negv">-3.52</td><td>2023：7.14</td><td class="posv">＋1.72（自 5.42）</td><td class="posv">轉強</td></tr>
+      <tr><td>2023</td><td class="negv">-5.71</td><td>2024：4.79</td><td class="negv">－2.35（自 7.14）</td><td class="negv">回落</td></tr>
+      <tr><td>2024</td><td class="negv">-6.27</td><td>2025：6.79</td><td class="posv">＋2.00（自 4.79）</td><td class="posv">轉強</td></tr>
+    </tbody>
+  </table>
+  <p>六次投資後的隔年觀察中，<b>4 次轉強、2 次回落</b>（2020→2021、2023→2024 兩次投資後隔年反而下滑），整體屬於<b>「有實力但不保證每次都靈」型</b>：多數投資能在一年內回饋到營業現金流成長，但並非每次重壓都立即見效，暫定 65 分。</p>
+
+  <!-- 規則四 -->
+  <h3>規則四：C 融資活動合理性（B 與 C 組合訊號）</h3>
+  <div class="chart-wrap">
+    <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="131.5" x2="680" y2="131.5" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="52" y="135" text-anchor="end" font-size="11" fill="#9db3ba">0</text>
+      <!-- highlight bands for borrow-invest years: 2019,2020,2024,2025 -->
+      <rect x="66" y="20" width="80" height="300" fill="#e0a45822" />
+      <rect x="146" y="20" width="80" height="300" fill="#e0a45822" />
+      <rect x="466" y="20" width="80" height="300" fill="#e0a45822" />
+      <rect x="546" y="20" width="80" height="300" fill="#e0a45822" />
+      <g font-size="10.5">
+        <!-- 2019 -->
+        <rect x="74" y="131.5" width="30" height="166.1" fill="var(--c-trough)"/>
+        <rect x="108" y="28.0" width="30" height="103.5" fill="var(--c-pos)"/>
+        <text x="104" y="315" text-anchor="middle" fill="#9db3ba">2019</text>
+        <!-- 2020 -->
+        <rect x="154" y="131.5" width="30" height="120.6" fill="var(--negv)"/>
+        <rect x="188" y="68.8" width="30" height="62.7" fill="var(--c-pos)"/>
+        <text x="184" y="315" text-anchor="middle" fill="#9db3ba">2020</text>
+        <!-- 2021 -->
+        <rect x="234" y="131.5" width="30" height="30.8" fill="var(--negv)"/>
+        <rect x="268" y="131.5" width="30" height="38.4" fill="var(--c-quarter)"/>
+        <text x="264" y="315" text-anchor="middle" fill="#9db3ba">2021</text>
+        <!-- 2022 -->
+        <rect x="314" y="131.5" width="30" height="78.5" fill="var(--negv)"/>
+        <rect x="348" y="131.5" width="30" height="80.5" fill="var(--c-quarter)"/>
+        <text x="344" y="315" text-anchor="middle" fill="#9db3ba">2022</text>
+        <!-- 2023 -->
+        <rect x="394" y="131.5" width="30" height="127.3" fill="var(--negv)"/>
+        <rect x="428" y="131.5" width="30" height="39.7" fill="var(--c-quarter)"/>
+        <text x="424" y="315" text-anchor="middle" fill="#9db3ba">2023</text>
+        <!-- 2024 -->
+        <rect x="474" y="131.5" width="30" height="139.8" fill="var(--c-trough)"/>
+        <rect x="508" y="96.1" width="30" height="35.4" fill="var(--c-pos)"/>
+        <text x="504" y="315" text-anchor="middle" fill="#9db3ba">2024</text>
+        <!-- 2025 -->
+        <rect x="554" y="131.5" width="30" height="154.8" fill="var(--c-trough)"/>
+        <rect x="588" y="123.5" width="30" height="8.0" fill="var(--c-pos)"/>
+        <text x="584" y="315" text-anchor="middle" fill="#9db3ba">2025</text>
+        <!-- 26Q2 quarter -->
+        <rect x="634" y="131.5" width="30" height="43.0" fill="none" stroke="var(--c-quarter)" stroke-dasharray="3,2"/>
+        <rect x="634" y="131.5" width="30" height="14.0" fill="none" stroke="var(--c-quarter)" stroke-dasharray="3,2" transform="translate(34,0)"/>
+        <text x="664" y="315" text-anchor="middle" fill="var(--c-quarter)" font-style="italic">26Q2</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--c-trough)"></span>B（投資活動，重度投資年）</span>
+      <span><span class="dot" style="background:var(--negv)"></span>B（一般投資年）</span>
+      <span><span class="dot" style="background:var(--c-pos)"></span>C 為正（疑似舉債支應）</span>
+      <span><span class="dot" style="background:var(--c-quarter)"></span>C 為負（淨還債）</span>
+      <span>底色標示區間＝B 大幅負值＋C 同時為正（借錢投資組合年度）</span>
+    </div>
+  </div>
+  <p><b>2019、2020、2024、2025 四個年度</b>都出現「B 大幅負值＋C 為正」的組合，屬<b>重複出現的模式</b>而非單一特例，需要留意；但因為這七年 <b>A 從未轉為負值</b>，未觸及「A為負＋C為正/小幅負」的最高警戒訊號。<b>目前僅有 C 總額，尚未取得現金增資／舉債等細項拆解，無法判斷這四年的資金結構是偏股權還是偏純舉債，此項評分暫定為 60 分</b>，建議提供融資活動細項以校正風險排序。</p>
+
+  <!-- 規則五 -->
+  <h3>規則五：A &gt; D 現金流品質（嚴格二分法）</h3>
+  <table>
+    <thead><tr><th>年度</th><th>A</th><th>D（稅前淨利）</th><th>A &gt; D？</th></tr></thead>
+    <tbody>
+      <tr><td>2019</td><td>1.03</td><td>1.83</td><td class="negv">不通過</td></tr>
+      <tr><td>2020</td><td>4.96</td><td>2.14</td><td class="posv">通過</td></tr>
+      <tr><td>2021</td><td>2.17</td><td>2.12</td><td class="posv">通過</td></tr>
+      <tr><td>2022</td><td>5.42</td><td>4.42</td><td class="posv">通過</td></tr>
+      <tr><td>2023</td><td>7.14</td><td>3.53</td><td class="posv">通過</td></tr>
+      <tr><td>2024</td><td>4.79</td><td>3.53</td><td class="posv">通過</td></tr>
+      <tr><td>2025</td><td>6.79</td><td>2.54</td><td class="posv">通過</td></tr>
+    </tbody>
+  </table>
+  <p>七年中僅 <b>2019 年（A=1.03 &lt; D=1.83）未通過</b>，其餘六年全數通過，<b>通過率 85.7%</b>，代表大汽電近六年帳上獲利多有真實現金入帳支撐，不是「膨風灌水」型公司。</p>
+
+  <!-- 規則六 -->
+  <h3>規則六：E 期末現金餘額穩定性</h3>
+  <p>期末現金餘額從 2019 年 3.78 億攀升至 2020 年高峰 <b>6.14 億</b>，之後連兩年下滑至 2023 年低點 <b>3.13 億</b>，近三年（2023–2025）則穩定在 <b>3.1～3.5 億</b>區間、略有回升，屬<b>「先衝高後回落找到新平衡」型</b>：雖已脫離 2020 年高點，但近三年並未持續探底，呈現築底穩定跡象。</p>
+  <div class="chart-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="30" x2="60" y2="280" stroke="var(--line)"/>
+      <line x1="60" y1="280" x2="680" y2="280" stroke="var(--line)"/>
+      <g font-size="11" fill="#9db3ba">
+        <text x="52" y="284" text-anchor="end">0</text>
+        <line x1="55" y1="280" x2="680" y2="280" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="221.5" text-anchor="end">2</text>
+        <line x1="55" y1="217.5" x2="680" y2="217.5" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="159" text-anchor="end">4</text>
+        <line x1="55" y1="155" x2="680" y2="155" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="96.5" text-anchor="end">6</text>
+        <line x1="55" y1="92.5" x2="680" y2="92.5" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="34" text-anchor="end">8</text>
+      </g>
+      <g>
+        <rect x="76" y="161.9" width="45" height="118.1" fill="var(--c-pos)"/>
+        <text x="98.5" y="156" text-anchor="middle" font-size="11" fill="var(--ink)">3.78</text>
+        <text x="98.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2019</text>
+
+        <rect x="154" y="88.1" width="45" height="191.9" fill="var(--c-peak)"/>
+        <text x="176.5" y="82" text-anchor="middle" font-size="11" fill="var(--ink)">6.14</text>
+        <text x="176.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2020</text>
+
+        <rect x="231" y="117.5" width="45" height="162.5" fill="var(--c-pos)"/>
+        <text x="253.5" y="111.5" text-anchor="middle" font-size="11" fill="var(--ink)">5.20</text>
+        <text x="253.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2021</text>
+
+        <rect x="309" y="170.9" width="45" height="109.1" fill="var(--c-pos)"/>
+        <text x="331.5" y="165" text-anchor="middle" font-size="11" fill="var(--ink)">3.49</text>
+        <text x="331.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2022</text>
+
+        <rect x="386" y="182.2" width="45" height="97.8" fill="var(--c-trough)"/>
+        <text x="408.5" y="176" text-anchor="middle" font-size="11" fill="var(--ink)">3.13</text>
+        <text x="408.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2023</text>
+
+        <rect x="464" y="178.4" width="45" height="101.6" fill="var(--c-pos)"/>
+        <text x="486.5" y="172.4" text-anchor="middle" font-size="11" fill="var(--ink)">3.25</text>
+        <text x="486.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2024</text>
+
+        <rect x="541" y="171.6" width="45" height="108.4" fill="var(--c-pos)"/>
+        <text x="563.5" y="165.6" text-anchor="middle" font-size="11" fill="var(--ink)">3.47</text>
+        <text x="563.5" y="298" text-anchor="middle" font-size="11" fill="#9db3ba">2025</text>
+
+        <rect x="619" y="180.6" width="45" height="99.4" fill="none" stroke="var(--c-quarter)" stroke-dasharray="4,3" stroke-width="1.5"/>
+        <text x="641.5" y="174.6" text-anchor="middle" font-size="10" fill="var(--c-quarter)" font-style="italic">3.18</text>
+        <text x="641.5" y="298" text-anchor="middle" font-size="10" fill="var(--c-quarter)" font-style="italic">26Q2</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--c-peak)"></span>高峰</span>
+      <span><span class="dot" style="background:var(--c-trough)"></span>谷底</span>
+      <span>虛線框為 26Q2 單季，僅供參考不列入計分</span>
+    </div>
+  </div>
+
+  <h3>六大規則總評分</h3>
+  <div class="scorebox">
+    <div class="scorecard"><div class="n">78</div><div class="l">① A 成長趨勢</div></div>
+    <div class="scorecard"><div class="n">70<sup style="font-size:11px">暫定</sup></div><div class="l">② B 投資紀律</div></div>
+    <div class="scorecard"><div class="n">65<sup style="font-size:11px">暫定</sup></div><div class="l">③ B 投資效益</div></div>
+    <div class="scorecard"><div class="n">60<sup style="font-size:11px">暫定</sup></div><div class="l">④ C 融資合理性</div></div>
+    <div class="scorecard"><div class="n">86</div><div class="l">⑤ A&gt;D 現金品質</div></div>
+    <div class="scorecard"><div class="n">68</div><div class="l">⑥ E 餘額穩定性</div></div>
+  </div>
+
+  <div class="verdict">
+    <div class="big">總分 71.2 分（良好，60–79% 區間）</div>
+    <p style="margin:10px 0 0">現金流體質可以繼續看下去。建議下一步進入基本資訊查詢（股價、EPS、殖利率、產業地位）。
+    另外規則②③④目前為暫定分數，若能補上投資活動與融資活動的細項截圖（Goodinfo 頁面往下捲動即有），可以進一步校正評分準確度。</p>
+  </div>
+
+</section>
+
+<section id="step2">
+  <div class="step-tag">第 2 步／共 6 步：基本資訊查詢</div>
+  <h2>基本資訊查詢</h2>
+
+  <div class="callout">
+    <b>重點結論：</b>股價近期約 <b>40.7 元</b>（2026/08/14 收盤），本益比落在 <b>34–35 倍</b>，明顯高於同業平均約 <b>24–29 倍</b>；
+    近五年平均現金殖利率 <b>4.24%</b>，已連續 <b>28 年</b>發放股利。但要特別留意：<b>年度 EPS 連 3 年下滑</b>（2022年3.01元 → 2025年1.87元，累計衰退約 38%），
+    近期本益比偏高並非獲利成長帶動，而是股價相對高、獲利卻走弱的組合，需要在後續步驟（法說會、估值）進一步確認是否有轉機題材支撐。
+  </div>
+
+  <h3>股價與估值（即時快照，非官方公布區間）</h3>
+  <table>
+    <thead><tr><th>查詢時間</th><th>收盤價</th><th>本益比（同業平均）</th></tr></thead>
+    <tbody>
+      <tr><td>2026/08/14 13:30</td><td>40.70 元</td><td>34.79 倍（24.18 倍）</td></tr>
+      <tr><td>2026/08/11（開盤）</td><td>40.25 元</td><td>34.70 倍（29.09 倍）</td></tr>
+    </tbody>
+  </table>
+  <p class="source-note">上列為不同查詢時間點的快照，股價每日變動，非同一頁面顯示的區間。正式交易請以看盤軟體/券商 App 即時報價為準。資料來源：<a href="https://tw.stock.yahoo.com/quote/8931.TWO/dividend" style="color:var(--accent)">Yahoo股市</a></p>
+
+  <h3>EPS 與每股淨值</h3>
+  <table>
+    <thead><tr><th>期間</th><th>EPS</th></tr></thead>
+    <tbody>
+      <tr><td>近四季合計（25Q3～26Q2）</td><td>1.16 元（0.40 + 0.03 + 0.38 + 0.35）</td></tr>
+      <tr><td>2025 年度</td><td class="negv">1.87 元</td></tr>
+      <tr><td>2024 年度</td><td>2.32 元</td></tr>
+      <tr><td>2023 年度</td><td>2.32 元</td></tr>
+      <tr><td>2022 年度</td><td class="posv">3.01 元</td></tr>
+    </tbody>
+  </table>
+  <p>近三年查無股票分割、減資或現金增資換股紀錄，EPS 逐年比較基礎一致。年度 EPS 從 2022 年 3.01 元<b>連續三年下滑</b>至 2025 年 1.87 元，累計衰退約 <b>38%</b>；每股淨值 <b>16.16 元</b>（2026Q2），以收盤 40.7 元計算，股價淨值比約 <b>2.5 倍</b>。</p>
+
+  <h3>殖利率與股利政策</h3>
+  <p>大汽電已連續 <b>28 年</b>發放股利，歷年合計配發 <b>29.90 元</b>；近 5 年平均現金殖利率 <b>4.24%</b>。最新一次（2025 年度）董事會通過現金股利 <b>1.60 元</b>，較 2024 年度的 2.00 元下修，對應殖利率 3.79%（除息日 2026/07/30，發放日 2026/08/27），股利隨獲利下滑同步縮減。</p>
+
+  <h3>公司基本資料</h3>
+  <table>
+    <thead><tr><th>項目</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td>公司全名</td><td>大園汽電共生股份有限公司</td></tr>
+      <tr><td>成立時間</td><td>1993/08/14</td></tr>
+      <tr><td>上櫃掛牌日期</td><td>2001/05/10</td></tr>
+      <tr><td>產業類別</td><td>櫃油電燃氣</td></tr>
+      <tr><td>所屬集團</td><td>正隆集團</td></tr>
+      <tr><td>主要經營業務</td><td>汽電共生廠經營操作管理及設備維修、汽電共生系統設計顧問諮詢、廢棄物清除處理（SRF）</td></tr>
+      <tr><td>股本／已發行股數</td><td>約 12.23 億元／1.223 億股</td></tr>
+      <tr><td>市值</td><td>約 49.6 億元（2026/08/11 資料）</td></tr>
+      <tr><td>董監持股比例</td><td>70.38%（籌碼集中度高）</td></tr>
+    </tbody>
+  </table>
+  <p class="source-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/8931.TWO/profile" style="color:var(--accent)">Yahoo股市個股基本資料</a>、<a href="https://www.nstock.tw/%E5%A4%A7%E6%B1%BD%E9%9B%BB%E5%81%9A%E4%BB%80%E9%BA%BC.html" style="color:var(--accent)">nStock公司小百科</a></p>
+
+  <h3>最新法說會連結</h3>
+  <p>最近一次法人說明會時間為 <b>2026/05/20</b>（線上法人說明會，附中英文簡報，說明 2026Q1 營運）。查詢入口：<a href="https://www.cnyes.com/twstock/8931/company/profile" style="color:var(--accent)">鉅亨網個股法說會資訊頁</a>；重點摘要見第 3 步。</p>
+
+</section>
+
+<section id="step3">
+  <div class="step-tag">第 3 步／共 6 步：法說會資料深入討論</div>
+  <h2>法說會資料深入討論（2026/05/20，說明 2026Q1 營運）</h2>
+
+  <div class="callout">
+    <b>重點結論：</b>2026Q1 營收 6.21 億元與去年同期持平，但<b>燃煤轉燃氣導致營業成本年增 4,960 萬元</b>，稅前淨利腰斬至 5,860 萬元（EPS 0.38 元，去年同期 0.74 元）。
+    公司正處於<b>能源轉型陣痛期</b>：2026Q3 燃氣複循環機組商轉、Q4 燃煤鍋爐正式退場，同時規劃 <b>2026Q4 切入 AI 算力中心用電市場</b>作為新成長引擎。這解釋了第 2 步觀察到的「本益比偏高但獲利下滑」現象——市場可能是在為轉型完成後的獲利結構、以及 AI 用電題材提前反映期待，而非現有獲利成長。
+  </div>
+
+  <h3>營運摘要</h3>
+  <p>2026Q1 營業收入 6 億 2,078 萬元，與去年同期 6 億 1,930 萬元約略持平；但營業成本因燃料轉換增至 5 億 1,612 萬元（去年同期 4 億 6,651 萬元），稅前淨利因而下滑至 5,860 萬元（較去年同期減少 5,423 萬元），EPS 0.38 元，較去年同期 0.74 元近乎腰斬。公司說明部分設備歲修也影響本季營收獲利。</p>
+
+  <h3>業務組合（2026Q1）</h3>
+  <table>
+    <thead><tr><th>業務</th><th>本季表現</th></tr></thead>
+    <tbody>
+      <tr><td>電力銷售</td><td>營收佔比 <b>54.25%</b>（高於去年同期），因售電計價方式變更，售電量提升至 9,250 萬度</td></tr>
+      <tr><td>蒸汽銷售</td><td>營收佔比與銷售量均衰退，銷售量降至 141,514 噸（年減近 1 萬噸）</td></tr>
+      <tr><td>廢棄物處理（SRF）</td><td>營收佔比與處理量穩定，SRF 產能已接近每月 1,100 噸目標上限</td></tr>
+    </tbody>
+  </table>
+  <p>股東結構：主要股東為<b>正隆股份有限公司（41.06%）</b>與<b>臺灣汽電共生股份有限公司（29.31%）</b>，兩大法人合計持股逾七成，與第 2 步查到的董監持股集中度 70.38% 相互印證。</p>
+
+  <h3>財務結構與燃料成本風險</h3>
+  <p>負債佔資產比例 2026Q1 為 <b>58.47%</b>（去年同期 60.47%，略降），公司預期因仍有資本支出，此比例 2026 年將維持現有水準，2027 年後才會逐步下降——這與第一步現金流分析中「B 持續大幅負值、部分年度伴隨舉債」的觀察一致，顯示大汽電未來一年仍處於資本支出高峰期，而非收斂階段。資產報酬率 4.33%，低於去年同期 5.07%。</p>
+  <p><b>天然氣價格受國際情勢（如美國與伊朗戰爭相關風險）影響波動劇烈</b>，電業用戶天然氣價格已超過每立方米 20 元，合格汽電共生系統用戶價格在政府調控下維持約 15 元；售電價格與天然氣成本連動。這是公司最大的成本不確定性因素，也直接對應第 2 步觀察到的獲利連 3 年下滑趨勢。</p>
+
+  <h3>能源轉型時程表</h3>
+  <table>
+    <thead><tr><th>時間</th><th>進度</th></tr></thead>
+    <tbody>
+      <tr><td>2025 年 6 月</td><td>燃氣渦輪汽電共生機組商轉</td></tr>
+      <tr><td>2026 年第三季</td><td>燃氣複循環機組商轉，預期提升電力銷售量</td></tr>
+      <tr><td>2026 年第四季</td><td>燃煤鍋爐正式退場除役，完成能源轉型</td></tr>
+    </tbody>
+  </table>
+  <p>公司同時規劃於 <b>2026 年第四季開拓 AI 算力中心用電客戶</b>，作為轉型完成後的新營收成長動能；目前在汽電共生市場的裝置容量市佔率約 1.26%，SRF 市佔率約 5.36%、污泥處理市佔率約 6.9%，市佔率穩定未有重大變化。</p>
+
+  <h3>機會與風險（法說會揭露）</h3>
+  <table>
+    <thead><tr><th>面向</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td class="posv">機會</td><td>燃氣機組陸續上線、燃煤退場預期優化成本結構；AI 算力中心用電需求提供高成長潛力新客源</td></tr>
+      <tr><td class="negv">風險</td><td>天然氣價格易受國際地緣政治影響，為最大成本不確定因素；再生燃料機組維修成本較高，成本控制與運轉穩定性是挑戰</td></tr>
+    </tbody>
+  </table>
+  <p>公司<b>未發布具體財務預測</b>，管理層僅強調未來營運重點圍繞能源轉型與新市場開拓，因此 AI 算力中心這個題材目前仍停留在「規劃階段」，尚無具體簽約客戶或營收貢獻時間表，第 5 步估值時需將此列為「未證實的成長性」處理，不宜直接假設兌現。</p>
+
+  <p class="source-note">資料來源：<a href="https://blog.fugle.tw/post/earnings-call-8931-2026-05-20" style="color:var(--accent)">富果直送法說會備忘錄（20260520，AI 摘要整理自法說會影音）</a>，原始影音／簡報請查閱<a href="https://irconference.twse.com.tw/8931_23_20260520_ch.mp4" style="color:var(--accent)">公開資訊觀測站影音</a>或公司官方公告。此摘要為第三方 AI 整理內容，非公司官方逐字稿。</p>
+
+</section>
+
+<section id="step4">
+  <div class="step-tag">第 4 步／共 6 步：營收趨勢視覺化</div>
+  <h2>營收趨勢視覺化（近 12 個月月營收）</h2>
+
+  <div class="callout">
+    <b>重點結論：</b>近 12 個月月營收大致落在 <b>1.5～2.5 億元</b>區間，並無明顯的持續衰退或成長趨勢，<b>2026 年 2 月因農曆春節落在 2 月（去年落在 1 月）出現單月營收明顯偏低（1.54 億，年減 24.24%）</b>，屬於年節基期落差的季節性現象，1、2 月合計來看實際上是成長的。
+    2026 年 1～6 月累計營收 <b>13.04 億元，年增 7.38%</b>，顯示<b>營收端其實是成長的，獲利卻在下滑</b>——這與第 3 步法說會揭露的「燃煤轉燃氣推升成本」完全吻合，代表大汽電目前的獲利壓力來自<b>成本端（毛利率被壓縮）</b>，而不是需求或營收下滑，是解讀本股基本面時很關鍵的區別。
+  </div>
+
+  <div class="chart-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="30" x2="60" y2="280" stroke="var(--line)"/>
+      <line x1="60" y1="280" x2="680" y2="280" stroke="var(--line)"/>
+      <g font-size="11" fill="#9db3ba">
+        <text x="52" y="284" text-anchor="end">0</text>
+        <line x1="55" y1="280" x2="680" y2="280" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="200.7" text-anchor="end">1</text>
+        <line x1="55" y1="196.7" x2="680" y2="196.7" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="117.3" text-anchor="end">2</text>
+        <line x1="55" y1="113.3" x2="680" y2="113.3" stroke="#274653" stroke-dasharray="2,3"/>
+        <text x="52" y="34" text-anchor="end">3（億元）</text>
+      </g>
+      <g font-size="10">
+        <rect x="70" y="74.2" width="32" height="205.8" fill="var(--c-peak)"/>
+        <text x="86" y="68.2" text-anchor="middle" fill="var(--ink)">2.47</text>
+        <text x="86" y="298" text-anchor="middle" fill="#9db3ba">25/07</text>
+
+        <rect x="122" y="90.8" width="32" height="189.2" fill="var(--c-pos)"/>
+        <text x="138" y="84.8" text-anchor="middle" fill="var(--ink)">2.27</text>
+        <text x="138" y="298" text-anchor="middle" fill="#9db3ba">25/08</text>
+
+        <rect x="173" y="98.3" width="32" height="181.7" fill="var(--c-pos)"/>
+        <text x="189" y="92.3" text-anchor="middle" fill="var(--ink)">2.18</text>
+        <text x="189" y="298" text-anchor="middle" fill="#9db3ba">25/09</text>
+
+        <rect x="225" y="117.5" width="32" height="162.5" fill="var(--c-pos)"/>
+        <text x="241" y="111.5" text-anchor="middle" fill="var(--ink)">1.95</text>
+        <text x="241" y="298" text-anchor="middle" fill="#9db3ba">25/10</text>
+
+        <rect x="277" y="128.3" width="32" height="151.7" fill="var(--c-pos)"/>
+        <text x="293" y="122.3" text-anchor="middle" fill="var(--ink)">1.82</text>
+        <text x="293" y="298" text-anchor="middle" fill="#9db3ba">25/11</text>
+
+        <rect x="328" y="120.8" width="32" height="159.2" fill="var(--c-pos)"/>
+        <text x="344" y="114.8" text-anchor="middle" fill="var(--ink)">1.91</text>
+        <text x="344" y="298" text-anchor="middle" fill="#9db3ba">25/12</text>
+
+        <rect x="380" y="84.2" width="32" height="195.8" fill="var(--c-pos)"/>
+        <text x="396" y="78.2" text-anchor="middle" fill="var(--ink)">2.35</text>
+        <text x="396" y="298" text-anchor="middle" fill="#9db3ba">26/01</text>
+
+        <rect x="432" y="151.7" width="32" height="128.3" fill="var(--c-trough)"/>
+        <text x="448" y="145.7" text-anchor="middle" fill="var(--ink)">1.54</text>
+        <text x="448" y="298" text-anchor="middle" fill="#9db3ba">26/02</text>
+
+        <rect x="483" y="86.7" width="32" height="193.3" fill="var(--c-pos)"/>
+        <text x="499" y="80.7" text-anchor="middle" fill="var(--ink)">2.32</text>
+        <text x="499" y="298" text-anchor="middle" fill="#9db3ba">26/03</text>
+
+        <rect x="535" y="94.2" width="32" height="185.8" fill="var(--c-pos)"/>
+        <text x="551" y="88.2" text-anchor="middle" fill="var(--ink)">2.23</text>
+        <text x="551" y="298" text-anchor="middle" fill="#9db3ba">26/04</text>
+
+        <rect x="587" y="90.8" width="32" height="189.2" fill="var(--c-pos)"/>
+        <text x="603" y="84.8" text-anchor="middle" fill="var(--ink)">2.27</text>
+        <text x="603" y="298" text-anchor="middle" fill="#9db3ba">26/05</text>
+
+        <rect x="638" y="85.8" width="32" height="194.2" fill="var(--c-pos)"/>
+        <text x="654" y="79.8" text-anchor="middle" fill="var(--ink)">2.33</text>
+        <text x="654" y="298" text-anchor="middle" fill="#9db3ba">26/06</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--c-peak)"></span>近12月最高</span>
+      <span><span class="dot" style="background:var(--c-trough)"></span>近12月最低（春節基期效應）</span>
+      <span><span class="dot" style="background:var(--c-pos)"></span>一般月份</span>
+    </div>
+  </div>
+
+  <h3>逐月營收與年增率明細</h3>
+  <table>
+    <thead><tr><th>年月</th><th>單月營收（億元）</th><th>年增率</th></tr></thead>
+    <tbody>
+      <tr><td>2025/07</td><td>2.47</td><td class="posv">+4.85%</td></tr>
+      <tr><td>2025/08</td><td>2.27</td><td class="negv">-0.93%</td></tr>
+      <tr><td>2025/09</td><td>2.18</td><td class="posv">+2.23%</td></tr>
+      <tr><td>2025/10</td><td>1.95</td><td class="negv">-10.73%</td></tr>
+      <tr><td>2025/11</td><td>1.82</td><td class="negv">-11.19%</td></tr>
+      <tr><td>2025/12</td><td>1.91</td><td class="negv">-16.79%</td></tr>
+      <tr><td>2026/01</td><td>2.35</td><td class="posv">+26.28%</td></tr>
+      <tr><td>2026/02</td><td class="negv">1.54</td><td class="negv">-24.24%</td></tr>
+      <tr><td>2026/03</td><td>2.32</td><td class="posv">+0.73%</td></tr>
+      <tr><td>2026/04</td><td>2.23</td><td class="posv">+18.80%</td></tr>
+      <tr><td>2026/05</td><td>2.27</td><td class="posv">+18.06%</td></tr>
+      <tr><td>2026/06</td><td>2.33</td><td class="posv">+8.39%</td></tr>
+    </tbody>
+  </table>
+  <p>2026 年 1 月（+26.28%）與 2 月（-24.24%）呈現大幅互相對沖的年增率，主因<b>農曆春節基期落點不同</b>（2025 年春節在 1 月底、2026 年在 2 月中），並非業務出現斷崖式下滑，合併 1～2 月來看營收仍是正成長。2026 年下半年（4～6 月）年增率穩定在 +8% 至 +19%，呈現溫和回升的態勢，與法說會提到的「售電量提升、電力銷售佔比上升」相互印證。</p>
+
+  <p class="source-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/8931.TWO/revenue" style="color:var(--accent)">Yahoo股市月營收表</a>（查詢時間 2026/08，資料涵蓋至 2026/06；7、8 月營收尚未公告完整月增率資料）</p>
+
+</section>
+
+<section id="step5">
+  <div class="step-tag">第 5 步／共 6 步：前瞻本益比／EPS 預估</div>
+  <h2>前瞻本益比／EPS 預估</h2>
+
+  <div class="callout">
+    <b>重點結論：</b>大汽電籌碼集中、成交量稀薄（單日常僅數十張），<b>查無市場法人對次一年度（2026）或次二年度（2027）EPS 的正式預估</b>，甚至有第三方網站明確指出「股價和營收、預估EPS、預估殖利率統計上皆呈現低度相關，無法推估合理價」。
+    以下改用<b>公司自身已公布的半年數字做情境試算</b>，並清楚標示這只是敏感度分析、不是預測。以現價 40.7 元計算的<b>目前實際本益比（TTM）約 35.1 倍</b>，即使用最樂觀情境的 EPS 估算，本益比仍落在同業偏高端，估值不便宜。
+  </div>
+
+  <h3>目前實際（TTM）估值 vs. 目標本益比法的差異</h3>
+  <p>兩者是同一公式的不同用法，不是同一件事：<b>「現在貴不貴」</b>用「現在股價 ÷ 預估EPS」回答隱含倍數是多少；<b>「合理價可能落在哪」</b>用「預估EPS × 假設合理倍數」反推目標價。第二個方法算出的價格對「倍數怎麼選」高度敏感，沒有標準答案，只是敏感度試算不是預測。</p>
+  <table>
+    <thead><tr><th>指標</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>現價（2026/08/14）</td><td>40.70 元</td></tr>
+      <tr><td>近四季 EPS 合計（TTM）</td><td>1.16 元</td></tr>
+      <tr><td>目前實際本益比（現價 ÷ TTM EPS）</td><td class="negv">35.1 倍</td></tr>
+      <tr><td>同業平均本益比（第 2 步查得）</td><td>24～29 倍</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2026 全年 EPS 情境試算（非機構預測，僅供敏感度參考）</h3>
+  <p>2026 上半年實際 EPS 已知為 <b>0.73 元</b>（Q1 0.38 + Q2 0.35）。下半年表現高度取決於第 3 步觀察到的能源轉型時程（Q3 燃氣複循環機組商轉、Q4 燃煤鍋爐退場），公司未發布財測，故以三種情境呈現區間，而非單一數字：</p>
+  <table>
+    <thead><tr><th>情境</th><th>假設依據</th><th>推估全年 EPS</th></tr></thead>
+    <tbody>
+      <tr><td class="negv">保守</td><td>比照 2025 年下半年疲弱模式（H2 僅占全年 23%）延伸</td><td>約 0.95 元</td></tr>
+      <tr><td>中性</td><td>下半年與上半年打平（H1 × 2），無重大一次性轉型費用</td><td>約 1.46 元</td></tr>
+      <tr><td class="posv">樂觀</td><td>Q3 新機組挹注、Q4 燃煤退場後成本結構優化提前顯現，貼近 2025 年全年水準</td><td>約 1.7～1.9 元</td></tr>
+    </tbody>
+  </table>
+
+  <h3>目標本益比法：不同 EPS 情境 × 本益比倍數的目標價敏感度</h3>
+  <table>
+    <thead><tr><th>EPS 情境</th><th>20 倍</th><th>25 倍（同業區間下緣附近）</th><th>30 倍</th><th>35 倍（目前實際倍數）</th></tr></thead>
+    <tbody>
+      <tr><td class="negv">保守（0.95元）</td><td>19.0 元</td><td>23.8 元</td><td>28.5 元</td><td>33.3 元</td></tr>
+      <tr><td>中性（1.46元）</td><td>29.2 元</td><td>36.5 元</td><td>43.8 元</td><td>51.1 元</td></tr>
+      <tr><td class="posv">樂觀（1.85元）</td><td>37.0 元</td><td>46.3 元</td><td>55.5 元</td><td>64.8 元</td></tr>
+    </tbody>
+  </table>
+  <p>對照現價 40.7 元：<b>只有「中性情境＋25倍以上」或「樂觀情境」才能支撐目前股價</b>，「保守情境」下即使套用目前市場已經給予的 35 倍高本益比，目標價（33.3 元）仍低於現價。換言之，目前股價隱含市場已經預期下半年獲利明顯優於保守情境，若能源轉型時程或 AI 算力客戶開發進度不如預期，股價存在回檔壓力。</p>
+
+  <h3>不確定性揭露</h3>
+  <ul style="padding-left:20px;font-size:14.5px">
+    <li>本頁 EPS 情境為<b>本報告自行試算</b>，非任何券商或法人正式財測，公司本身也未發布財測。</li>
+    <li>大汽電<b>籌碼集中（董監持股70.38%）、成交量稀薄</b>，估值倍數容易因少量成交而劇烈波動，第 2 步查到的本益比在 19～35 倍之間有明顯落差，反映的正是這種稀薄流動性下的雜訊，而非公司體質短期內的劇變。</li>
+    <li>AI 算力中心用電題材規劃於 2026Q4 才開始開拓，<b>目前無具體客戶、無營收貢獻時間表</b>，上述三種情境皆未納入此題材的潛在挹注，若題材兌現，樂觀情境仍可能低估。</li>
+  </ul>
+
+</section>
+
+<section id="step6">
+  <div class="step-tag">第 6 步／共 6 步：投資決策推理</div>
+  <h2>投資決策推理</h2>
+  <p class="source-note">以下是根據前五步分析所做的推理與觀點，不是專業投資建議，我不是持牌理財顧問。請自行判斷並承擔投資決策的風險。</p>
+
+  <div class="callout">
+    <b>核心邏輯：</b>大汽電現金流體質良好（第1步71.2分）、營收其實仍在成長（第4步），但獲利被燃料轉換的一次性成本壓縮（第3步），股價卻已用 35 倍本益比提前反映轉型完成後的樂觀情境（第5步）。<b>這是一檔「體質沒問題、但估值已經跑在基本面前面」的股票</b>——現金流不是問題，問題是股價有沒有為尚未兌現的轉型效益與 AI 題材付太多錢。
+  </div>
+
+  <h3>若尚未持有：會不會進場？</h3>
+  <p>目前不會進場。理由：現價 40.7 元對應的本益比只有在「中性偏樂觀」情境才站得住腳（第5步），等於是在為公司自己都還沒證實的轉型效益、以及規劃中但無具體客戶的 AI 算力題材先付錢。與其現在追價，更合理的做法是<b>等待下一次驗證訊號出現、確認轉型效益真的兌現後再進場</b>，即使因此錯過起漲的第一段也是可接受的代價。</p>
+  <p><b>進場觀察訊號（尚未發生、待驗證）：</b></p>
+  <table>
+    <thead><tr><th>訊號</th><th>驗證方式</th></tr></thead>
+    <tbody>
+      <tr><td>2026Q3 財報公布後，毛利率／稅前淨利率是否較 2026Q1、Q2 明顯回升</td><td>對照第3步 2026Q1 毛利率相關數字，待 Q3 財報公布後比較</td></tr>
+      <tr><td>燃氣複循環機組是否如期於 Q3 商轉、燃煤鍋爐是否如期於 Q4 除役</td><td>留意公司重大訊息公告或後續法說會更新進度</td></tr>
+      <tr><td>是否出現具體 AI 算力中心用電客戶簽約或合作消息</td><td>留意公司重大訊息公告，目前僅為規劃階段的口頭陳述</td></tr>
+      <tr><td>2026 全年現金流量表公布後，B（投資）與 C（融資）是否延續第1步觀察到的「重度投資＋疑似舉債」組合</td><td>待 2026 年報公布後對照第1步六大規則重新檢視</td></tr>
+    </tbody>
+  </table>
+
+  <h3>若已持有：續抱還是賣出？</h3>
+  <p>可以續抱，但建議<b>設定停利／停損的心理價位，不宜無限期抱著等題材</b>。續抱的理由是現金流體質仍屬良好、股利政策穩定（近5年平均殖利率4.24%），下檔有一定支撐；但因為目前股價已經計入偏樂觀的預期，若上述任一觀察訊號在 2026Q3、Q4 陸續公布時反而轉差（例如毛利率沒有改善、機組商轉延遲、AI 客戶遲遲沒有下文），應該重新評估是否減碼，而不是繼續等待。</p>
+
+  <h3>與第一步現金流結論的呼應</h3>
+  <p>第1步指出大汽電有「重度投資＋融資活動疑似舉債」的重複模式，但因為 A（營業現金流）從未轉負而未觸及最高警戒訊號；本步驟的估值分析進一步補充：<b>現金流體質良好只代表公司不會很快出事，不代表現在買在好價格</b>。這兩者是分開的兩個問題——現金流回答「這家公司安不安全」，估值回答「現在買貴不貴」——大汽電目前的答案分別是「還算安全」與「偏貴」，需要一起看才是完整的判斷。</p>
+
+</section>
+
+</main>
+
+<footer>
+  8931 大汽電 個股初步分析報告・v1・生成時間：2026-08-16・資料來源：使用者提供財報截圖，非本次搜尋所得
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links = document.querySelectorAll('nav.stepnav a');
+  var sections = document.querySelectorAll('main section');
+  links.forEach(function(link){
+    link.addEventListener('click',function(e){
+      e.preventDefault();
+      var id = link.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if(target){ target.scrollIntoView({behavior:'smooth'}); }
+    });
+  });
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.getAttribute('id');
+        links.forEach(function(l){
+          l.classList.toggle('active', l.getAttribute('href') === '#'+id);
+        });
+      }
+    });
+  }, {threshold:0.3, rootMargin:'-80px 0px -60% 0px'});
+  sections.forEach(function(s){ observer.observe(s); });
+});
+</script>
+
+</body>
+</html>
