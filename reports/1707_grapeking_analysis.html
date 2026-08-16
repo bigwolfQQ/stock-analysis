@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>葡萄王(1707) 現金流量表六大規則分析</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F5F0;
+  --paper:#FFFFFF;
+  --primary:#1E3A2B;
+  --primary-light:#2F5643;
+  --gold:#B8863B;
+  --gold-soft:#EBD9B6;
+  --negv:#B23A2E;
+  --negv-soft:#F3DCD8;
+  --posv:#3F7D5C;
+  --ink:#1B2420;
+  --sub:#5C6B62;
+  --line:#DBE0D6;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans TC",sans-serif;
+  line-height:1.7;
+}
+.mono{font-family:"Roboto Mono",monospace;}
+.serif{font-family:"Noto Serif TC",serif;}
+
+/* ---- top nav ---- */
+.stepnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(30,58,43,0.97);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:center; gap:2px;
+  padding:10px 18px;
+  overflow-x:auto;
+}
+.stepnav a{
+  flex:0 0 auto;
+  color:#CFE0D3;
+  text-decoration:none;
+  font-size:13px;
+  padding:8px 14px;
+  border-radius:20px;
+  white-space:nowrap;
+  transition:all .2s;
+  border:1px solid transparent;
+}
+.stepnav a.active{ background:var(--gold); color:#241A08; font-weight:700; }
+.stepnav a.locked{ color:#6E8478; pointer-events:none; }
+.stepnav .navlabel{color:#9DBBA8;font-size:12px;padding-right:8px;border-right:1px solid #3d5a49;margin-right:6px;flex:0 0 auto;}
+
+/* ---- header ---- */
+header.hero{
+  background:linear-gradient(160deg,var(--primary) 0%, var(--primary-light) 100%);
+  color:#F4F7F1;
+  padding:48px 24px 40px;
+  position:relative;
+  overflow:hidden;
+}
+header.hero::after{
+  content:"";
+  position:absolute; right:-60px; top:-60px;
+  width:280px; height:280px; border-radius:50%;
+  border:1px dashed rgba(235,217,182,0.25);
+}
+.hero-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;}
+.hero-text .eyebrow{
+  font-size:12px; letter-spacing:2px; color:var(--gold-soft); font-weight:700;text-transform:uppercase;
+}
+.hero-text h1{
+  font-family:"Noto Serif TC",serif;
+  font-size:32px; margin:10px 0 6px; font-weight:900;
+}
+.hero-text p{max-width:520px;color:#D7E3D9;font-size:14.5px;}
+.badge-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.badge{
+  font-size:12px; padding:5px 10px; border-radius:6px;
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+}
+
+/* ---- gauge (signature element) ---- */
+.gauge-wrap{
+  background:var(--paper); border-radius:16px; padding:20px 26px;
+  text-align:center; color:var(--ink);
+  box-shadow:0 12px 30px rgba(0,0,0,0.18);
+  min-width:220px;
+}
+.gauge-wrap .glabel{font-size:11px;letter-spacing:1.5px;color:var(--sub);text-transform:uppercase;}
+.gauge-num{font-family:"Noto Serif TC",serif;font-size:44px;font-weight:900;color:var(--primary);margin:2px 0;}
+.gauge-tag{
+  display:inline-block; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px;
+  background:var(--gold-soft); color:#5C4413;
+}
+
+/* ---- layout ---- */
+main{max-width:960px;margin:0 auto;padding:36px 20px 80px;}
+section{padding-top:26px;margin-top:10px;}
+.step-tag{
+  display:inline-block; font-family:"Roboto Mono",monospace; font-size:12px; font-weight:700;
+  color:var(--primary); background:var(--gold-soft); padding:4px 10px; border-radius:6px; margin-bottom:10px;
+}
+h2.rule-title{font-family:"Noto Serif TC",serif;font-size:22px;margin:4px 0 14px;color:var(--primary);}
+h3{font-family:"Noto Serif TC",serif;font-size:17px;color:var(--primary);margin-bottom:8px;}
+
+.callout{
+  border-left:4px solid var(--gold);
+  background:#FBF6EA;
+  padding:14px 18px; border-radius:0 10px 10px 0; margin:16px 0;
+  font-size:14.5px;
+}
+.callout.warn{border-left-color:var(--negv); background:var(--negv-soft);}
+.callout b{color:var(--primary);}
+.callout.warn b{color:var(--negv);}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;background:var(--paper);border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(30,58,43,0.06);}
+th,td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);}
+th{background:var(--primary);color:#EFEFE6;font-weight:700;font-size:12.5px;}
+td.rowlabel{text-align:left;font-weight:700;background:#F6F8F4;}
+.posv{color:var(--posv);font-family:"Roboto Mono",monospace;}
+.negv{color:var(--negv);font-family:"Roboto Mono",monospace;font-weight:700;}
+.pass{color:var(--posv);font-weight:700;}
+.fail{color:var(--negv);font-weight:700;}
+
+.chartcard{background:var(--paper);border-radius:14px;padding:18px 14px 10px;box-shadow:0 4px 16px rgba(30,58,43,0.08);margin:16px 0;}
+.chartcard svg{width:100%;height:auto;display:block;}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--sub);justify-content:center;margin-top:4px;}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+.scorebox{
+  background:var(--paper); border-radius:14px; padding:16px 20px; margin-top:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  box-shadow:0 2px 10px rgba(30,58,43,0.06);
+}
+.scorebox .sname{font-weight:700;color:var(--primary);}
+.scorebox .sval{font-family:"Roboto Mono",monospace;font-size:20px;font-weight:700;}
+
+.snap-note{font-size:11.5px;color:var(--sub);margin-top:6px;}
+.snap-note::before{content:"◆ ";color:var(--gold);}
+
+.final-panel{
+  background:var(--primary); color:#F4F7F1; border-radius:16px; padding:26px 28px; margin-top:28px;
+}
+.final-panel h2{font-family:"Noto Serif TC",serif;color:#fff;margin-top:0;}
+.final-panel .fscore{font-family:"Roboto Mono",monospace;font-size:40px;font-weight:900;color:var(--gold-soft);}
+.final-panel table{background:rgba(255,255,255,0.06);}
+.final-panel th{background:rgba(255,255,255,0.12);color:#EFEFE6;}
+.final-panel td{border-bottom:1px solid rgba(255,255,255,0.12);color:#EAF0EA;}
+.final-panel td.rowlabel{background:transparent;color:#fff;}
+.verdict{
+  margin-top:16px;padding:14px 18px;border-radius:10px;background:rgba(184,134,59,0.18);
+  border:1px solid rgba(184,134,59,0.5);
+}
+
+footer{max-width:960px;margin:0 auto;padding:0 20px 60px;color:var(--sub);font-size:12px;}
+footer .fline{border-top:1px solid var(--line);padding-top:14px;margin-top:20px;}
+</style>
+</head>
+<body>
+
+<nav class="stepnav" id="stepnav">
+  <span class="navlabel">六步驟導覽</span>
+  <a href="#step1" class="active" data-step="1">① 現金流六大規則</a>
+  <a href="#step2" class="" data-step="2">② 基本資訊</a>
+  <a href="#step3" class="" data-step="3">③ 法說會</a>
+  <a class="locked">④ 營收趨勢</a>
+  <a class="locked">⑤ 前瞻本益比</a>
+  <a class="locked">⑥ 投資決策</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow">現金流健檢報告 · 盲測階段</div>
+      <h1>葡萄王生技 1707</h1>
+      <p>本階段刻意不查詢股價、EPS、產業地位等任何基本面資訊，僅根據使用者提供的現金流量表數字（2019–2025，共7年）做客觀判讀，避免先入為主。</p>
+      <div class="badge-row">
+        <span class="badge">資料年度 2019–2025</span>
+        <span class="badge">來源：使用者提供截圖</span>
+        <span class="badge">狀態：盲測進行中</span>
+      </div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="glabel">六大規則綜合評分</div>
+      <div class="gauge-num">66<span style="font-size:20px;">分</span></div>
+      <div class="gauge-tag">良好 · 可繼續往下看</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="step1">
+  <span class="step-tag">【第 1 步／共 6 步：現金流量表六大規則分析】</span>
+  <h2 class="rule-title">整體結論先講</h2>
+
+  <div class="callout">
+    <b>體質尚可，六大規則平均約 66.3 分（良好區間 60–79%），現金流體質可以繼續看下去。</b>
+    最突出的正面訊號是規則四（融資活動）：七年來融資活動現金流全數為負，近8季細項證實主要是發放現金股利與非控制權益變動，完全找不到舉債科目，沒有「本業現金流轉弱、卻仍靠舉債撐場」的警訊。最需要留意的是規則五：近三年（2023–2025）營業現金流連續低於稅前淨利，代表帳面獲利轉換成實際現金的效率在下降，值得後續在基本面查詢階段留意應收帳款、存貨變化。
+  </div>
+
+  <div class="callout warn">
+    <b>細項更新（2024Q2–2026Q1，共8季）：</b> 你已補上投資／融資活動明細，確認投資活動主力是「固定資產」真實資本支出（非併購或理財性金融資產調度），融資活動的大幅淨流出主要來自「發放現金股利」與「非控制權益變動」，明細中<b>完全沒有出現借款、公司債等舉債科目</b>，規則二、四的判讀信心因此提高。惟這批細項僅涵蓋近8季，2019–2023 較早年度仍未取得細項，故規則二、三、四評分仍標註「部分年度暫定」。
+  </div>
+  <div class="callout warn">
+    <b>資料口徑提醒：</b> 交叉核對發現，你先前提供的「2025 年度」投資活動（-6.06億）、融資活動（-17.5億）與這批明細中<b>單一季度 2025Q4</b>（投資-6.06億、融資-17.45億）幾乎完全相同，而不等於 2025 全年四季加總（投資活動全年加總約 -13.35 億）。這兩份資料很可能存在口徑差異（例如年度表實際抓到的是最新單季快照、或年度數字尚未完整更新），我不會自行選一個當正確答案，如實並陳，建議後續以官方年報/財報書為準核對，第一步評分暫不回頭更動。
+  </div>
+
+  <h3>現金流量原始數據（單位：億元）</h3>
+  <table>
+    <tr>
+      <th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>E 期末現金餘額</th>
+    </tr>
+    <tr><td class="rowlabel">2019</td><td class="posv">21.7</td><td class="negv">-6.90</td><td class="negv">-13.70</td><td class="mono">24.4</td><td class="mono">21.5</td></tr>
+    <tr><td class="rowlabel">2020</td><td class="posv">27.2</td><td class="negv">-12.30</td><td class="negv">-7.23</td><td class="mono">23.8</td><td class="mono">29.3</td></tr>
+    <tr><td class="rowlabel">2021</td><td class="posv">25.4</td><td class="negv">-4.62</td><td class="negv">-13.70</td><td class="mono">24.1</td><td class="mono">36.4</td></tr>
+    <tr><td class="rowlabel">2022</td><td class="posv">29.9</td><td class="negv">-3.30</td><td class="negv">-16.30</td><td class="mono">26.9</td><td class="mono">46.7</td></tr>
+    <tr><td class="rowlabel">2023</td><td class="posv">25.2</td><td class="negv">-6.55</td><td class="negv">-17.10</td><td class="mono">26.6</td><td class="mono">48.2</td></tr>
+    <tr><td class="rowlabel">2024</td><td class="posv">18.8</td><td class="negv">-6.62</td><td class="negv">-17.20</td><td class="mono">26.7</td><td class="mono">43.4</td></tr>
+    <tr><td class="rowlabel">2025</td><td class="posv">21.8</td><td class="negv">-6.06</td><td class="negv">-17.50</td><td class="mono">23.0</td><td class="mono">41.6</td></tr>
+  </table>
+  <div class="snap-note">使用者提供截圖（財報綜合表，含年度股價、獲利、現金流量、現金餘額欄位），2026 年僅有股價資料尚無完整現金流量，故不列入本表。</div>
+
+  <!-- Rule 1 -->
+  <h3>規則一：A 逐年成長趨勢</h3>
+  <p>「膨風灌水／穩健成長」個性判讀：葡萄王的營業現金流在 2019–2022 呈現波動上升，2022 年來到七年高點 29.9 億，但 2023 年起連續兩年下滑，2024 年跌到七年最低 18.8 億（較 2022 年高點下滑 37%），2025 年小幅回升至 21.8 億。屬於「高峰已過、正在尋底」的個性，還沒有確立新的成長方向，需要觀察 2026 年能否延續回升。</p>
+  <div class="chartcard">
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70" y1="50" x2="610" y2="50" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="120" x2="610" y2="120" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="190" x2="610" y2="190" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="260" x2="610" y2="260" stroke="#5C6B62"/>
+      <text x="55" y="54" text-anchor="end" font-size="11" fill="#5C6B62">30</text>
+      <text x="55" y="124" text-anchor="end" font-size="11" fill="#5C6B62">20</text>
+      <text x="55" y="194" text-anchor="end" font-size="11" fill="#5C6B62">10</text>
+      <text x="55" y="264" text-anchor="end" font-size="11" fill="#5C6B62">0</text>
+
+      <rect x="84"  y="108.1" width="50" height="151.9" fill="#2F5643"/>
+      <rect x="161" y="69.6"  width="50" height="190.4" fill="#2F5643"/>
+      <rect x="238" y="82.2"  width="50" height="177.8" fill="#2F5643"/>
+      <rect x="315" y="50.7"  width="50" height="209.3" fill="#B8863B"/>
+      <rect x="392" y="83.6"  width="50" height="176.4" fill="#2F5643"/>
+      <rect x="469" y="128.4" width="50" height="131.6" fill="#B23A2E"/>
+      <rect x="546" y="107.4" width="50" height="152.6" fill="#2F5643"/>
+
+      <text x="109" y="102" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">21.7</text>
+      <text x="186" y="63" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">27.2</text>
+      <text x="263" y="76" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">25.4</text>
+      <text x="340" y="44" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">29.9</text>
+      <text x="417" y="77" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">25.2</text>
+      <text x="494" y="122" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">18.8</text>
+      <text x="571" y="101" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">21.8</text>
+
+      <text x="109" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2019</text>
+      <text x="186" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2020</text>
+      <text x="263" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2021</text>
+      <text x="340" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2022</text>
+      <text x="417" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2023</text>
+      <text x="494" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2024</text>
+      <text x="571" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2025</text>
+    </svg>
+    <div class="legend"><span><i style="background:#B8863B"></i>高峰 2022</span><span><i style="background:#B23A2E"></i>谷底 2024</span></div>
+  </div>
+  <div class="scorebox"><span class="sname">規則一評分</span><span class="sval" style="color:#B8863B">55 / 100（需觀察）</span></div>
+
+  <!-- Rule 2 -->
+  <h3>規則二：B 投資紀律評估</h3>
+  <p>「穩健自律」型：B 七年皆為負值（持續投資），但規模始終克制，介於 -3.3 億至 -12.3 億之間，且每年 |B| 都遠低於當年 A，沒有出現資本支出失控吃掉本業現金流的情況。2020 年投資規模最大（-12.3 億），2022 年最小（-3.3 億）。<span class="snap-note" style="display:block;margin-top:6px;">近8季細項已確認：投資活動主力是「固定資產」（真實廠房設備支出），金融資產類科目金額很小，代表這不是靠併購或理財堆出來的投資數字，是扎實的資本支出，信心提高。2019–2023 較早年度細項仍未取得，暫定標記保留。</span></p>
+  <div class="chartcard">
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70" y1="125" x2="610" y2="125" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="200" x2="610" y2="200" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="50" x2="610" y2="50" stroke="#5C6B62"/>
+      <text x="55" y="54" text-anchor="end" font-size="11" fill="#5C6B62">0</text>
+      <text x="55" y="129" text-anchor="end" font-size="11" fill="#5C6B62">-5</text>
+      <text x="55" y="204" text-anchor="end" font-size="11" fill="#5C6B62">-10</text>
+
+      <rect x="84"  y="50" width="50" height="103.5" fill="#2F5643"/>
+      <rect x="161" y="50" width="50" height="184.5" fill="#B23A2E"/>
+      <rect x="238" y="50" width="50" height="69.3"  fill="#2F5643"/>
+      <rect x="315" y="50" width="50" height="49.5"  fill="#B8863B"/>
+      <rect x="392" y="50" width="50" height="98.25" fill="#2F5643"/>
+      <rect x="469" y="50" width="50" height="99.3"  fill="#2F5643"/>
+      <rect x="546" y="50" width="50" height="90.9"  fill="#2F5643"/>
+
+      <text x="109" y="167" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">-6.90</text>
+      <text x="186" y="248" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">-12.30</text>
+      <text x="263" y="133" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">-4.62</text>
+      <text x="340" y="113" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">-3.30</text>
+      <text x="417" y="162" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">-6.55</text>
+      <text x="494" y="163" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">-6.62</text>
+      <text x="571" y="155" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">-6.06</text>
+
+      <text x="109" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2019</text>
+      <text x="186" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2020</text>
+      <text x="263" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2021</text>
+      <text x="340" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2022</text>
+      <text x="417" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2023</text>
+      <text x="494" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2024</text>
+      <text x="571" y="20" text-anchor="middle" font-size="12" fill="#5C6B62">2025</text>
+    </svg>
+    <div class="legend"><span><i style="background:#B8863B"></i>投資最少 2022</span><span><i style="background:#B23A2E"></i>投資最多 2020</span></div>
+  </div>
+  <div class="scorebox"><span class="sname">規則二評分（近8季已驗證，早年暫定）</span><span class="sval" style="color:#3F7D5C">85 / 100（良好）</span></div>
+
+  <!-- Rule 3 -->
+  <h3>規則三：B 投資效益分析（以 A 為對照指標）</h3>
+  <p>「效果時有時無」型：把每一年的投資規模，對照「隔一年」的營業現金流變化，七年裡有三次投資後隔年 A 明顯轉強，也有三次投資後隔年 A 反而走弱，訊號並不穩定，比較接近「投資有沒有轉化為造血能力，得看運氣與時機」的類型，而不是穩定的「投資—轉強」正循環。</p>
+  <table>
+    <tr><th>投資年度</th><th>當年 B</th><th>隔年度</th><th>隔年 A</th><th>較投資年 A 變化</th><th>判讀</th></tr>
+    <tr><td class="rowlabel">2019</td><td class="negv">-6.90</td><td>2020</td><td class="posv">27.2</td><td class="mono">21.7→27.2（+25.3%）</td><td class="pass">轉強</td></tr>
+    <tr><td class="rowlabel">2020</td><td class="negv">-12.30</td><td>2021</td><td class="posv">25.4</td><td class="mono">27.2→25.4（-6.6%）</td><td class="fail">未立即轉強</td></tr>
+    <tr><td class="rowlabel">2021</td><td class="negv">-4.62</td><td>2022</td><td class="posv">29.9</td><td class="mono">25.4→29.9（+17.7%）</td><td class="pass">轉強</td></tr>
+    <tr><td class="rowlabel">2022</td><td class="negv">-3.30</td><td>2023</td><td class="posv">25.2</td><td class="mono">29.9→25.2（-15.7%）</td><td class="fail">轉弱</td></tr>
+    <tr><td class="rowlabel">2023</td><td class="negv">-6.55</td><td>2024</td><td class="posv">18.8</td><td class="mono">25.2→18.8（-25.4%）</td><td class="fail">轉弱</td></tr>
+    <tr><td class="rowlabel">2024</td><td class="negv">-6.62</td><td>2025</td><td class="posv">21.8</td><td class="mono">18.8→21.8（+16.0%）</td><td class="pass">略轉強</td></tr>
+  </table>
+  <div class="snap-note">近8季細項已確認B主要為固定資產真實資本支出，本表因果解讀成立；惟2019–2023較早年度細項仍未取得，投資—轉強的對照關係暫定保留。</div>
+  <div class="scorebox"><span class="sname">規則三評分（暫定）</span><span class="sval" style="color:#B8863B">55 / 100（需觀察）</span></div>
+
+  <!-- Rule 4 -->
+  <h3>規則四：C 融資活動合理性</h3>
+  <p>「穩定發放、無舉債擴張」型：七年來 C 全數為負值，且負值規模逐年擴大，完全沒有出現規則四定義的最高警戒訊號（A轉負、同時C為正或小幅負值）。近8季細項證實這筆持續擴大的淨流出<b>幾乎全部來自「發放現金股利」與「非控制權益變動」（子公司對少數股東的股利/權益調整）</b>，明細裡完全找不到任何借款、公司債等舉債科目，代表這是把賺到的現金持續還給股東（含子公司少數股東），而不是依賴外部資金撐業務，財務結構風險偏低。</p>
+
+  <h4 style="font-family:'Noto Serif TC',serif;color:var(--primary);font-size:15px;margin:18px 0 8px;">補充：近8季（2024Q2–2026Q1）投資與融資活動明細（單位：億元）</h4>
+  <table style="font-size:12.5px;">
+    <tr><th>項目</th><th>2026Q1</th><th>2025Q4</th><th>2025Q3</th><th>2025Q2</th><th>2025Q1</th><th>2024Q4</th><th>2024Q3</th><th>2024Q2</th></tr>
+    <tr><td class="rowlabel">固定資產(增加)減少</td><td class="negv">-2.13</td><td class="negv">-4.45</td><td class="negv">-3.14</td><td class="negv">-2.01</td><td class="negv">-0.91</td><td class="negv">-6.26</td><td class="negv">-4.71</td><td class="negv">-2.86</td></tr>
+    <tr><td class="rowlabel">金融資產等其他項目</td><td class="mono">-0.28</td><td class="negv">-1.61</td><td class="negv">-1.18</td><td class="mono">0.02</td><td class="mono">-0.07</td><td class="negv">-0.36</td><td class="negv">-0.49</td><td class="negv">-1.06</td></tr>
+    <tr><td class="rowlabel">投資活動淨額 (B)</td><td class="negv">-2.41</td><td class="negv">-6.06</td><td class="negv">-4.32</td><td class="negv">-1.99</td><td class="negv">-0.98</td><td class="negv">-6.62</td><td class="negv">-5.20</td><td class="negv">-3.92</td></tr>
+    <tr><td class="rowlabel">發放現金股利</td><td class="negv">-3.26</td><td class="negv">-10.22</td><td class="negv">-10.22</td><td class="negv">-4.00</td><td class="negv">-4.00</td><td class="negv">-10.22</td><td class="negv">-10.22</td><td class="mono">0.00</td></tr>
+    <tr><td class="rowlabel">非控制權益變動</td><td class="mono">0.00</td><td class="negv">-6.54</td><td class="negv">-6.76</td><td class="negv">-6.76</td><td class="mono">0.04</td><td class="negv">-6.41</td><td class="negv">-6.41</td><td class="negv">-6.46</td></tr>
+    <tr><td class="rowlabel">租賃本金等其他項目</td><td class="mono">-0.17</td><td class="negv">-0.69</td><td class="negv">-0.27</td><td class="negv">-0.32</td><td class="negv">-0.14</td><td class="negv">-0.54</td><td class="negv">-0.38</td><td class="negv">-0.25</td></tr>
+    <tr><td class="rowlabel">融資活動淨額 (C)</td><td class="negv">-3.43</td><td class="negv">-17.45</td><td class="negv">-17.25</td><td class="negv">-11.08</td><td class="negv">-4.10</td><td class="negv">-17.17</td><td class="negv">-17.01</td><td class="negv">-6.71</td></tr>
+  </table>
+  <div class="snap-note">使用者提供截圖（投資活動／融資活動明細表）。「金融資產等其他項目」「租賃本金等其他項目」為多個小項加總後的簡化列示，非原表逐項照抄。</div>
+
+  <div class="callout" style="margin-top:14px;">
+    <b>解讀：</b>融資活動淨流出裡，發放現金股利與非控制權益變動兩項合計就佔了九成以上，且每一季都沒有借款科目，這對規則四是明確加分。唯一保留的疑點是「非控制權益變動」金額偏大且穩定在 -6.4～-6.76 億（2025Q1 除外），這比較像是子公司對少數股東的股利分配或權益調整，但具體性質建議留到第2、3步查詢公司公告或法說會資料時再確認。
+  </div>
+  <div class="chartcard">
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70" y1="85"  x2="610" y2="85"  stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="130" x2="610" y2="130" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="175" x2="610" y2="175" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="40" x2="610" y2="40" stroke="#5C6B62"/>
+      <text x="55" y="44"  text-anchor="end" font-size="11" fill="#5C6B62">0</text>
+      <text x="55" y="89"  text-anchor="end" font-size="11" fill="#5C6B62">-5</text>
+      <text x="55" y="134" text-anchor="end" font-size="11" fill="#5C6B62">-10</text>
+      <text x="55" y="179" text-anchor="end" font-size="11" fill="#5C6B62">-15</text>
+
+      <rect x="76"  y="40" width="22" height="62.1"  fill="#2F5643"/>
+      <rect x="100" y="40" width="22" height="123.3" fill="#B8863B"/>
+      <rect x="153" y="40" width="22" height="110.7" fill="#2F5643"/>
+      <rect x="177" y="40" width="22" height="65.07" fill="#B8863B"/>
+      <rect x="230" y="40" width="22" height="41.58" fill="#2F5643"/>
+      <rect x="254" y="40" width="22" height="123.3" fill="#B8863B"/>
+      <rect x="307" y="40" width="22" height="29.7"  fill="#2F5643"/>
+      <rect x="331" y="40" width="22" height="146.7" fill="#B8863B"/>
+      <rect x="384" y="40" width="22" height="58.95" fill="#2F5643"/>
+      <rect x="408" y="40" width="22" height="153.9" fill="#B8863B"/>
+      <rect x="461" y="40" width="22" height="59.58" fill="#2F5643"/>
+      <rect x="485" y="40" width="22" height="154.8" fill="#B8863B"/>
+      <rect x="538" y="40" width="22" height="54.54" fill="#2F5643"/>
+      <rect x="562" y="40" width="22" height="157.5" fill="#B8863B"/>
+
+      <text x="109" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2019</text>
+      <text x="186" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2020</text>
+      <text x="263" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2021</text>
+      <text x="340" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2022</text>
+      <text x="417" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2023</text>
+      <text x="494" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2024</text>
+      <text x="571" y="234" text-anchor="middle" font-size="12" fill="#5C6B62">2025</text>
+    </svg>
+    <div class="legend"><span><i style="background:#2F5643"></i>B 投資活動</span><span><i style="background:#B8863B"></i>C 融資活動</span></div>
+  </div>
+  <div class="scorebox"><span class="sname">規則四評分（近8季已驗證，早年暫定）</span><span class="sval" style="color:#3F7D5C">92 / 100（優秀）</span></div>
+
+  <!-- Rule 5 -->
+  <h3>規則五：A &gt; D 現金流品質（嚴格二分）</h3>
+  <p>近三年（2023、2024、2025）連續出現 A ≤ D，也就是帳面稅前淨利大於實際收到的營業現金流，是七年數據中最值得留意的訊號，代表獲利品質近期有轉弱跡象，建議後續查詢基本資訊時，留意應收帳款、存貨是否同步墊高。</p>
+  <table>
+    <tr><th>年度</th><th>A</th><th>D（稅前淨利）</th><th>A &gt; D？</th></tr>
+    <tr><td class="rowlabel">2019</td><td class="mono">21.7</td><td class="mono">24.4</td><td class="fail">不通過</td></tr>
+    <tr><td class="rowlabel">2020</td><td class="mono">27.2</td><td class="mono">23.8</td><td class="pass">通過</td></tr>
+    <tr><td class="rowlabel">2021</td><td class="mono">25.4</td><td class="mono">24.1</td><td class="pass">通過</td></tr>
+    <tr><td class="rowlabel">2022</td><td class="mono">29.9</td><td class="mono">26.9</td><td class="pass">通過</td></tr>
+    <tr><td class="rowlabel">2023</td><td class="mono">25.2</td><td class="mono">26.6</td><td class="fail">不通過</td></tr>
+    <tr><td class="rowlabel">2024</td><td class="mono">18.8</td><td class="mono">26.7</td><td class="fail">不通過</td></tr>
+    <tr><td class="rowlabel">2025</td><td class="mono">21.8</td><td class="mono">23.0</td><td class="fail">不通過</td></tr>
+  </table>
+  <div class="scorebox"><span class="sname">規則五評分（3/7年通過）</span><span class="sval" style="color:#B23A2E">42.9 / 100（需觀察）</span></div>
+
+  <!-- Rule 6 -->
+  <h3>規則六：E 期末現金餘額穩定性</h3>
+  <p>「先蓄水、近期微幅放水」型：期末現金餘額從 2019 年 21.5 億穩定成長至 2023 年高點 48.2 億，累積成長超過一倍，長期趨勢健康；但 2024、2025 連兩年回落至 43.4 億、41.6 億，較高點下滑約 13.7%，波動幅度尚在合理範圍內，長期方向仍偏穩定或上升，但近期的連續下滑值得留意是否延續。</p>
+  <div class="chartcard">
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70" y1="35"  x2="610" y2="35"  stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="80"  x2="610" y2="80"  stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="125" x2="610" y2="125" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="170" x2="610" y2="170" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="215" x2="610" y2="215" stroke="#DBE0D6" stroke-dasharray="4 4"/>
+      <line x1="70" y1="260" x2="610" y2="260" stroke="#5C6B62"/>
+      <text x="55" y="39"  text-anchor="end" font-size="11" fill="#5C6B62">50</text>
+      <text x="55" y="84"  text-anchor="end" font-size="11" fill="#5C6B62">40</text>
+      <text x="55" y="129" text-anchor="end" font-size="11" fill="#5C6B62">30</text>
+      <text x="55" y="174" text-anchor="end" font-size="11" fill="#5C6B62">20</text>
+      <text x="55" y="219" text-anchor="end" font-size="11" fill="#5C6B62">10</text>
+      <text x="55" y="264" text-anchor="end" font-size="11" fill="#5C6B62">0</text>
+
+      <rect x="84"  y="163.25" width="50" height="96.75"  fill="#B23A2E"/>
+      <rect x="161" y="128.15" width="50" height="131.85" fill="#2F5643"/>
+      <rect x="238" y="96.2"   width="50" height="163.8"  fill="#2F5643"/>
+      <rect x="315" y="49.85"  width="50" height="210.15" fill="#2F5643"/>
+      <rect x="392" y="43.1"   width="50" height="216.9"  fill="#B8863B"/>
+      <rect x="469" y="64.7"   width="50" height="195.3"  fill="#2F5643"/>
+      <rect x="546" y="72.8"   width="50" height="187.2"  fill="#2F5643"/>
+
+      <text x="109" y="157" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">21.5</text>
+      <text x="186" y="122" text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">29.3</text>
+      <text x="263" y="90"  text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">36.4</text>
+      <text x="340" y="44"  text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">46.7</text>
+      <text x="417" y="37"  text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono" font-weight="700">48.2</text>
+      <text x="494" y="59"  text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">43.4</text>
+      <text x="571" y="67"  text-anchor="middle" font-size="12" fill="#1B2420" font-family="Roboto Mono">41.6</text>
+
+      <text x="109" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2019</text>
+      <text x="186" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2020</text>
+      <text x="263" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2021</text>
+      <text x="340" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2022</text>
+      <text x="417" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2023</text>
+      <text x="494" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2024</text>
+      <text x="571" y="278" text-anchor="middle" font-size="12" fill="#5C6B62">2025</text>
+    </svg>
+    <div class="legend"><span><i style="background:#B8863B"></i>高峰 2023</span><span><i style="background:#B23A2E"></i>谷底 2019</span></div>
+  </div>
+  <div class="scorebox"><span class="sname">規則六評分</span><span class="sval" style="color:#3F7D5C">68 / 100（良好）</span></div>
+
+  <!-- Final -->
+  <div class="final-panel">
+    <h2>總評分與關卡建議</h2>
+    <table>
+      <tr><th>規則</th><th>評分</th><th>狀態</th></tr>
+      <tr><td class="rowlabel">一、A 逐年成長趨勢</td><td class="mono">55</td><td>需觀察</td></tr>
+      <tr><td class="rowlabel">二、B 投資紀律（近8季已驗證）</td><td class="mono">85</td><td>良好</td></tr>
+      <tr><td class="rowlabel">三、B 投資效益（早年暫定）</td><td class="mono">55</td><td>需觀察</td></tr>
+      <tr><td class="rowlabel">四、C 融資合理性（近8季已驗證）</td><td class="mono">92</td><td>優秀</td></tr>
+      <tr><td class="rowlabel">五、A＞D 現金流品質</td><td class="mono">42.9</td><td>需觀察</td></tr>
+      <tr><td class="rowlabel">六、E 期末餘額穩定性</td><td class="mono">68</td><td>良好</td></tr>
+    </table>
+    <div class="fscore">66.3 %</div>
+    <div class="verdict">
+      <b>關卡判斷：總分 ≥60%，現金流體質可以繼續看下去。</b><br>
+      補上投資／融資明細後，確認沒有規則四定義的三重疊加警訊（A轉負＋重度投資＋C為正/小幅負值），投資是真實資本支出、融資淨流出是配息而非舉債，體質信心較第一版提高。仍有兩個觀察點：① 規則五近三年連續未通過，獲利轉現金效率下降；② 規則一近三年高峰回落。另外提醒你先前提供的2025年度總表數字與這批單季明細之間有口徑落差（見上方資料口徑提醒），建議第2步查詢官方年報時一併核對。建議接著進入第 2 步查詢股價、EPS、殖利率等基本資訊。
+    </div>
+  </div>
+
+</section>
+
+<section id="step2">
+  <span class="step-tag">【第 2 步／共 6 步：基本資訊查詢】</span>
+  <h2 class="rule-title">股價、估值、獲利與股利概況</h2>
+
+  <div class="callout">
+    <b>最值得注意的現象：股價已從 2019 年高點 195 元一路下滑到近日 89.3 元，累計跌幅逾五成，2026 年迄今（YTD）更是加速下跌 29.4%，跌幅明顯大於同期 EPS 的下滑幅度（2026Q1 EPS 年減 16%）。</b>這與第1步觀察到的「規則五近三年A&lt;D」「規則一近三年A高峰回落」屬於同一個故事的不同面向，建議第3步查法說會資料時，重點了解營運面（通路、原料成本、子公司狀況）究竟發生了什麼事。
+  </div>
+
+  <h3>股價快照</h3>
+  <table>
+    <tr><th>項目</th><th>數值</th></tr>
+    <tr><td class="rowlabel">收盤價（2026/08/14）</td><td class="mono">89.30 元（+0.68%）</td></tr>
+    <tr><td class="rowlabel">52 週高／低</td><td class="mono">132.00 ／ 88.20</td></tr>
+    <tr><td class="rowlabel">本益比（近四季）</td><td class="mono">11.16 倍</td></tr>
+    <tr><td class="rowlabel">每股淨值／本淨比</td><td class="mono">67.36 元 ／ 1.32 倍</td></tr>
+    <tr><td class="rowlabel">市值</td><td class="mono">132.29 億</td></tr>
+    <tr><td class="rowlabel">毛利率／營益率／淨利率</td><td class="mono">69.67% ／ 14.72% ／ 12.58%</td></tr>
+    <tr><td class="rowlabel">近四季 EPS ／ 當季(2026Q1) EPS</td><td class="mono">7.75 元 ／ 1.18 元</td></tr>
+    <tr><td class="rowlabel">年股利（最新公告）／殖利率</td><td class="mono">6.00 元 ／ 6.72%</td></tr>
+  </table>
+  <div class="snap-note">查詢時間 2026/08/16（台股上一交易日 2026/08/14 收盤，市場已收盤，非即時報價，正式交易請以看盤軟體/券商App為準）。資料來源：<a href="https://www.cnyes.com/twstock/1707" target="_blank">鉅亨網 葡萄王(1707)總覽</a></div>
+
+  <h3>年度收盤價趨勢（使用者提供財報綜合表）</h3>
+  <table>
+    <tr><th>年度</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026(YTD)</th></tr>
+    <tr><td class="rowlabel">年度收盤價</td><td class="mono">195.0</td><td class="mono">177.5</td><td class="mono">160.0</td><td class="mono">168.0</td><td class="mono">156.0</td><td class="mono">149.5</td><td class="mono">126.5</td><td class="mono">89.3</td></tr>
+    <tr><td class="rowlabel">年漲跌幅</td><td class="mono">+2.4%</td><td class="negv">-9.0%</td><td class="negv">-9.9%</td><td class="posv">+5.0%</td><td class="negv">-7.1%</td><td class="negv">-4.2%</td><td class="negv">-15.4%</td><td class="negv">-29.4%</td></tr>
+  </table>
+  <div class="snap-note">使用者提供截圖（財報綜合表）。2026 為年初至最新交易日（YTD）漲跌，非全年度數字。</div>
+
+  <h3>歷年 EPS 趨勢</h3>
+  <table>
+    <tr><th>年度</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026Q1</th></tr>
+    <tr><td class="rowlabel">EPS（元）</td><td class="mono">~9.63*</td><td class="mono">~9.34*</td><td class="mono">8.81</td><td class="mono">9.84</td><td class="mono">9.81</td><td class="mono">~9.78†</td><td class="mono">8.22</td><td class="mono">1.18</td></tr>
+  </table>
+  <div class="snap-note">2021–2023、2025 為官方公告年度 EPS（<a href="https://tw.stock.yahoo.com/quote/1707.TW/profile" target="_blank">Yahoo股市 基本資料</a>）。標 † 之 2024 為單季 EPS 加總推算（1.74+2.21+2.81+3.02，<a href="https://tw.stock.yahoo.com/quote/1707.TW/eps" target="_blank">Yahoo股市 每股盈餘</a>）。標 * 之 2019、2020 為推算數字（稅後淨利 ÷ 股本，未查得官方年度EPS公告），公式：13.1億÷13.6億股≈9.63、12.7億÷13.6億股≈9.34，與2021–2025推算值和官方公告值高度吻合，佐證股本基礎一致、無股票分割或減資造成的失真。2025年EPS較2024年下滑約16%，與股價年跌15.4%幅度相近；但2026年迄今股價跌幅(-29.4%)明顯大於2026Q1 EPS年減幅度(-16%)，落差值得留意。</div>
+
+  <h3>股利政策</h3>
+  <table>
+    <tr><th>所屬年度</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th></tr>
+    <tr><td class="rowlabel">現金股利（元，隔年發放）</td><td class="mono">6.50</td><td class="mono">6.50</td><td class="mono">6.40</td><td class="mono">6.10</td><td class="mono">6.90</td><td class="mono">6.90</td></tr>
+  </table>
+  <div class="snap-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/1707.TW/dividend" target="_blank">Yahoo股市 股利政策</a>。2026年已累計配發現金股利6.00元（分兩次發放，其中第2次除息日2026/06/17、發放3.8元），近五年平均現金股利約7.84元、平均殖利率約5.34%（<a href="https://winvest.tw/Stock/Symbol/Comment/1707" target="_blank">Win投資</a>，資料時間2026年6月）。</div>
+
+  <h3>公司基本資料</h3>
+  <table>
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td class="rowlabel">公司全名</td><td>葡萄王生技股份有限公司（GRAPE KING BIO LTD）</td></tr>
+    <tr><td class="rowlabel">產業別</td><td>生技醫療業（保健食品／益生菌／菌種業）</td></tr>
+    <tr><td class="rowlabel">成立／上市日期</td><td class="mono">1971/04/01 ／ 1982/12/20</td></tr>
+    <tr><td class="rowlabel">資本額</td><td class="mono">14.81 億</td></tr>
+    <tr><td class="rowlabel">董事長／總經理</td><td>曾盛麟</td></tr>
+  </table>
+  <div class="snap-note">資料來源：<a href="https://www.cnyes.com/twstock/1707" target="_blank">鉅亨網 葡萄王(1707)總覽</a></div>
+
+  <h3>法人說明會（法說會）資訊</h3>
+  <p>官方完整法說會財務業務資訊請至公開資訊觀測站查詢：<a href="https://mopsov.twse.com.tw/mops/web/t100sb02_1" target="_blank">公開資訊觀測站－法人說明會一覽表</a>（查詢時輸入股票代號 1707）。最近一場公告的法人說明會為 2026/06/23 受邀參加永豐金證券舉辦之線上法人說明會；再前一場為 2026/03/19。</p>
+  <div class="snap-note">資料來源：<a href="https://www.genetinfo.com/investment/company-news/item/96137.html" target="_blank">生技投資第一站 Genet 觀點（2026/06/23場次公告）</a></div>
+
+  <div class="callout">
+    <b>第2步小結：</b>現金流體質尚可，但估值面出現同步轉弱訊號——股價自2019年高點累積跌逾五成，2025、2026Q1獲利也連續下滑，目前本益比11.16倍、殖利率6.72%，數字本身不算貴，但需要先搞清楚「為什麼跌」，而不是單純把低本益比／高殖利率當成買點。建議接著進入第3步查詢法說會資料，了解營運面轉弱的具體原因。
+  </div>
+</section>
+
+<section id="step3">
+  <span class="step-tag">【第 3 步／共 6 步：法說會資料深入討論】</span>
+  <h2 class="rule-title">為什麼獲利與股價會連續轉弱？</h2>
+
+  <div class="callout">
+    <b>一句話結論：</b>拖累獲利的是佔集團淨利98%的直銷主力「葡眾」——2025全年營收年減8.14%、2026Q1再年減4.2%，主因是前一波調價後的高基期比較與消費趨於保守；與此同時，公司正大舉加碼資本支出（2026年規劃6.53億，年增273%）擴產能、進軍馬來西亞、推進新藥臨床，這些長期布局在短期內會壓抑獲利，屬於「轉型陣痛」而非現金流出問題（回顧第1步，現金流體質仍良好，沒有借錢硬撐的訊號）。
+  </div>
+
+  <h3>2026 年第一季法說會重點（2026/06/23 發布，永豐金證券線上法人說明會）</h3>
+  <table>
+    <tr><th>項目（百萬元）</th><th>2025 Q1</th><th>2026 Q1</th><th>年增減</th></tr>
+    <tr><td class="rowlabel">營業收入</td><td class="mono">2,252</td><td class="mono">2,278</td><td class="posv">+1.2%</td></tr>
+    <tr><td class="rowlabel">營業毛利</td><td class="mono">1,650</td><td class="mono">1,588</td><td class="negv">-3.8%</td></tr>
+    <tr><td class="rowlabel">營業利益</td><td class="mono">376</td><td class="mono">335</td><td class="negv">-10.9%</td></tr>
+    <tr><td class="rowlabel">歸屬母公司淨利</td><td class="mono">208</td><td class="mono">175</td><td class="negv">-15.9%</td></tr>
+    <tr><td class="rowlabel">每股盈餘 EPS（元）</td><td class="mono">1.40</td><td class="mono">1.18</td><td class="negv">-15.7%</td></tr>
+    <tr><td class="rowlabel">毛利率／營益率／淨利率</td><td class="mono">73.3% / 16.7% / 14.6%</td><td class="mono">69.7% / 14.7% / 12.6%</td><td class="negv">三率齊降</td></tr>
+  </table>
+
+  <h3>三大事業體營收結構（2026 Q1）</h3>
+  <table>
+    <tr><th>事業體</th><th>Q1營收</th><th>年增減</th><th>備註</th></tr>
+    <tr><td class="rowlabel">葡眾（直銷，持股60%）</td><td class="mono">16.08億</td><td class="negv">-4.2%</td><td>佔集團淨利98%，1月+7.8%但3月轉為-10.4%，是拖累獲利的主因</td></tr>
+    <tr><td class="rowlabel">台灣葡萄王（母公司）</td><td class="mono">3.82億</td><td class="posv">+20.8%</td><td>代工(ODM/OEM) 2.19億 年增39%為主力，主要客戶佔比30%→56%；自有品牌+3%</td></tr>
+    <tr><td class="rowlabel">上海葡萄王（持股100%）</td><td class="mono">2.88億</td><td class="posv">+11.5%</td><td>谷底回升但仍小幅虧損，佔集團淨利約-4%</td></tr>
+  </table>
+
+  <h3>2025 全年營收年減 8% 的背景</h3>
+  <p>拉長時間看，這不是2026Q1才出現的新問題。<cite index="48-1">葡萄王生技2025年全年營收102.5億元，較前一年減少8.14%，直銷通路葡眾主要受到前一波調價後的高基期，加上市場消費趨於保守影響，營收呈現回檔修正；相對地，台灣葡萄王受惠代工(ODM/OEM)動能強勁，全年營收年增16.21%，其中代工業務年增率高達54.03%。</cite>換句話說，「葡眾成長趨緩、代工與海外接棒成長」這個結構性轉變，從2025年就已經在發生，2026Q1只是延續同一個趨勢。</p>
+
+  <h3>財務結構與營運效率（法說會揭露）</h3>
+  <table>
+    <tr><th>指標</th><th>數值</th><th>解讀</th></tr>
+    <tr><td class="rowlabel">總借款</td><td class="mono">零</td><td class="pass">維持零借款，與第1步規則四判讀一致</td></tr>
+    <tr><td class="rowlabel">淨現金／股權比重</td><td class="mono">-33.6%</td><td class="pass">淨現金部位穩健</td></tr>
+    <tr><td class="rowlabel">ROE（年化）</td><td class="mono">9.6%（2025全年15.6%）</td><td class="fail">獲利衰退拖累</td></tr>
+    <tr><td class="rowlabel">ROA（年化）</td><td class="mono">7.4%（2025全年12%）</td><td class="fail">獲利衰退拖累</td></tr>
+    <tr><td class="rowlabel">存貨週轉天數</td><td class="mono">115.5天→106.7天</td><td class="pass">去庫存化中，改善</td></tr>
+    <tr><td class="rowlabel">應收帳款週轉天數</td><td class="mono">11.4天→15.2天</td><td class="fail">收現速度放緩，呼應第1步規則五的觀察</td></tr>
+  </table>
+  <div class="callout" style="margin-top:10px;">
+    <b>與第1步的呼應：</b>應收帳款週轉天數拉長，剛好對應第1步規則五「近三年A（營業現金流）連續低於D（稅前淨利）」的疑慮——獲利轉換成現金的效率下降，這裡找到了具體原因之一：收現變慢。
+  </div>
+
+  <h3>利多與利空一覽</h3>
+  <table>
+    <tr><th>方向</th><th>要點</th></tr>
+    <tr><td class="rowlabel pass" style="text-align:left;">利多</td><td>代工業務Q1年增39%；平鎮湧豐廠一期、龍潭廠二期完工，乾燥製程將收回自製降低成本；馬來西亞直銷牌照2026/2月取得，吉隆坡營運中心8/17正式開幕；樟芝新藥GKAC獲FDA核准二期臨床，預計2026Q3收案；2026配息率規劃維持70%高水準</td></tr>
+    <tr><td class="rowlabel fail" style="text-align:left;">利空</td><td>核心獲利主體葡眾Q1營收年減4.2%（占集團淨利98%）；毛利率／營益率／淨利率三率齊降；上海葡萄王仍處虧損；應收帳款週轉天數拉長；2026資本支出年增273%，短期折舊費用將壓抑獲利</td></tr>
+  </table>
+
+  <h3>後續觀察重點</h3>
+  <p>綜合法說會揭露內容，後續可觀察：① 葡眾單月營收年增率何時轉正，是EPS止跌回升的最關鍵指標；② 毛利率能否在下半年重回70%以上，驗證新產能自製降低成本的效益；③ 馬來西亞吉隆坡營運中心8/17正式開幕後的會員招募與銷售狀況。</p>
+  <div class="snap-note">本節內容整理自公開資訊觀測站揭露之法說會文件的第三方AI摘要（<a href="https://poorstock.com/earningcall/1707" target="_blank">散戶鬥嘴鼓 法說會AI整理，2026/06/23場次</a>），原始簡報PDF在<a href="https://mopsov.twse.com.tw/mops/web/t100sb02_1" target="_blank">公開資訊觀測站法人說明會一覽表</a>（因網站禁止自動化存取，Claude未能直接讀取PDF核對，建議你直接開啟連結核對原始簡報數字）。2025全年營收年減8%背景整理自<a href="https://tw.stock.yahoo.com/news/%E8%91%A1%E8%90%84%E7%8E%8B2025%E5%B9%B4%E7%87%9F%E6%94%B6%E5%B9%B4%E6%B8%9B8-2026%E5%B9%B4%E5%A4%9A%E5%8B%95%E8%83%BD%E8%93%84%E5%8B%A2%E5%BE%85%E7%99%BC%E6%8B%9A%E5%9B%9E%E6%88%90%E9%95%B7-003129479.html" target="_blank">財訊快報／Yahoo股市新聞</a>（2026/01/12）。</div>
+
+  <div class="callout">
+    <b>第3步小結：</b>股價與獲利的連續走弱，找到了具體且可驗證的原因——直銷主力葡眾成長趨緩＋公司主動加碼資本支出的轉型陣痛，而不是財務體質惡化（現金流、負債結構仍健康）。故事線至此完整銜接：現金流體質良好但獲利效率下降（第1步）→股價跌幅超過獲利跌幅、估值不算貴但要先懂原因（第2步）→原因是核心通路轉弱+主動擴張的短期陣痛（第3步）。建議接著進入第4步營收趨勢視覺化，用月營收數字驗證葡眾是否已經止跌。
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="fline">
+    報告版本 v1.1（第 1 步／共 6 步）｜產出時間：2026-08-16｜資料來源：使用者提供之財務綜合表截圖（含年度股價、獲利、現金流量、現金餘額）與投資/融資活動明細截圖（2024Q2–2026Q1），非本次網路搜尋所得，尚未經 Claude 逐項覆核。規則二、三、四評分已依近8季細項部分校正，2019–2023較早年度細項仍未取得，該部分評分維持暫定。年度總表與單季明細間存在口徑落差，詳見內文說明。
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var links = document.querySelectorAll('.stepnav a[href]');
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = a.getAttribute('href').substring(1);
+      var el = document.getElementById(id);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+  var sections = document.querySelectorAll('main section[id]');
+  var navMap = {};
+  links.forEach(function(a){
+    var href = a.getAttribute('href');
+    if(href){ navMap[href.substring(1)] = a; }
+  });
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        links.forEach(function(a){ a.classList.remove('active'); });
+        var link = navMap[entry.target.id];
+        if(link){ link.classList.add('active'); }
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px', threshold:0});
+  sections.forEach(function(s){ observer.observe(s); });
+});
+</script>
+
+</body>
+</html>
