@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>台灣高鐵(2633) 個股分析報告</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6F4;
+    --panel:#FFFFFF;
+    --ink:#141A1F;
+    --sub:#5B6670;
+    --rail:#0E3F66;
+    --rail-dark:#0A2E4D;
+    --amber:#D98E2B;
+    --pos:#1F8A6E;
+    --neg:#C24B5E;
+    --peak:#D6A94A;
+    --trough:#C24B5E;
+    --line:#DEE2E0;
+    --locked:#B7BEC2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.65;
+  }
+  h1,h2,h3,.disp{font-family:'Space Grotesk','Noto Sans TC',sans-serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  header.hero{
+    background: linear-gradient(135deg, var(--rail-dark) 0%, var(--rail) 60%, #14588f 100%);
+    color:#fff; padding:48px 32px 36px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; right:-60px; top:-60px; width:320px; height:320px;
+    border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:2px;
+    color:#9FD4C4; text-transform:uppercase; margin-bottom:10px;
+  }
+  header.hero h1{font-size:34px; margin:0 0 6px; font-weight:700;}
+  header.hero .sub{color:#C9D8E2; font-size:14px;}
+  .badge-row{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .badge{
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25);
+    padding:6px 14px; border-radius:20px; font-size:13px; color:#EAF2F6;
+  }
+  img.visitor{margin-top:14px; opacity:0.85;}
+
+  nav.stepnav{
+    position:sticky; top:0; z-index:50; background:#0E1B26; display:flex;
+    overflow-x:auto; padding:0 12px; box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  }
+  nav.stepnav a{
+    flex:0 0 auto; padding:14px 18px; color:var(--locked); text-decoration:none;
+    font-size:13px; font-weight:600; border-bottom:3px solid transparent; white-space:nowrap;
+    cursor:default;
+  }
+  nav.stepnav a.unlocked{color:#CFE3F0; cursor:pointer;}
+  nav.stepnav a.active{color:#fff; border-bottom-color:var(--amber);}
+
+  main{max-width:980px; margin:0 auto; padding:30px 20px 80px;}
+  section{margin-bottom:46px;}
+  .step-tag{
+    display:inline-block; background:var(--rail); color:#fff; font-family:'JetBrains Mono',monospace;
+    font-size:12px; padding:4px 10px; border-radius:4px; letter-spacing:1px; margin-bottom:14px;
+  }
+  h2.sec-title{font-size:23px; margin:0 0 18px; color:var(--rail-dark); border-bottom:2px solid var(--line); padding-bottom:10px;}
+
+  .callout{
+    border-left:4px solid var(--amber); background:#FFF7EA; padding:16px 20px;
+    border-radius:0 8px 8px 0; margin-bottom:24px; font-size:15px;
+  }
+  .callout b{color:var(--rail-dark);}
+  .callout.good{border-left-color:var(--pos); background:#EFF9F5;}
+
+  table{width:100%; border-collapse:collapse; background:var(--panel); border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:16px; font-size:14px;}
+  th, td{padding:10px 12px; text-align:right; border-bottom:1px solid var(--line);}
+  th{background:var(--rail-dark); color:#fff; font-weight:600; font-size:13px;}
+  td:first-child, th:first-child{text-align:left;}
+  tr.qrow td{color:#8B94A0; font-style:italic; background:#FAFBFB;}
+  .posv{color:var(--pos); font-weight:600;}
+  .negv{color:var(--neg); font-weight:700;}
+  .note{font-size:13px; color:var(--sub); margin-top:-6px; margin-bottom:20px;}
+
+  .rule-block{background:var(--panel); border-radius:12px; padding:20px 22px; margin-bottom:18px; box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+  .rule-block h3{margin:0 0 6px; font-size:17px; color:var(--rail-dark);}
+  .rule-score{
+    display:inline-block; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px;
+    padding:3px 10px; border-radius:6px; margin-left:8px;
+  }
+  .score-good{background:#EFF9F5; color:var(--pos);}
+  .score-mid{background:#FFF7EA; color:var(--amber);}
+  .score-pending{background:#EFEFEF; color:var(--sub);}
+  .tag{display:inline-block; font-size:12px; padding:2px 8px; border-radius:10px; background:#EDF2F5; color:var(--rail-dark); margin-left:6px;}
+  .provisional{background:#FDEEE9; color:#B5542E;}
+
+  svg.chart{width:100%; height:auto; display:block; margin:14px 0 6px;}
+  .legend{display:flex; gap:18px; font-size:12px; color:var(--sub); margin-bottom:8px;}
+  .legend span.dot{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:middle;}
+
+  .score-summary{
+    background: linear-gradient(135deg, var(--rail-dark), var(--rail));
+    color:#fff; border-radius:14px; padding:26px 28px; display:flex; align-items:center; gap:28px; flex-wrap:wrap;
+  }
+  .score-num{font-family:'Space Grotesk',sans-serif; font-size:52px; font-weight:700;}
+  .score-label{font-size:13px; color:#B9D3E2; letter-spacing:1px;}
+
+  footer{padding:24px 20px; text-align:center; color:var(--sub); font-size:12px;}
+  .source-note{background:#F0F2F1; border-radius:8px; padding:14px 18px; font-size:13px; color:var(--sub); margin-top:20px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">TW STOCK · 台股個股分析</div>
+  <h1>台灣高鐵 <span class="mono" style="font-size:22px; opacity:0.8;">2633</span></h1>
+  <div class="sub">六步驟現金流優先分析框架｜報告持續更新中</div>
+  <div class="badge-row">
+    <span class="badge">現金流體質：良好（暫定）</span>
+    <span class="badge">目前進度：第 1 / 6 步</span>
+  </div>
+  <img class="visitor" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.beststock-analysis.2633" alt="Visitors">
+</header>
+
+<nav class="stepnav" id="stepnav">
+  <a href="#step1" class="unlocked active" data-step="1">① 現金流六大規則</a>
+  <a class="locked" data-step="2">② 基本資訊</a>
+  <a class="locked" data-step="3">③ 法說會</a>
+  <a class="locked" data-step="4">④ 營收趨勢</a>
+  <a class="locked" data-step="5">⑤ 前瞻本益比</a>
+  <a class="locked" data-step="6">⑥ 投資決策</a>
+</nav>
+
+<main>
+
+<section id="step1">
+  <div class="step-tag">【第 1 步／共 6 步：現金流量表六大規則分析】</div>
+  <h2 class="sec-title">現金流量表六大規則分析（盲測階段）</h2>
+
+  <div class="callout good">
+    <b>初步結論：</b>依現有資料，五項規則平均約 <b>73 分（良好，≥60%）</b>，現金流體質可以繼續看下去。但本次資料<b>未包含期末現金餘額（E）</b>與投資／融資活動細項，規則二、三、四、六的評分屬<b>暫定</b>，建議後續補充以校正。
+  </div>
+
+  <h3 style="color:var(--rail-dark); margin-bottom:8px;">現金流量數據表格（單位：億元）</h3>
+  <table>
+    <tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>其他活動</th><th>淨現金流</th></tr>
+    <tr><td>2020</td><td class="negv">-15.3</td><td class="posv">8.21</td><td class="negv">-149</td><td>54.2</td><td>0</td><td class="negv">-156</td></tr>
+    <tr><td>2021</td><td class="posv">269</td><td class="negv">-88.3</td><td class="posv">29.2</td><td>42.7</td><td>0</td><td class="posv">210</td></tr>
+    <tr><td>2022</td><td class="posv">98.3</td><td class="posv">74.7</td><td class="negv">-223</td><td>42.7</td><td>-0.06</td><td class="negv">-50.6</td></tr>
+    <tr><td>2023</td><td class="posv">278</td><td class="negv">-129</td><td class="negv">-139</td><td>97.4</td><td>0.06</td><td class="posv">10.1</td></tr>
+    <tr><td>2024</td><td class="posv">167</td><td class="negv">-74.6</td><td class="negv">-225</td><td>80.4</td><td>-0.01</td><td class="negv">-133</td></tr>
+    <tr><td>2025</td><td class="posv">207</td><td class="negv">-95.6</td><td class="negv">-106</td><td>81.2</td><td>0.14</td><td class="posv">5.12</td></tr>
+    <tr class="qrow"><td>26Q2（單季）</td><td>136</td><td>19.3</td><td>-14.2</td><td>43.9</td><td>0.07</td><td>141</td></tr>
+  </table>
+  <div class="note">E（期末現金餘額）欄位使用者尚未提供，規則六暫無法評分。26Q2 為單季資料，僅供參考，不列入計分。資料來源：使用者提供截圖。</div>
+
+  <!-- Rule 1 -->
+  <div class="rule-block">
+    <h3>規則一：A 逐年逐季成長趨勢 <span class="rule-score score-mid">68 分</span></h3>
+    <p>2020 年 A 出現 <b class="negv">-15.3億</b> 的單一負值年度，是六年間唯一的赤字，屬於「膨風灌水」型的年度異常——當年稅前淨利仍有 54.2億，帳面賺錢卻收不到營業現金。2021 年起強勁翻正至 269億，之後呈鋸齒狀波動：269 → 98.3（↓）→ 278（↑）→ 167（↓）→ 207（↑），2023-2025 三年平均約 <b>217億</b>，較 2021-2022 平均 <b>183.7億</b> 略有墊高，中長期方向大致持平偏上，但年度間波動偏大，屬於「體質穩健但不夠平順」的類型。</p>
+    <div class="legend"><span><span class="dot" style="background:var(--peak);"></span>高峰</span><span><span class="dot" style="background:var(--trough);"></span>谷底</span><span><span class="dot" style="background:var(--rail); opacity:0.55; border:1px dashed var(--rail);"></span>虛線框＝單季，僅供參考不列入計分</span></div>
+    <svg class="chart" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+      <!-- gridlines -->
+      <line x1="60" y1="110" x2="580" y2="110" stroke="#333" stroke-width="1"/>
+      <line x1="60" y1="20" x2="580" y2="20" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="24" text-anchor="end" font-size="10" fill="var(--sub)">278</text>
+      <line x1="60" y1="45" x2="580" y2="45" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="49" text-anchor="end" font-size="10" fill="var(--sub)">200</text>
+      <line x1="60" y1="74" x2="580" y2="74" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="78" text-anchor="end" font-size="10" fill="var(--sub)">100</text>
+      <text x="55" y="114" text-anchor="end" font-size="10" fill="var(--sub)">0</text>
+
+      <!-- bars: zero_y=110, scale=0.3597 -->
+      <g>
+        <rect x="80"  y="110"   width="46" height="5.5" fill="var(--trough)"/>
+        <text x="103" y="125" text-anchor="middle" font-size="11" fill="var(--neg)" font-weight="700">-15.3</text>
+        <text x="103" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2020</text>
+
+        <rect x="150" y="13.2" width="46" height="96.8" fill="var(--peak)"/>
+        <text x="173" y="8"  text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">269</text>
+        <text x="173" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2021</text>
+
+        <rect x="220" y="74.6" width="46" height="35.4" fill="var(--rail)"/>
+        <text x="243" y="70" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">98.3</text>
+        <text x="243" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2022</text>
+
+        <rect x="290" y="10.0" width="46" height="100.0" fill="var(--peak)"/>
+        <text x="313" y="6" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">278</text>
+        <text x="313" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2023</text>
+
+        <rect x="360" y="49.9" width="46" height="60.1" fill="var(--rail)"/>
+        <text x="383" y="45" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">167</text>
+        <text x="383" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2024</text>
+
+        <rect x="430" y="35.5" width="46" height="74.5" fill="var(--rail)"/>
+        <text x="453" y="31" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">207</text>
+        <text x="453" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2025</text>
+
+        <rect x="500" y="61.1" width="46" height="48.9" fill="none" stroke="var(--rail)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.75"/>
+        <text x="523" y="57" text-anchor="middle" font-size="11" fill="var(--rail)" font-style="italic">136</text>
+        <text x="523" y="228" text-anchor="middle" font-size="11" fill="#8B94A0" font-style="italic">26Q2</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Rule 2 -->
+  <div class="rule-block">
+    <h3>規則二：B 投資紀律評估 <span class="rule-score score-mid">72 分（暫定）</span> <span class="tag provisional">待細項校正</span></h3>
+    <p>高鐵屬於資本密集的軌道基礎建設事業，B 長期為負值屬正常現象。2021、2023、2024、2025 四個年度 B 皆為負值，且 |B|/A 比例相當一致：2021年 33%、2023年 46%、2024年 45%、2025年 46%，屬於穩定的再投資強度，不算過度擴產。但 2020 年（+8.21億）與 2022 年（+74.7億）出現罕見的投資活動<b>正值</b>，不符合基礎建設公司持續資本支出的一般型態，可能是處分資產、收回投資或金融資產調度所致——目前只有總額，<b>無法確認真實原因</b>，這正是規則二評分暫定的主因。</p>
+    <div class="legend"><span><span class="dot" style="background:var(--peak);"></span>高峰</span><span><span class="dot" style="background:var(--trough);"></span>谷底</span></div>
+    <svg class="chart" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="110" x2="580" y2="110" stroke="#333" stroke-width="1"/>
+      <line x1="60" y1="20" x2="580" y2="20" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="24" text-anchor="end" font-size="10" fill="var(--sub)">-100</text>
+      <line x1="60" y1="65" x2="580" y2="65" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="69" text-anchor="end" font-size="10" fill="var(--sub)">-50</text>
+      <text x="55" y="114" text-anchor="end" font-size="10" fill="var(--sub)">0</text>
+
+      <g>
+        <rect x="80"  y="103.6" width="46" height="6.4" fill="var(--pos)"/>
+        <text x="103" y="98" text-anchor="middle" font-size="11" fill="var(--pos)" font-weight="700">+8.2</text>
+        <text x="103" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2020</text>
+
+        <rect x="150" y="110" width="46" height="68.4" fill="var(--trough)"/>
+        <text x="173" y="192" text-anchor="middle" font-size="11" fill="var(--neg)" font-weight="700">-88.3</text>
+        <text x="173" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2021</text>
+
+        <rect x="220" y="52.1" width="46" height="57.9" fill="var(--peak)"/>
+        <text x="243" y="48" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">+74.7</text>
+        <text x="243" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2022</text>
+
+        <rect x="290" y="110" width="46" height="100.0" fill="var(--trough)"/>
+        <text x="313" y="223" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">-129</text>
+        <text x="313" y="228" text-anchor="middle" font-size="12" fill="var(--ink)" transform="translate(0,14)">2023</text>
+
+        <rect x="360" y="110" width="46" height="57.8" fill="var(--rail)"/>
+        <text x="383" y="181" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">-74.6</text>
+        <text x="383" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2024</text>
+
+        <rect x="430" y="110" width="46" height="74.1" fill="var(--rail)"/>
+        <text x="453" y="197" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">-95.6</text>
+        <text x="453" y="228" text-anchor="middle" font-size="12" fill="var(--ink)">2025</text>
+      </g>
+    </svg>
+    <div class="note" style="margin-top:34px;">※ 2023 年長條因超出繪圖區已將數字標籤內縮，長條高度比例仍依實際數值繪製。</div>
+  </div>
+
+  <!-- Rule 3 -->
+  <div class="rule-block">
+    <h3>規則三：B 投資效益分析 <span class="rule-score score-mid">60 分（暫定）</span> <span class="tag provisional">待細項校正</span></h3>
+    <p>核心對照指標為 A（營業現金流），觀察投資年度後 1-2 年 A 是否轉強：</p>
+    <table>
+      <tr><th>投資年度</th><th>當年 B</th><th>隔年 A</th><th>兩年後 A</th><th>效果判讀</th></tr>
+      <tr><td>2021</td><td class="negv">-88.3</td><td>98.3（2022，↓）</td><td class="posv">278（2023，↑↑）</td><td>延遲顯現</td></tr>
+      <tr><td>2023</td><td class="negv">-129</td><td>167（2024，↓）</td><td class="posv">207（2025，↑）</td><td>延遲顯現</td></tr>
+      <tr><td>2024</td><td class="negv">-74.6</td><td class="posv">207（2025，↑）</td><td>—（待補）</td><td>當年即見效</td></tr>
+    </table>
+    <p style="margin-top:-6px;">三次重度投資中，效果呈現「隔年不一定馬上反映，需等 1-2 年才明顯回升」的模式，並非每次投資後立刻轉強。目前僅有總額，<b>無法排除 B 的正值年度（2020、2022）稀釋了效益判斷的準確性</b>——若這兩年其實是處分資產而非投資緊縮，會改變對整體投資效益的解讀，故本項評分暫定，建議提供細項後重新校正。</p>
+  </div>
+
+  <!-- Rule 4 -->
+  <div class="rule-block">
+    <h3>規則四：C 融資活動合理性 <span class="rule-score score-good">82 分</span></h3>
+    <p>檢查「B 大幅負值＋C 為正值」（疑似借錢支應投資）的年度：僅 <b>2021 年</b>出現此組合（B -88.3／C +29.2），其餘年度（2023、2024、2025）B 為負值時，C 同步為負值，代表<b>投資的同時仍在還債</b>，屬於財務紀律良好的訊號，並非重複出現的舉債擴張模式。2020、2022 年因 B 為正值不適用此判斷。整體來看，六年中僅一次「借錢投資」組合，且金額（29.2億）相對溫和，未見最高警戒訊號（A為負且C同步為正／小幅負值）重複發生。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--rail);"></span>B 投資活動</span>
+      <span><span class="dot" style="background:var(--amber);"></span>C 融資活動</span>
+    </div>
+    <svg class="chart" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="110" x2="580" y2="110" stroke="#333" stroke-width="1"/>
+      <line x1="60" y1="20" x2="580" y2="20" stroke="var(--line)" stroke-dasharray="3,3"/>
+      <text x="55" y="24" text-anchor="end" font-size="10" fill="var(--sub)">200</text>
+      <text x="55" y="114" text-anchor="end" font-size="10" fill="var(--sub)">0</text>
+
+      <!-- pairs: B then C per year, zero_y=110, scale=0.4444 -->
+      <g>
+        <!-- 2020 -->
+        <rect x="75" y="106.4" width="30" height="3.6" fill="var(--rail)"/>
+        <rect x="108" y="110" width="30" height="66.2" fill="var(--amber)"/>
+        <text x="121" y="228" text-anchor="middle" font-size="12">2020</text>
+
+        <!-- 2021 highlight: borrow+invest -->
+        <rect x="200" y="16" width="145" height="188" fill="#FDEEE9" rx="4"/>
+        <rect x="215" y="110" width="30" height="39.2" fill="var(--rail)"/>
+        <text x="230" y="155" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">-88.3</text>
+        <rect x="248" y="97.0" width="30" height="13.0" fill="var(--amber)"/>
+        <text x="263" y="93" text-anchor="middle" font-size="10" font-weight="700">+29.2</text>
+        <text x="261" y="228" text-anchor="middle" font-size="12">2021</text>
+
+        <!-- 2022 -->
+        <rect x="355" y="76.8" width="30" height="33.2" fill="var(--rail)"/>
+        <text x="370" y="72" text-anchor="middle" font-size="10" font-weight="700">+74.7</text>
+        <rect x="388" y="110" width="30" height="99.1" fill="var(--amber)"/>
+        <text x="403" y="228" text-anchor="middle" font-size="12">2022</text>
+
+        <!-- 2023 -->
+        <rect x="435" y="110" width="30" height="57.3" fill="var(--rail)"/>
+        <rect x="468" y="110" width="30" height="61.8" fill="var(--amber)"/>
+        <text x="483" y="228" text-anchor="middle" font-size="12">2023</text>
+
+        <!-- 2024 -->
+        <rect x="515" y="110" width="30" height="33.2" fill="var(--rail)"/>
+        <rect x="548" y="110" width="30" height="100.0" fill="var(--amber)"/>
+        <text x="563" y="228" text-anchor="middle" font-size="12">2024</text>
+      </g>
+    </svg>
+    <div class="note">2025 年因版面限制未繪入圖表，數值請參照上方數據總表（B -95.6／C -106，兩者同為負值，符合「投資同時還債」型態）。淺色底標示為 2021 年「B負C正」組合年度。</div>
+  </div>
+
+  <!-- Rule 5 -->
+  <div class="rule-block">
+    <h3>規則五：A > D 現金流品質 <span class="rule-score score-good">83.3 分</span></h3>
+    <p>採嚴格二分法逐年判斷，A 大於 D 才算通過：</p>
+    <table>
+      <tr><th>年度</th><th>A</th><th>D（稅前淨利）</th><th>是否通過</th></tr>
+      <tr><td>2020</td><td class="negv">-15.3</td><td>54.2</td><td class="negv">✗ 不通過</td></tr>
+      <tr><td>2021</td><td class="posv">269</td><td>42.7</td><td class="posv">✓ 通過</td></tr>
+      <tr><td>2022</td><td class="posv">98.3</td><td>42.7</td><td class="posv">✓ 通過</td></tr>
+      <tr><td>2023</td><td class="posv">278</td><td>97.4</td><td class="posv">✓ 通過</td></tr>
+      <tr><td>2024</td><td class="posv">167</td><td>80.4</td><td class="posv">✓ 通過</td></tr>
+      <tr><td>2025</td><td class="posv">207</td><td>81.2</td><td class="posv">✓ 通過</td></tr>
+    </table>
+    <p style="margin-top:-6px;">6 年中 5 年通過（83.3%），僅 2020 年因 A 為負值不通過。整體現金流品質良好，帳上獲利多數年度都能確實轉化為營業現金，僅 2020 年（COVID疫情期間全球運輸業普遍受衝擊的年份，此處僅描述數字現象、非查證背景資訊）出現落差。</p>
+  </div>
+
+  <!-- Rule 6 -->
+  <div class="rule-block">
+    <h3>規則六：E 期末現金餘額穩定性 <span class="rule-score score-pending">待補資料</span></h3>
+    <p>目前提供的資料中沒有「期末現金餘額（E）」欄位，暫無法評分。麻煩後續補充近 5-10 年 E 欄位數字（Goodinfo 現金流量表頁面往下捲動即有），我會再回頭補上這項評分並更新總分。</p>
+  </div>
+
+  <div class="score-summary">
+    <div>
+      <div class="score-num">73<span style="font-size:22px;">分</span></div>
+      <div class="score-label">五項規則平均（規則六待補）</div>
+    </div>
+    <div style="flex:1; min-width:220px;">
+      <div style="font-size:15px; line-height:1.7;">
+        評等：<b>良好（60-79%）</b>。現金流體質可以繼續看下去，可進入第二步基本資訊查詢。惟規則二、三、四目前僅依總額判斷，屬暫定評分；規則六因缺 E 欄位尚未評分，建議之後補齊細項與 E 欄位以校正總分。
+      </div>
+    </div>
+  </div>
+
+  <div class="source-note">
+    <b>資料來源備註：</b>本步驟所有現金流量、稅前淨利數字皆為使用者提供之截圖資料，非本次搜尋所得。26Q2 為單季資料，僅供參考，不列入六大規則計分。股價欄位（上期/本期收盤、漲跌）本步驟暫不使用，依「現金流優先、基本面在後」原則保留至第二步再行查證引用。
+  </div>
+</section>
+
+</main>
+
+<footer>
+  報告版本 v1.0（第 1 步）｜生成時間：2026-08-18｜台灣高鐵 2633｜六步驟現金流優先分析框架
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var links = document.querySelectorAll('nav.stepnav a.unlocked');
+    links.forEach(function(a){
+      a.addEventListener('click', function(){
+        var id = 'step' + a.getAttribute('data-step');
+        var target = document.getElementById(id);
+        if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+    var sections = document.querySelectorAll('main section[id]');
+    var navLinks = document.querySelectorAll('nav.stepnav a');
+    if('IntersectionObserver' in window && sections.length){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            var stepNum = entry.target.id.replace('step','');
+            navLinks.forEach(function(l){
+              l.classList.toggle('active', l.getAttribute('data-step') === stepNum);
+            });
+          }
+        });
+      }, {rootMargin:'-40% 0px -50% 0px', threshold:0});
+      sections.forEach(function(s){ observer.observe(s); });
+    }
+  });
+</script>
+
+</body>
+</html>
