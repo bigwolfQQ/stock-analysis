@@ -130,9 +130,9 @@
 
 <nav class="stepnav" id="stepnav">
   <a href="#step1" class="unlocked active" data-step="1">① 現金流六大規則</a>
-  <a class="locked" data-step="2">② 基本資訊</a>
+  <a href="#step2" class="unlocked" data-step="2">② 基本資訊</a>
   <a class="locked" data-step="3">③ 法說會</a>
-  <a class="locked" data-step="4">④ 營收趨勢</a>
+  <a href="#step4" class="unlocked" data-step="4">④ 營收趨勢</a>
   <a class="locked" data-step="5">⑤ 前瞻本益比</a>
   <a class="locked" data-step="6">⑥ 投資決策</a>
 </nav>
@@ -349,6 +349,135 @@
 
   <div class="source-note">
     <b>資料來源備註：</b>本步驟所有現金流量、稅前淨利數字皆為使用者提供之截圖資料，非本次搜尋所得。26Q2 為單季資料，僅供參考，不列入六大規則計分。股價欄位（上期/本期收盤、漲跌）本步驟暫不使用，依「現金流優先、基本面在後」原則保留至第二步再行查證引用。
+  </div>
+</section>
+
+<section id="step2">
+  <div class="step-tag">【第 2 步／共 6 步：基本資訊查詢】</div>
+  <h2 class="sec-title">基本資訊查詢</h2>
+
+  <div class="callout">
+    <b>提醒：</b>以下股價皆為「查詢當下」的單一快照，非即時報價，正式交易請以看盤軟體／券商App為準。市值欄位發現原始來源數字有誤，已自行反推驗證並訂正，詳見下方說明。
+  </div>
+
+  <table>
+    <tr><th>查詢時間</th><th>收盤價</th><th>本益比</th><th>同業平均本益比</th></tr>
+    <tr><td>2026/06/26 14:30</td><td>26.05</td><td>21.69</td><td>27.49</td></tr>
+    <tr><td>2026/06/18 14:30</td><td>26.15</td><td>—</td><td>—</td></tr>
+    <tr><td>2026/07/23 13:30</td><td>25.95</td><td>21.45</td><td>28.58</td></tr>
+    <tr><td>2026/08/17 13:30</td><td>26.00</td><td>21.31</td><td>22.42</td></tr>
+  </table>
+
+  <div class="rule-block">
+    <h3>每股盈餘（EPS）</h3>
+    <p>近四季：2026 Q1為 <b>0.37元</b>、2025 Q4為 0.28元、2025 Q3為 0.27元、2025 Q2為 0.29元，四季合計約 <b>1.21元</b>。歷年：2025年 1.17元、2024年 1.15元、2023年 1.39元、2022年 0.67元。查證近1-2年並無股票分割或減資紀錄，股本規模穩定在562-564億區間，各期 EPS 可直接比較，不需回溯調整。</p>
+  </div>
+
+  <div class="rule-block">
+    <h3>殖利率 / 股利政策</h3>
+    <p>已連續 11 年發放股利，合計 10.03 元。近 5 年平均現金殖利率 <b>3.07%</b>。2025 年度（2026年發放）現金股利 1.15 元，以除息日昨收價 26.15 元計算，殖利率 <b>4.4%</b>。</p>
+  </div>
+
+  <div class="rule-block">
+    <h3>股本／每股淨值／市值（含來源矛盾訂正）</h3>
+    <p>股本 562.8 億元（已發行普通股數 5,628,293,058 股），每股淨值 13.30 元（2026 Q1）。</p>
+    <p><b class="negv">⚠️ 市值數字發現來源矛盾：</b>Yahoo股市基本資料頁面顯示市值為 686.9 億元，但用「股價 × 已發行股數」反推：26.05元 × 5,628,293,058股 ≈ <b>1,466 億元</b>，與另一資料來源（玩股網）顯示的市值 1,466.17 億元完全吻合。判斷 Yahoo 該欄位數字顯示有誤，本報告採用自行反推驗證後的 <b>1,466 億元</b>。</p>
+  </div>
+
+  <div class="rule-block">
+    <h3>公司概況與法說會</h3>
+    <p>成立於 1998/05/11，2016/10/27 掛牌上市，主要經營業務為高速鐵路之經營，董事長史哲，總經理陳惠裕。Yahoo股市將其歸類在「航運」大類下比較同業，但實際業務是軌道運輸，與航運/海運公司性質不同，比較同業本益比時應留意此分類差異。</p>
+    <p>最新法說會：<b>2026年6月24日</b>，凱基證券舉辦之線上法人說明會（電話會議）。</p>
+  </div>
+
+  <div class="source-note">
+    <b>資料來源：</b>
+    <a href="https://tw.stock.yahoo.com/quote/2633.TW/profile" target="_blank">Yahoo股市－基本資料</a>／
+    <a href="https://tw.stock.yahoo.com/quote/2633.TW/eps" target="_blank">Yahoo股市－每股盈餘</a>／
+    <a href="https://tw.stock.yahoo.com/quote/2633.TW/dividend" target="_blank">Yahoo股市－股利政策</a>／
+    <a href="https://www.wantgoo.com/stock/2633" target="_blank">玩股網（市值交叉驗證）</a>／
+    <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=2633" target="_blank">Goodinfo（法說會公告）</a>
+  </div>
+</section>
+
+<section id="step4">
+  <div class="step-tag">【第 4 步／共 6 步：營收趨勢視覺化】（跳過第 3 步）</div>
+  <h2 class="sec-title">營收趨勢視覺化</h2>
+
+  <div class="callout good">
+    <b>初步結論：</b>近 12 個月營收穩定在 42-50 億區間，波動幅度不大（最高與最低相差約 17%），2025/10 為近期高峰，2025/09 為近期低點，整體呈現溫和但穩定的營運節奏，符合高鐵運量型收入的特性。
+  </div>
+
+  <div class="legend"><span><span class="dot" style="background:var(--peak);"></span>高峰（2025/10）</span><span><span class="dot" style="background:var(--trough);"></span>谷底（2025/09）</span></div>
+  <svg class="chart" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+    <line x1="50" y1="210" x2="870" y2="210" stroke="#333" stroke-width="1"/>
+    <line x1="50" y1="24.9" x2="870" y2="24.9" stroke="var(--line)" stroke-dasharray="3,3"/>
+    <text x="45" y="28" text-anchor="end" font-size="10" fill="var(--sub)">50億</text>
+    <line x1="50" y1="61.9" x2="870" y2="61.9" stroke="var(--line)" stroke-dasharray="3,3"/>
+    <text x="45" y="65" text-anchor="end" font-size="10" fill="var(--sub)">40億</text>
+    <line x1="50" y1="98.9" x2="870" y2="98.9" stroke="var(--line)" stroke-dasharray="3,3"/>
+    <text x="45" y="102" text-anchor="end" font-size="10" fill="var(--sub)">30億</text>
+    <line x1="50" y1="135.9" x2="870" y2="135.9" stroke="var(--line)" stroke-dasharray="3,3"/>
+    <text x="45" y="139" text-anchor="end" font-size="10" fill="var(--sub)">20億</text>
+    <text x="45" y="214" text-anchor="end" font-size="10" fill="var(--sub)">0</text>
+
+    <rect x="60.0" y="34.1" width="46" height="175.9" fill="var(--rail)"/>
+    <text x="83" y="30" text-anchor="middle" font-size="10" font-weight="700">47.5</text>
+    <text x="83" y="228" text-anchor="middle" font-size="11">25/08</text>
+
+    <rect x="126.7" y="53.2" width="46" height="156.8" fill="var(--trough)"/>
+    <text x="149.7" y="49" text-anchor="middle" font-size="10" fill="var(--neg)" font-weight="700">42.4</text>
+    <text x="149.7" y="228" text-anchor="middle" font-size="11">25/09</text>
+
+    <rect x="193.3" y="26.0" width="46" height="184.0" fill="var(--peak)"/>
+    <text x="216.3" y="22" text-anchor="middle" font-size="10" font-weight="700">49.7</text>
+    <text x="216.3" y="228" text-anchor="middle" font-size="11">25/10</text>
+
+    <rect x="260.0" y="37.0" width="46" height="173.0" fill="var(--rail)"/>
+    <text x="283" y="33" text-anchor="middle" font-size="10" font-weight="700">46.7</text>
+    <text x="283" y="228" text-anchor="middle" font-size="11">25/11</text>
+
+    <rect x="326.7" y="28.7" width="46" height="181.3" fill="var(--rail)"/>
+    <text x="349.7" y="24" text-anchor="middle" font-size="10" font-weight="700">49.0</text>
+    <text x="349.7" y="228" text-anchor="middle" font-size="11">25/12</text>
+
+    <rect x="393.4" y="46.2" width="46" height="163.8" fill="var(--rail)"/>
+    <text x="416.4" y="42" text-anchor="middle" font-size="10" font-weight="700">44.2</text>
+    <text x="416.4" y="228" text-anchor="middle" font-size="11">26/01</text>
+
+    <rect x="460.0" y="37.0" width="46" height="173.0" fill="var(--rail)"/>
+    <text x="483" y="33" text-anchor="middle" font-size="10" font-weight="700">46.7</text>
+    <text x="483" y="228" text-anchor="middle" font-size="11">26/02</text>
+
+    <rect x="526.7" y="32.5" width="46" height="177.5" fill="var(--rail)"/>
+    <text x="549.7" y="28" text-anchor="middle" font-size="10" font-weight="700">48.0</text>
+    <text x="549.7" y="228" text-anchor="middle" font-size="11">26/03</text>
+
+    <rect x="593.4" y="32.3" width="46" height="177.7" fill="var(--rail)"/>
+    <text x="616.4" y="28" text-anchor="middle" font-size="10" font-weight="700">48.0</text>
+    <text x="616.4" y="228" text-anchor="middle" font-size="11">26/04</text>
+
+    <rect x="660.0" y="35.6" width="46" height="174.4" fill="var(--rail)"/>
+    <text x="683" y="31" text-anchor="middle" font-size="10" font-weight="700">47.1</text>
+    <text x="683" y="228" text-anchor="middle" font-size="11">26/05</text>
+
+    <rect x="726.7" y="46.6" width="46" height="163.4" fill="var(--rail)"/>
+    <text x="749.7" y="42" text-anchor="middle" font-size="10" font-weight="700">44.1</text>
+    <text x="749.7" y="228" text-anchor="middle" font-size="11">26/06</text>
+
+    <rect x="793.4" y="40.7" width="46" height="169.3" fill="var(--rail)"/>
+    <text x="816.4" y="36" text-anchor="middle" font-size="10" font-weight="700">45.7</text>
+    <text x="816.4" y="228" text-anchor="middle" font-size="11">26/07</text>
+  </svg>
+  <div class="note">單位：億元（單月合併營收）。2026/07 營收 45.74億，月增3.66%、年增4.27%；2026 年累計營收年增約 4.06%，較 2025 年同期略為加速。</div>
+
+  <div class="rule-block">
+    <h3>波動原因觀察</h3>
+    <p>近12個月中，2025/09 為谷底（42.36億），隔月 2025/10 隨即反彈至近12個月高峰（49.70億，月增17.32%、年增20.62%），推測與國定假期／連假出遊人潮的季節性效應有關（10月為國慶連假等傳統出遊旺季），但本步驟未特別查證該月新聞背景，僅依數字現象描述，如需精確歸因建議另行查證當月運量或票務公告。整體而言 12 個月營收波動區間約在 42-50 億之間，屬於溫和季節性起伏，未見結構性衰退訊號。</p>
+  </div>
+
+  <div class="source-note">
+    <b>資料來源：</b><a href="https://tw.stock.yahoo.com/quote/2633.TW/revenue" target="_blank">Yahoo股市－營收表</a>（查詢於2026/08/18）
   </div>
 </section>
 
