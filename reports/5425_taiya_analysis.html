@@ -125,7 +125,7 @@
   <h1>台半 5425｜台股個股初步分析</h1>
   <div class="sub">六步驟框架：現金流量表六大規則 → 基本資訊 → 法說會 → 營收趨勢 → 前瞻本益比 → 投資決策推理</div>
   <div class="badge-row">
-    <span class="badge">目前進度：第 4 步／共 6 步</span>
+    <span class="badge">目前進度：第 5 步／共 6 步</span>
     <span class="badge">產業：半導體分立元件（二極體）</span>
   </div>
 </header>
@@ -135,7 +135,7 @@
   <a href="#step2">02 基本資訊</a>
   <a href="#step3">03 法說會</a>
   <a href="#step4">04 營收趨勢</a>
-  <a class="locked">05 前瞻本益比</a>
+  <a href="#step5">05 前瞻本益比</a>
   <a class="locked">06 投資決策</a>
 </nav>
 
@@ -621,10 +621,59 @@
   </ul>
 </section>
 
-<section id="step5-locked">
+<section id="step5">
   <div class="step-tag">【第 5 步／共 6 步：前瞻本益比／EPS 預估】</div>
-  <h2 style="opacity:.5;">前瞻本益比／EPS 預估</h2>
-  <div class="locked-card">尚未執行。可請我繼續進行第五步，查詢法人對次一、次二年度EPS預估，並換算前瞻本益比與目標本益比法估值。</div>
+  <h2>前瞻本益比／EPS 預估</h2>
+
+  <div class="callout warn">
+    <b>資料限制誠實說明：</b>與元太這類大型股不同，台半屬於中小型股，<b>查無 FactSet 等多家分析師的共識調查資料</b>，也找不到任何次二年度（2027年）的法人預估。目前只查到<b>一家券商（宏遠證券）</b>在2026/03/01發布的單一份評等報告，樣本數過少，無法呈現「區間」，只能就這一份報告誠實呈現，並提醒你不宜把單一券商報告當成市場共識。
+  </div>
+
+  <h3 class="disp" style="font-size:17px;">唯一查得的法人預估（宏遠證券，2026/03/01，當時股價約50幾元）</h3>
+  <table>
+    <tr><th>項目</th><th>預估值</th></tr>
+    <tr><td>2026年營收預估</td><td>156.91 億元</td></tr>
+    <tr><td>2026年EPS預估</td><td>8.46 元</td></tr>
+    <tr><td>目標價</td><td>120 元（隱含本益比約14.1倍）</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <b>誠實揭露預估的不確定性：這份預估與目前已知的實際數字有明顯落差，需要特別提醒你注意：</b>
+    <ul style="margin:8px 0 0 20px; font-size:14px;">
+      <li><b>營收方面：</b>2026上半年官方財報已顯示營收94.71億元，若下半年維持近期月均16-17億的水準，全年營收上看190億元左右，<b>反而可能超過</b>宏遠證券3月估的156.91億——代表營收成長比預期更快。</li>
+      <li><b>獲利方面：</b>但2026上半年官方EPS僅1.52元，若要達到全年8.46元的預估，下半年EPS必須達到約6.94元，等於是上半年的4.6倍——<b>這是非常激進的假設</b>，需要毛利率或獲利能力出現大幅跳升才可能實現，以目前查到的資訊（H1營業利益率約9%）來看，這個目標存在相當大的不確定性。</li>
+      <li>換句話說，這份預估「營收成長方向估對了，但獲利跳升的幅度目前還看不到對應的證據」，投資人若看到120元目標價，應該理解這是建立在「獲利大幅跳升」這個尚未被財報證實的假設之上。</li>
+    </ul>
+  </div>
+
+  <h3 class="disp" style="font-size:17px;margin-top:28px;">前瞻本益比試算（僅供參考，非法人共識）</h3>
+  <table>
+    <tr><th>基準</th><th>股價（2026/08/07收盤82.5元）</th><th>隱含前瞻本益比</th></tr>
+    <tr><td>2026年EPS 8.46元（宏遠證券估）</td><td>82.5元</td><td class="pos">9.75倍</td></tr>
+    <tr><td>2025年EPS 2.07元（官方已實現）</td><td>82.5元</td><td class="neg">39.86倍</td></tr>
+  </table>
+  <p style="font-size:13.5px;">這兩個本益比數字差距懸殊（9.75倍 vs 39.86倍），正好反映前述的不確定性：如果宏遠證券的樂觀獲利預估成真，現在股價確實不貴；但如果只看已經確定實現的2025年獲利水準，現在的股價已經隱含將近40倍本益比，是相對偏貴的。<b>這中間的落差，就是這檔股票近期股價劇烈波動的核心矛盾——市場在賭獲利能否跳升，而不是根據已確認的獲利數字定價。</b></p>
+
+  <h3 class="disp" style="font-size:17px;margin-top:28px;">目標本益比法（不同情境試算）</h3>
+  <p style="font-size:13.5px;">由於缺乏次二年度預估，這裡改用「保守情境」與「樂觀情境」兩種EPS假設，各自搭配20/25/30倍本益比試算：</p>
+  <table>
+    <tr><th>情境本益比</th><th>保守情境 EPS 3.0元（H1×2略放大）</th><th>樂觀情境 EPS 8.46元（宏遠證券估）</th></tr>
+    <tr><td>20倍</td><td>60元</td><td>169元</td></tr>
+    <tr><td>25倍</td><td>75元</td><td>212元</td></tr>
+    <tr><td>30倍</td><td>90元</td><td>254元</td></tr>
+  </table>
+  <p style="font-size:13.5px;">保守情境的EPS 3.0元是我依據上半年1.52元、假設下半年動能持平略增所做的粗略試算，<b>不是任何法人的正式預估，僅供你感受「保守 vs 樂觀」兩種假設下目標價的巨大差距（60~90元 vs 169~254元）</b>。可以看到，光是EPS假設的差異，就能讓目標價相差超過2倍，這也解釋了為何市場對這檔股票的評價分歧這麼大、波動這麼劇烈。</p>
+
+  <ul class="src">
+    <li>宏遠證券評等報告轉述：<a href="https://readmo.cmoney.tw/article/f3c361b3-57aa-416d-be0e-b0e976aeb2cf" target="_blank">CMoney投資網誌「台半(5425)目標價102元反映了哪些基本面假設？」</a>、<a href="https://www.cmoney.tw/forum/article/180004535" target="_blank">股市爆料同學會相關討論（僅供參考，非正式報告）</a></li>
+    <li>2026/08/07股價快照：<a href="https://shop.nstock.tw/stock_info?stock_id=5425&status=6" target="_blank">nStock股市資訊</a></li>
+  </ul>
+</section>
+
+<section id="step6-locked">
+  <div class="step-tag">【第 6 步／共 6 步：投資決策推理】</div>
+  <h2 style="opacity:.5;">投資決策推理</h2>
+  <div class="locked-card">僅在你主動詢問「該不該買」「該續抱還是賣出」時才會進行，不會自動附加。若想討論，直接問我即可。</div>
 </section>
 
 </div>
