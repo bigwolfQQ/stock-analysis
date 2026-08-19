@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>元太科技(8069) 個股分析報告</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEEAE1;
+    --panel:#FFFFFF;
+    --ink:#1A1A18;
+    --sub:#6B6558;
+    --rail:#2B2A26;
+    --rail-dark:#151412;
+    --amber:#C98A3D;
+    --pos:#2E7D5B;
+    --neg:#B5423E;
+    --peak:#C98A3D;
+    --trough:#B5423E;
+    --line:#DEDAD0;
+    --locked:#A69F8F;
+    --card:#F7F4EC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.7;
+  }
+  h1,h2,h3,.disp{font-family:'Noto Serif TC','Noto Sans TC',serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  header.hero{
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 6px),
+      linear-gradient(135deg, var(--rail-dark) 0%, var(--rail) 55%, #34322c 100%);
+    color:#F3F0E6; padding:48px 32px 34px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; right:-40px; top:-40px; width:280px; height:280px;
+    border-radius:50%; background:radial-gradient(circle, rgba(201,138,61,0.16), transparent 70%);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:2px;
+    color:var(--amber); text-transform:uppercase; margin-bottom:10px;
+  }
+  header.hero h1{font-size:32px; margin:0 0 6px; font-weight:700;}
+  header.hero .sub{color:#CFC9B8; font-size:14px;}
+  .badge-row{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .badge{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2);
+    padding:6px 14px; border-radius:20px; font-size:12.5px; color:#EFEAD f;
+    color:#EFEAD8;
+  }
+  img.visitor{margin-top:14px; opacity:0.8;}
+
+  nav.stepnav{
+    position:sticky; top:0; z-index:50; background:var(--rail-dark); display:flex;
+    overflow-x:auto; padding:0 12px; box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  }
+  nav.stepnav a{
+    flex:0 0 auto; padding:14px 18px; color:var(--locked); text-decoration:none;
+    font-size:13px; font-family:'JetBrains Mono',monospace; border-bottom:3px solid transparent;
+    white-space:nowrap; transition:color .15s, border-color .15s;
+  }
+  nav.stepnav a.active{color:#F3F0E6; border-bottom-color:var(--amber);}
+  nav.stepnav a.locked{color:#5C5850; cursor:default; pointer-events:none;}
+
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px;}
+  section{padding:44px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .step-tag{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber);
+    letter-spacing:1.5px; margin-bottom:8px;}
+  section h2{font-size:24px; margin:0 0 20px;}
+
+  .callout{
+    background:var(--card); border-left:4px solid var(--amber);
+    padding:16px 20px; border-radius:0 8px 8px 0; margin-bottom:24px; font-size:14.5px;
+  }
+  .callout b{color:var(--ink);}
+  .callout.warn{border-left-color:var(--neg);}
+  .callout.good{border-left-color:var(--pos);}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:13.5px;}
+  th,td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line);}
+  th:first-child, td:first-child{text-align:left;}
+  th{background:var(--card); font-weight:700; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sub);}
+  td.pos{color:var(--pos); font-weight:700;}
+  td.neg{color:var(--neg); font-weight:700;}
+  td.partial{font-style:italic; color:var(--sub);}
+  tr.partial-row td{font-style:italic; color:var(--sub); background:#FBFAF6;}
+
+  .chart-box{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 12px 10px; margin:18px 0;}
+  .chart-note{font-size:12px; color:var(--sub); margin-top:4px; text-align:center;}
+  .chart-svg{width:100%; height:auto; display:block;}
+
+  .rule-block{margin:28px 0; padding:20px; background:var(--panel); border:1px solid var(--line); border-radius:10px;}
+  .rule-block h3{font-size:16.5px; margin:0 0 4px; display:flex; align-items:center; gap:10px;}
+  .rule-num{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px;
+    background:var(--rail-dark); color:var(--amber); border-radius:50%; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .rule-score{margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700;}
+  .rule-score.s-good{color:var(--pos);}
+  .rule-score.s-mid{color:var(--amber);}
+  .rule-score.s-bad{color:var(--neg);}
+  .rule-block p{font-size:14px; margin:10px 0;}
+  .tag-label{display:inline-block; background:var(--card); padding:2px 10px; border-radius:12px; font-size:12.5px; margin:2px 4px 2px 0; border:1px solid var(--line);}
+
+  .score-summary{display:flex; align-items:center; gap:24px; background:var(--rail-dark); color:#F3F0E6; padding:26px 24px; border-radius:12px; margin:20px 0;}
+  .score-summary .big{font-family:'JetBrains Mono',monospace; font-size:46px; font-weight:700; color:var(--amber);}
+  .score-summary .lbl{font-size:13px; color:#CFC9B8;}
+
+  .locked-card{background:var(--card); border:1px dashed var(--line); border-radius:10px; padding:22px; color:var(--sub); font-size:14px;}
+
+  .foot{font-size:12px; color:var(--sub); padding:30px 0 60px; text-align:center;}
+  .foot a{color:var(--amber);}
+  ul.src{font-size:12.5px; color:var(--sub); padding-left:18px;}
+  ul.src li{margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">CASH FLOW FIRST · 現金流優先分析框架</div>
+  <img class="visitor" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.stock-analysis.8069" alt="Visitors">
+  <h1>元太科技 8069｜台股個股初步分析</h1>
+  <div class="sub">六步驟框架：現金流量表六大規則 → 基本資訊 → 法說會 → 營收趨勢 → 前瞻本益比 → 投資決策推理</div>
+  <div class="badge-row">
+    <span class="badge">目前進度：第 1 步／共 6 步</span>
+    <span class="badge">產業：電子紙 ePaper／顯示技術</span>
+  </div>
+</header>
+
+<nav class="stepnav">
+  <a href="#step1" class="active">01 現金流六大規則</a>
+  <a class="locked">02 基本資訊</a>
+  <a class="locked">03 法說會</a>
+  <a class="locked">04 營收趨勢</a>
+  <a class="locked">05 前瞻本益比</a>
+  <a class="locked">06 投資決策</a>
+</nav>
+
+<div class="wrap">
+
+<section id="step1">
+  <div class="step-tag">【第 1 步／共 6 步：現金流量表六大規則分析】</div>
+  <h2>現金流量表六大規則分析（盲測階段）</h2>
+
+  <div class="callout">
+    本步驟採「盲測」原則，分析時尚未查詢元太科技的股價、EPS、產業地位或新聞背景，僅根據使用者提供的現金流量表數字本身做客觀判斷，避免先入為主。
+  </div>
+
+  <div class="callout warn">
+    <b>資料來源提醒：</b>目前僅取得 A（營業活動）／B（投資活動）／C（融資活動）／D（稅前淨利）／E（期末現金餘額）之<b>總額</b>，尚未取得投資活動與融資活動的細項截圖（固定資產支出 vs 併購 vs 理財；現金增資 vs 舉債）。因此規則二、三、四目前<b>僅依總額判斷，評分屬暫定</b>，建議後續提供細項截圖以校正評分準確度。
+  </div>
+
+  <h3 class="disp" style="font-size:17px;">現金流量數據總表（單位：億元）</h3>
+  <table>
+    <tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>E 期末餘額</th></tr>
+    <tr><td>2020</td><td class="pos">49.2</td><td class="pos">18.8</td><td class="neg">-12.6</td><td>42.4</td><td>130</td></tr>
+    <tr><td>2021</td><td class="pos">46.9</td><td class="neg">-80.2</td><td class="neg">-0.94</td><td>65.5</td><td>87.5</td></tr>
+    <tr><td>2022</td><td class="pos">60.3</td><td class="neg">-36.7</td><td class="neg">-25.4</td><td>121</td><td>88.4</td></tr>
+    <tr><td>2023</td><td class="pos">106</td><td class="neg">-83.3</td><td class="neg">-12</td><td>98.2</td><td>96.9</td></tr>
+    <tr><td>2024</td><td class="pos">71.1</td><td class="neg">-32.6</td><td class="neg">-3.54</td><td>109</td><td>132</td></tr>
+    <tr><td>2025</td><td class="pos">96</td><td class="pos">3.77</td><td class="neg">-43.5</td><td>128</td><td>188</td></tr>
+    <tr class="partial-row"><td>26Q2（單季）</td><td>21.8</td><td>-16.7</td><td>2.43</td><td>79.1</td><td>198</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--sub);">* 26Q2 為單季資料，僅供參考，不列入六大規則計分。資料來源：使用者提供之財報截圖（Goodinfo 現金流量表格式）。</p>
+
+  <!-- Rule 1 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">1</span>A 逐年成長趨勢<span class="rule-score s-mid">75 分</span></h3>
+    <p>營業活動現金流 A 從 2020 年 49.2 億波動上升至 2025 年 96 億，期間 2021 年小幅回落至 46.9 億，2023 年一度衝到 106 億的高峰，隨後 2024 年回落至 71.1 億，2025 年再度回升至 96 億。整體呈現「兩年一波」的鋸齒狀走勢，但長期方向明確向上，5 年間成長近一倍。</p>
+    <p><span class="tag-label">個性標籤：穩健爬升型</span> —— 造血能力沒有停滯，但年度間的波動偏大（尤其 2023→2024 從 106 掉到 71.1，跌幅逾 3 成），這種波動可能與應收帳款、存貨的季節性增減有關，建議後續查詢應收帳款與存貨細項以確認波動原因是「業務擴張導致的正常帳款堆積」還是「收款能力轉弱」。</p>
+    <div class="chart-box">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" class="chart-svg">
+<line x1="54" y1="278.0" x2="682" y2="278.0" stroke="#DEDAD0" stroke-width="1" stroke-dasharray=""/>
+<text x="46" y="282.0" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">0</text>
+<line x1="54" y1="161.0" x2="682" y2="161.0" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="165.0" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">50</text>
+<line x1="54" y1="44.0" x2="682" y2="44.0" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="48.0" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">100</text>
+<line x1="54" y1="278.0" x2="682" y2="278.0" stroke="#1A1A18" stroke-width="1.4"/>
+<rect x="75.5" y="162.9" width="46.7" height="115.1" rx="2" fill="#2E7D5B"/>
+<text x="98.9" y="156.9" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">49.2</text>
+<text x="98.9" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2020</text>
+<rect x="165.2" y="168.3" width="46.7" height="109.7" rx="2" fill="#B5423E"/>
+<text x="188.6" y="162.3" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">46.9</text>
+<text x="188.6" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2021</text>
+<rect x="255.0" y="136.9" width="46.7" height="141.1" rx="2" fill="#2E7D5B"/>
+<text x="278.3" y="130.9" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">60.3</text>
+<text x="278.3" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2022</text>
+<rect x="344.7" y="30.0" width="46.7" height="248.0" rx="2" fill="#C98A3D"/>
+<text x="368.0" y="24.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">106.0</text>
+<text x="368.0" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2023</text>
+<rect x="434.4" y="111.7" width="46.7" height="166.3" rx="2" fill="#2E7D5B"/>
+<text x="457.7" y="105.7" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">71.1</text>
+<text x="457.7" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2024</text>
+<rect x="524.1" y="53.4" width="46.7" height="224.6" rx="2" fill="#2E7D5B"/>
+<text x="547.4" y="47.4" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">96.0</text>
+<text x="547.4" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2025</text>
+<rect x="613.8" y="227.0" width="46.7" height="51.0" rx="2" fill="none" stroke="#2E7D5B" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.85"/>
+<text x="637.1" y="221.0" text-anchor="middle" font-size="11" font-weight="700" font-style="italic" fill="#9A9484" font-family="JetBrains Mono, monospace">21.8</text>
+<text x="637.1" y="304" text-anchor="middle" font-size="11" font-style="italic" fill="#9A9484" font-family="Noto Sans TC, sans-serif">26Q2</text>
+</svg>
+      <div class="chart-note">圖一：營業活動現金流量 A（億元）｜金色＝高峰年度、紅色＝低點年度、虛線框＝26Q2單季僅供參考</div>
+    </div>
+  </div>
+
+  <!-- Rule 2 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">2</span>B 投資紀律評估<span class="rule-score s-mid">70 分（暫定）</span></h3>
+    <p>B 在 2021、2022、2023、2024 年皆為大幅負值（持續投資），2023 年 |B|=83.3 億甚至超過當年 A 的 106 億的近八成，屬於資本密集產業（面板／電子紙製程）的常態，不宜過度扣分。但 2020 年（+18.8 億）與 2025 年（+3.77 億）出現罕見的正值，代表當年投資活動轉為淨流入（可能是處分資產、收回理財部位，或子公司股權處分），與持續資本支出的模式不同，需要細項資料才能判斷是「策略性減少擴產」還是「一次性資產處分」。</p>
+    <p><span class="tag-label">個性標籤：敢衝但偶爾喘息型</span> —— 多數年度重度投資，少數年度收手回補現金，此評分待細項資料校正。</p>
+    <div class="chart-box">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" class="chart-svg">
+<line x1="54" y1="318.6" x2="682" y2="318.6" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="322.6" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">-100</text>
+<line x1="54" y1="197.1" x2="682" y2="197.1" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="201.1" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">-50</text>
+<line x1="54" y1="75.7" x2="682" y2="75.7" stroke="#DEDAD0" stroke-width="1" stroke-dasharray=""/>
+<text x="46" y="79.7" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">0</text>
+<line x1="54" y1="75.7" x2="682" y2="75.7" stroke="#1A1A18" stroke-width="1.4"/>
+<rect x="75.5" y="30.0" width="46.7" height="45.7" rx="2" fill="#C98A3D"/>
+<text x="98.9" y="24.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">18.8</text>
+<text x="98.9" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2020</text>
+<rect x="165.2" y="75.7" width="46.7" height="194.8" rx="2" fill="#8891A3"/>
+<text x="188.6" y="284.5" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-80.2</text>
+<text x="188.6" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2021</text>
+<rect x="255.0" y="75.7" width="46.7" height="89.1" rx="2" fill="#8891A3"/>
+<text x="278.3" y="178.8" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-36.7</text>
+<text x="278.3" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2022</text>
+<rect x="344.7" y="75.7" width="46.7" height="202.3" rx="2" fill="#B5423E"/>
+<text x="368.0" y="292.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-83.3</text>
+<text x="368.0" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2023</text>
+<rect x="434.4" y="75.7" width="46.7" height="79.2" rx="2" fill="#8891A3"/>
+<text x="457.7" y="168.9" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-32.6</text>
+<text x="457.7" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2024</text>
+<rect x="524.1" y="66.5" width="46.7" height="9.2" rx="2" fill="#0E3F66"/>
+<text x="547.4" y="60.5" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">3.8</text>
+<text x="547.4" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2025</text>
+<rect x="613.8" y="75.7" width="46.7" height="40.6" rx="2" fill="none" stroke="#8891A3" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.85"/>
+<text x="637.1" y="130.2" text-anchor="middle" font-size="11" font-weight="700" font-style="italic" fill="#9A9484" font-family="JetBrains Mono, monospace">-16.7</text>
+<text x="637.1" y="304" text-anchor="middle" font-size="11" font-style="italic" fill="#9A9484" font-family="Noto Sans TC, sans-serif">26Q2</text>
+</svg>
+      <div class="chart-note">圖二：投資活動現金流量 B（億元）｜藍＝負值持續投資、灰＝正值年度、金色＝2020最大流入、紅色＝2023最大流出</div>
+    </div>
+  </div>
+
+  <!-- Rule 3 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">3</span>B 投資效益分析<span class="rule-score s-good">78 分</span></h3>
+    <p>以 A（營業現金流）作為投資效益的核心對照指標，而非易受業外損益干擾的 D：</p>
+    <table>
+      <tr><th>重度投資年度</th><th>當年 B</th><th>隔年 A</th><th>年增</th><th>解讀</th></tr>
+      <tr><td>2021</td><td class="neg">-80.2</td><td>2022 A=60.3（較 2021 A=46.9）</td><td class="pos">+28.6%</td><td>投資轉化為造血能力，效果延續到 2023（A=106，再增 75.8%）</td></tr>
+      <tr><td>2023</td><td class="neg">-83.3</td><td>2024 A=71.1（較 2023 A=106）</td><td class="neg">-32.9%</td><td>當年未見效果，但延後一年於 2025（A=96）明顯回升</td></tr>
+    </table>
+    <p><span class="tag-label">個性標籤：敢衝且有實力型</span> —— 重度投資後 1-2 年內 A 多半轉強，顯示資本支出有實質轉化為營運現金流的能力，但效果發酵時間不一定固定在隔一年，2023 年的投資是延後到第二年（2025）才顯現。</p>
+  </div>
+
+  <!-- Rule 4 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">4</span>C 融資活動合理性<span class="rule-score s-good">85 分（暫定）</span></h3>
+    <p>C 在 2020-2025 全部六個完整年度皆為<b>負值</b>（現金流出，即淨還債／配息），代表元太在重度投資的同時，並未依賴舉債來支應資本支出——這是相對健康的訊號。特別檢查「B 大幅負值同時 C 為正值」（借錢投資）的疊加訊號：<b>六個完整年度中沒有任何一年同時出現這個組合</b>，也沒有出現「A 為負、C 為正或小幅負值」的最高警戒訊號（A 六年皆為正值）。</p>
+    <p>唯一例外是 26Q2 單季 C=+2.43（小幅正值），但屬單季資料且金額不大，暫不列入警訊，後續步驟若能取得法說會揭露的槓桿指標（如淨負債/EBITDA），會一併核對是否有「年度數字掩蓋單季波動」的情形。</p>
+    <p><span class="tag-label">個性標籤：量入為出型</span> —— 目前僅有總額，尚未取得 C 的組成明細（現金增資 vs 舉債），此評分待細項校正，但單看總額方向已屬正面訊號。</p>
+    <div class="chart-box">
+      <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" class="chart-svg">
+<line x1="54" y1="324.9" x2="682" y2="324.9" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="328.9" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">-100</text>
+<line x1="54" y1="202.5" x2="682" y2="202.5" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="206.5" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">-50</text>
+<line x1="54" y1="80.0" x2="682" y2="80.0" stroke="#DEDAD0" stroke-width="1" stroke-dasharray=""/>
+<text x="46" y="84.0" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">0</text>
+<line x1="54" y1="80.0" x2="682" y2="80.0" stroke="#1A1A18" stroke-width="1.4"/>
+<rect x="65.7" y="34.0" width="30.5" height="46.0" rx="2" fill="#0E3F66"/>
+<text x="80.9" y="28.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">18.8</text>
+<rect x="101.5" y="80.0" width="30.5" height="30.9" rx="2" fill="#C98A3D"/>
+<text x="116.8" y="123.9" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-12.6</text>
+<text x="98.9" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2020</text>
+<rect x="155.4" y="80.0" width="30.5" height="196.4" rx="2" fill="#0E3F66"/>
+<text x="170.6" y="289.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-80.2</text>
+<rect x="191.3" y="80.0" width="30.5" height="2.3" rx="2" fill="#C98A3D"/>
+<text x="206.5" y="95.3" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-0.9</text>
+<text x="188.6" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2021</text>
+<rect x="245.1" y="80.0" width="30.5" height="89.9" rx="2" fill="#0E3F66"/>
+<text x="260.3" y="182.9" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-36.7</text>
+<rect x="281.0" y="80.0" width="30.5" height="62.2" rx="2" fill="#C98A3D"/>
+<text x="296.2" y="155.2" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-25.4</text>
+<text x="278.3" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2022</text>
+<rect x="334.8" y="80.0" width="30.5" height="204.0" rx="2" fill="#0E3F66"/>
+<text x="350.1" y="297.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-83.3</text>
+<rect x="370.7" y="80.0" width="30.5" height="29.4" rx="2" fill="#C98A3D"/>
+<text x="385.9" y="122.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-12.0</text>
+<text x="368.0" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2023</text>
+<rect x="424.5" y="80.0" width="30.5" height="79.8" rx="2" fill="#0E3F66"/>
+<text x="439.8" y="172.9" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-32.6</text>
+<rect x="460.4" y="80.0" width="30.5" height="8.7" rx="2" fill="#C98A3D"/>
+<text x="475.7" y="101.7" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-3.5</text>
+<text x="457.7" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2024</text>
+<rect x="514.2" y="70.8" width="30.5" height="9.2" rx="2" fill="#0E3F66"/>
+<text x="529.5" y="64.8" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">3.8</text>
+<rect x="550.1" y="80.0" width="30.5" height="106.5" rx="2" fill="#C98A3D"/>
+<text x="565.4" y="199.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">-43.5</text>
+<text x="547.4" y="310" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2025</text>
+<rect x="603.9" y="80.0" width="30.5" height="40.9" rx="2" fill="none" stroke="#0E3F66" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.85"/>
+<text x="619.2" y="133.9" text-anchor="middle" font-size="10" font-weight="700" font-style="italic" fill="#9A9484" font-family="JetBrains Mono, monospace">-16.7</text>
+<rect x="639.8" y="74.1" width="30.5" height="6.0" rx="2" fill="none" stroke="#C98A3D" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.85"/>
+<text x="655.1" y="68.1" text-anchor="middle" font-size="10" font-weight="700" font-style="italic" fill="#9A9484" font-family="JetBrains Mono, monospace">2.4</text>
+<text x="637.1" y="310" text-anchor="middle" font-size="11" font-style="italic" fill="#9A9484" font-family="Noto Sans TC, sans-serif">26Q2</text>
+<rect x="54" y="322" width="10" height="10" fill="#0E3F66"/>
+<text x="68" y="331" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">投資活動 B</text>
+<rect x="144" y="322" width="10" height="10" fill="#C98A3D"/>
+<text x="158" y="331" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">融資活動 C</text>
+</svg>
+      <div class="chart-note">圖三：B（投資活動）vs C（融資活動）並排比較（億元）｜虛線框＝26Q2單季僅供參考</div>
+    </div>
+  </div>
+
+  <!-- Rule 5 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">5</span>A &gt; D 現金流品質<span class="rule-score s-bad">33 分</span></h3>
+    <p>採嚴格二分法逐年判斷（A &gt; D 才算通過）：</p>
+    <table>
+      <tr><th>年度</th><th>A</th><th>D（稅前淨利）</th><th>A &gt; D？</th></tr>
+      <tr><td>2020</td><td>49.2</td><td>42.4</td><td class="pos">✓ 通過</td></tr>
+      <tr><td>2021</td><td>46.9</td><td>65.5</td><td class="neg">✗ 不通過</td></tr>
+      <tr><td>2022</td><td>60.3</td><td>121</td><td class="neg">✗ 不通過</td></tr>
+      <tr><td>2023</td><td>106</td><td>98.2</td><td class="pos">✓ 通過</td></tr>
+      <tr><td>2024</td><td>71.1</td><td>109</td><td class="neg">✗ 不通過</td></tr>
+      <tr><td>2025</td><td>96</td><td>128</td><td class="neg">✗ 不通過</td></tr>
+    </table>
+    <p>6 個完整年度中僅 2 年通過（2020、2023），通過率 <b>33.3%</b，是六大規則中明顯偏弱的一項。</p>
+    <p><span class="tag-label">個性標籤：帳面優於現金型</span> —— 多數年度稅前淨利成長速度快於實際收到的營業現金，2022 年尤其明顯（D=121 遠高於 A=60.3）。這不必然代表獲利造假，常見成因包括：業外投資收益（如轉投資收益、匯兌利益）墊高帳面淨利但未反映在營業活動現金流、應收帳款隨營收成長而增加、存貨備貨等。<b>建議在第二步查詢基本資訊時，一併確認元太是否有大額業外收益（如轉投資子公司獲利認列），以及應收帳款週轉天數是否持續拉長，這是本步驟中最需要後續驗證的疑點。</b></p>
+  </div>
+
+  <!-- Rule 6 -->
+  <div class="rule-block">
+    <h3><span class="rule-num">6</span>E 期末現金餘額穩定性<span class="rule-score s-good">80 分</span></h3>
+    <p>E 從 2020 年 130 億在 2021 年一度下滑至 87.5 億（跌幅 32.7%，對應當年 B 重度投資 -80.2 億），此後連續四年穩定回升：88.4 → 96.9 → 132 → 188 億，2025 年已超越 2020 年高點近 45%，26Q2 單季更續增至 198 億。</p>
+    <p><span class="tag-label">個性標籤：先蹲後跳型</span> —— 2021 年的下滑是單一年度重度投資造成，非長期趨勢轉差，此後現金餘額呈現清楚的中長期上升軌跡，體質穩健。</p>
+    <div class="chart-box">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" class="chart-svg">
+<line x1="54" y1="278.0" x2="682" y2="278.0" stroke="#DEDAD0" stroke-width="1" stroke-dasharray=""/>
+<text x="46" y="282.0" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">0</text>
+<line x1="54" y1="215.4" x2="682" y2="215.4" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="219.4" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">50</text>
+<line x1="54" y1="152.7" x2="682" y2="152.7" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="156.7" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">100</text>
+<line x1="54" y1="90.1" x2="682" y2="90.1" stroke="#DEDAD0" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="46" y="94.1" text-anchor="end" font-size="10.5" fill="#8A8577" font-family="JetBrains Mono, monospace">150</text>
+<line x1="54" y1="278.0" x2="682" y2="278.0" stroke="#1A1A18" stroke-width="1.4"/>
+<rect x="75.5" y="115.2" width="46.7" height="162.8" rx="2" fill="#2E7D5B"/>
+<text x="98.9" y="109.2" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">130.0</text>
+<text x="98.9" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2020</text>
+<rect x="165.2" y="168.4" width="46.7" height="109.6" rx="2" fill="#B5423E"/>
+<text x="188.6" y="162.4" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">87.5</text>
+<text x="188.6" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2021</text>
+<rect x="255.0" y="167.3" width="46.7" height="110.7" rx="2" fill="#2E7D5B"/>
+<text x="278.3" y="161.3" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">88.4</text>
+<text x="278.3" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2022</text>
+<rect x="344.7" y="156.6" width="46.7" height="121.4" rx="2" fill="#2E7D5B"/>
+<text x="368.0" y="150.6" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">96.9</text>
+<text x="368.0" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2023</text>
+<rect x="434.4" y="112.7" width="46.7" height="165.3" rx="2" fill="#2E7D5B"/>
+<text x="457.7" y="106.7" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">132.0</text>
+<text x="457.7" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2024</text>
+<rect x="524.1" y="42.5" width="46.7" height="235.5" rx="2" fill="#C98A3D"/>
+<text x="547.4" y="36.5" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1A18" font-family="JetBrains Mono, monospace">188.0</text>
+<text x="547.4" y="304" text-anchor="middle" font-size="11" fill="#5B564A" font-family="Noto Sans TC, sans-serif">2025</text>
+<rect x="613.8" y="30.0" width="46.7" height="248.0" rx="2" fill="none" stroke="#2E7D5B" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.85"/>
+<text x="637.1" y="24.0" text-anchor="middle" font-size="11" font-weight="700" font-style="italic" fill="#9A9484" font-family="JetBrains Mono, monospace">198.0</text>
+<text x="637.1" y="304" text-anchor="middle" font-size="11" font-style="italic" fill="#9A9484" font-family="Noto Sans TC, sans-serif">26Q2</text>
+</svg>
+      <div class="chart-note">圖四：期末現金餘額 E（億元）｜金色＝歷史新高、紅色＝相對低點、虛線框＝26Q2單季僅供參考</div>
+    </div>
+  </div>
+
+  <h3 class="disp" style="font-size:17px;margin-top:36px;">總評分與關卡建議</h3>
+  <div class="score-summary">
+    <div class="big">70.2<span style="font-size:20px;">%</span></div>
+    <div>
+      <div class="lbl">六項規則平均分（(75+70+78+85+33+80)/6）</div>
+      <div style="font-size:15px;margin-top:6px;">評等：<b style="color:var(--amber);">良好</b>（60-79% 區間）</div>
+    </div>
+  </div>
+
+  <div class="callout good">
+    <b>關卡判斷：現金流體質可以繼續看下去。</b> 六項規則均分 70.2%，屬「良好」等級，且未出現「A為負＋B大幅負值＋C正值/小幅負值」的三重疊加最高警戒訊號（A 六個完整年度皆為正值）。可以進入第二步基本資訊查詢。
+  </div>
+  <div class="callout warn">
+    <b>唯一需要留意的弱項：</b>規則五（A &gt; D 現金流品質）僅 33.3% 通過率，明顯低於其他五項規則，建議第二步查詢基本資訊時一併確認是否有大額業外收益或應收帳款/存貨持續墊高的情形，避免忽略這個「帳面獲利跑得比現金快」的訊號。
+  </div>
+
+  <ul class="src">
+    <li>資料來源：使用者提供之現金流量表截圖（含年度股價、獲利、現金流量、現金餘額欄位），非本次搜尋所得。</li>
+    <li>投資活動與融資活動細項尚未提供，規則二、三、四評分待細項校正。</li>
+  </ul>
+</section>
+
+<section id="step2-locked">
+  <div class="step-tag">【第 2 步／共 6 步：基本資訊查詢】</div>
+  <h2 style="opacity:.5;">基本資訊查詢</h2>
+  <div class="locked-card">尚未執行。現金流體質已通過關卡判斷，可隨時請我繼續進行第二步（股價／EPS／殖利率／營收／法說會連結）。</div>
+</section>
+
+</div>
+
+<div class="foot">
+  報告版本 v1｜產出時間：2026-08-19｜依「現金流優先、基本面在後」六步驟框架分析，僅為個人研究紀錄，非投資建議。<br>
+  <a href="https://github.com/bigwolfQQ/stock-analysis">回到 GitHub Repo</a>　｜　<a href="../index.html">回到分析總覽</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const links = document.querySelectorAll('nav.stepnav a:not(.locked)');
+  links.forEach(link => {
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.stepnav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        navLinks.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`nav.stepnav a[href="#${entry.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {rootMargin: "-40% 0px -55% 0px"});
+  sections.forEach(s => observer.observe(s));
+});
+</script>
+
+</body>
+</html>
