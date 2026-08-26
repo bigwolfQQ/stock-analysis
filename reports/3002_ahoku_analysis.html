@@ -222,7 +222,7 @@ svg line.zero{stroke:var(--ink-soft);stroke-width:1.5;}
     <a href="#step1" class="pad">01 現金流六大規則</a>
     <a href="#step2" class="pad">02 基本資訊</a>
     <a href="#step3" class="pad">03 法說會</a>
-    <a class="locked">04 營收趨勢</a>
+    <a href="#step4" class="pad">04 營收趨勢</a>
     <a class="locked">05 本益比／EPS</a>
     <a class="locked">06 投資決策</a>
   </div>
@@ -608,10 +608,95 @@ svg line.zero{stroke:var(--ink-soft);stroke-width:1.5;}
   <p>由於本步驟目前沒有可靠的一手資料可供深入分析，先如實回報這個限制，不強行湊出內容。若你手邊剛好有這場法說會的簡報截圖或逐字稿，可以提供給我，我再回頭補充這一步；否則建議先跳到第 4 步（營收趨勢，有月營收公開資料可查）。</p>
 
   <div class="callout pos" style="margin-top:20px;">
-    要不要直接跳到第 4 步看營收趨勢圖？
+    使用者選擇由 Claude 搜尋營收資料，繼續第 4 步。
   </div>
 
   <p class="meta">報告版本 v1.2（第1-3步，第3步資料有限） &middot; 生成時間：2026-08-26</p>
+</section>
+
+<section class="step" id="step4">
+  <p class="step-kicker">【第 4 步／共 6 步：營收趨勢視覺化】</p>
+  <h2 class="step-title">近12個月月營收趨勢</h2>
+
+  <div class="callout">
+    以下資料由 Claude 搜尋取得（非使用者提供），主要來源為 Yahoo股市營收表（彙整台灣證交所公開資訊觀測站之月營收公告），查詢於 2026/08/26。
+  </div>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 780 300" width="100%" role="img" aria-label="近12個月月營收長條圖，單位百萬元">
+      <line class="grid" x1="80" y1="20" x2="740" y2="20"/><text class="axis" x="72" y="24" text-anchor="end">90</text>
+      <line class="grid" x1="80" y1="60" x2="740" y2="60"/><text class="axis" x="72" y="64" text-anchor="end">75</text>
+      <line class="grid" x1="80" y1="100" x2="740" y2="100"/><text class="axis" x="72" y="104" text-anchor="end">60</text>
+      <line class="grid" x1="80" y1="140" x2="740" y2="140"/><text class="axis" x="72" y="144" text-anchor="end">45</text>
+      <line class="grid" x1="80" y1="180" x2="740" y2="180"/><text class="axis" x="72" y="184" text-anchor="end">30</text>
+      <line class="grid" x1="80" y1="220" x2="740" y2="220"/><text class="axis" x="72" y="224" text-anchor="end">15</text>
+      <line class="zero" x1="80" y1="260" x2="740" y2="260"/><text class="axis" x="72" y="264" text-anchor="end">0</text>
+
+      <rect x="684.5" y="20" width="55" height="240" fill="var(--accent-soft)" opacity="0.55"/>
+      <rect x="409.5" y="20" width="55" height="240" fill="var(--danger-soft)" opacity="0.55"/>
+
+      <rect x="91.5" y="67.8" width="32" height="192.2" fill="var(--teal)"/><text class="val" x="107.5" y="62" text-anchor="middle">72.1</text>
+      <rect x="146.5" y="85.4" width="32" height="174.6" fill="var(--teal)"/><text class="val" x="162.5" y="80" text-anchor="middle">65.5</text>
+      <rect x="201.5" y="131.5" width="32" height="128.5" fill="var(--teal)"/><text class="val" x="217.5" y="126" text-anchor="middle">48.2</text>
+      <rect x="256.5" y="99.4" width="32" height="160.6" fill="var(--teal)"/><text class="val" x="272.5" y="94" text-anchor="middle">60.2</text>
+      <rect x="311.5" y="133.4" width="32" height="126.6" fill="var(--danger)"/><text class="val" x="327.5" y="128" text-anchor="middle">47.5</text>
+      <rect x="366.5" y="56.1" width="32" height="203.9" fill="var(--teal)"/><text class="val" x="382.5" y="50" text-anchor="middle">76.5</text>
+      <rect x="421.5" y="142.8" width="32" height="117.2" fill="var(--danger)"/><text class="val" x="437.5" y="137" text-anchor="middle">43.9</text>
+      <rect x="476.5" y="72.0" width="32" height="188.0" fill="var(--teal)"/><text class="val" x="492.5" y="66" text-anchor="middle">70.5</text>
+      <rect x="531.5" y="63.5" width="32" height="196.5" fill="var(--teal)"/><text class="val" x="547.5" y="58" text-anchor="middle">73.7</text>
+      <rect x="586.5" y="48.4" width="32" height="211.6" fill="var(--teal)"/><text class="val" x="602.5" y="43" text-anchor="middle">79.4</text>
+      <rect x="641.5" y="73.3" width="32" height="186.7" fill="var(--teal)"/><text class="val" x="657.5" y="68" text-anchor="middle">70.0</text>
+      <rect x="696.5" y="34.0" width="32" height="226.0" fill="var(--teal)"/><text class="val" x="712.5" y="29" text-anchor="middle">84.7</text>
+
+      <text class="xlabel" x="107.5" y="278" text-anchor="middle">25/08</text>
+      <text class="xlabel" x="162.5" y="278" text-anchor="middle">25/09</text>
+      <text class="xlabel" x="217.5" y="278" text-anchor="middle">25/10</text>
+      <text class="xlabel" x="272.5" y="278" text-anchor="middle">25/11</text>
+      <text class="xlabel" x="327.5" y="278" text-anchor="middle">25/12</text>
+      <text class="xlabel" x="382.5" y="278" text-anchor="middle">26/01</text>
+      <text class="xlabel" x="437.5" y="278" text-anchor="middle">26/02</text>
+      <text class="xlabel" x="492.5" y="278" text-anchor="middle">26/03</text>
+      <text class="xlabel" x="547.5" y="278" text-anchor="middle">26/04</text>
+      <text class="xlabel" x="602.5" y="278" text-anchor="middle">26/05</text>
+      <text class="xlabel" x="657.5" y="278" text-anchor="middle">26/06</text>
+      <text class="xlabel" x="712.5" y="278" text-anchor="middle">26/07</text>
+    </svg>
+    <p class="chart-note">單位：百萬元。米色底=近12月高峰(26/07)，粉底=近12月低谷(26/02)；紅色長條為當月營收年增率為負的月份。</p>
+  </div>
+
+  <h3 class="rule-title">月營收年增率（YoY）</h3>
+  <table>
+    <thead><tr><th>月份</th><th>當月營收(百萬)</th><th>年增率</th></tr></thead>
+    <tbody>
+      <tr><td>2025/08</td><td>72.1</td><td class="pos">+54.80%</td></tr>
+      <tr><td>2025/09</td><td>65.5</td><td class="pos">+63.02%</td></tr>
+      <tr><td>2025/10</td><td>48.2</td><td class="pos">+30.73%</td></tr>
+      <tr><td>2025/11</td><td>60.2</td><td class="pos">+60.15%</td></tr>
+      <tr class="flag-row"><td>2025/12</td><td>47.5</td><td class="neg">-6.29%</td></tr>
+      <tr><td>2026/01</td><td>76.5</td><td class="pos">+52.12%</td></tr>
+      <tr><td>2026/02</td><td>43.9</td><td class="pos">+23.26%</td></tr>
+      <tr><td>2026/03</td><td>70.5</td><td class="pos">+15.51%</td></tr>
+      <tr><td>2026/04</td><td>73.7</td><td class="pos">+6.66%</td></tr>
+      <tr><td>2026/05</td><td>79.4</td><td class="pos">+49.17%</td></tr>
+      <tr><td>2026/06</td><td>70.0</td><td class="pos">+20.65%</td></tr>
+      <tr><td>2026/07</td><td>84.7</td><td class="pos">+21.79%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout pos">
+    <b>近12個月中有11個月營收年增率為正</b>，僅2025/12單月轉負（-6.29%），2026年以來每月YoY都維持在＋6.7%~+52%的區間，累計至2026年7月營收年增25.67%，成長力道相對明確。
+  </div>
+  <div class="callout warn">
+    <b>但這份成長沒有完全反映在獲利與現金流上。</b>對照第1步與第2步：近四季EPS僅0.10元、2026Q2毛利率只有8.92%、淨利率為負(-0.35%)，且第一步觀察到近五年營業活動現金流（A）多數年度轉負。營收成長、獲利與現金流卻沒有同步成長，比較可能的解讀是<b>成本或費用端的壓力抵銷了營收成長的效果</b>（例如原料成本、產品組合轉向毛利較低的品項、或費用增速快於營收），這點目前公開資料無法進一步拆解，若要確認需要看到產品別毛利率或法說會的具體說明——但第3步已知法說會資料取得不到，這是本次分析的一個侷限。
+  </div>
+
+  <p class="snap-note">來源：Yahoo股市營收表（<a href="https://tw.stock.yahoo.com/quote/3002/revenue" target="_blank" rel="noopener">https://tw.stock.yahoo.com/quote/3002/revenue</a>），查詢於 2026/08/26；原始單位仟元，已換算為百萬元並四捨五入至小數點後一位。</p>
+
+  <div class="callout pos" style="margin-top:20px;">
+    要不要繼續看第 5 步（前瞻本益比／EPS預估），把估值這塊補齊？
+  </div>
+
+  <p class="meta">報告版本 v1.3（第1-4步） &middot; 生成時間：2026-08-26</p>
 </section>
 </div>
 
