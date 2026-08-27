@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高林股(1531) 個股分析 — 現金流優先框架</title>
+<style>
+  :root {
+    --ink: #1B2430;
+    --ink-soft: #384357;
+    --paper: #FAF8F3;
+    --paper-alt: #F1ECE1;
+    --brass: #B08D57;
+    --brass-dark: #8C6D3F;
+    --thread-red: #A6392C;
+    --pos: #2E6B4F;
+    --neg: #A6392C;
+    --line: #DCD4C2;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --serif: 'Zilla Slab', 'Noto Serif TC', serif;
+    --sans: 'Inter', 'Noto Sans TC', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); line-height: 1.7;
+  }
+  header.hero {
+    background: linear-gradient(160deg, var(--ink) 0%, #232E42 100%);
+    color: var(--paper); padding: 56px 6vw 40px; position: relative; overflow: hidden;
+  }
+  header.hero::after {
+    content: ""; position: absolute; right: -60px; top: -60px; width: 320px; height: 320px;
+    border-radius: 50%; border: 1px solid rgba(176,141,87,0.25);
+  }
+  header.hero::before {
+    content: ""; position: absolute; right: 20px; top: 20px; width: 220px; height: 220px;
+    border-radius: 50%; border: 1px dashed rgba(176,141,87,0.18);
+  }
+  .eyebrow { color: var(--brass); letter-spacing: 0.18em; font-size: 0.78rem; text-transform: uppercase; font-weight: 600; }
+  h1.title { font-family: var(--serif); font-size: clamp(2.1rem, 4vw, 3.2rem); margin: 10px 0 6px; font-weight: 600; }
+  .subtitle { color: #C8CCD8; font-size: 1.02rem; max-width: 640px; }
+  .badge-row { margin-top: 18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  img.visitor-badge { opacity: 0.8; }
+  nav.stepnav {
+    position: sticky; top: 0; z-index: 50; display: flex; overflow-x: auto;
+    background: var(--ink); border-bottom: 2px solid var(--brass);
+  }
+  nav.stepnav a {
+    flex: 1 0 auto; padding: 14px 18px; color: #AEB6C4; text-decoration: none;
+    font-size: 0.86rem; font-weight: 600; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer; transition: all .2s;
+  }
+  nav.stepnav a.active { color: var(--paper); background: rgba(176,141,87,0.18); box-shadow: inset 0 -3px 0 var(--brass); }
+  nav.stepnav a.locked { color: #565f6f; cursor: default; }
+  main { max-width: 980px; margin: 0 auto; padding: 0 6vw 80px; }
+  section { padding-top: 48px; }
+  h2.step-title {
+    font-family: var(--serif); font-size: 1.6rem; display: flex; align-items: baseline; gap: 12px;
+    border-bottom: 2px solid var(--line); padding-bottom: 10px; margin-bottom: 6px;
+  }
+  .step-num { font-family: var(--mono); color: var(--brass-dark); font-size: 1rem; }
+  .callout {
+    background: var(--paper-alt); border-left: 4px solid var(--brass); padding: 14px 18px;
+    margin: 18px 0; border-radius: 0 6px 6px 0; font-size: 0.98rem;
+  }
+  .callout b { color: var(--brass-dark); }
+  .callout.warn { border-left-color: var(--thread-red); background: #F7ECE8; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.92rem; }
+  th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); font-family: var(--mono); }
+  th { text-align: right; background: var(--paper-alt); font-family: var(--sans); font-weight: 700; color: var(--ink-soft); }
+  td:first-child, th:first-child { text-align: left; font-family: var(--sans); font-weight: 600; }
+  .pos { color: var(--pos); }
+  .neg { color: var(--neg); font-weight: 700; }
+  .qcol { background: #F3EEE3; font-style: italic; color: #8a8371; }
+  .pass { color: var(--pos); font-weight:700; }
+  .fail { color: var(--neg); font-weight:700; }
+  .chart-wrap { margin: 22px 0; background: white; border: 1px solid var(--line); border-radius: 10px; padding: 14px 10px; }
+  svg.bar-chart { width: 100%; height: auto; display:block; font-family: var(--mono); }
+  .grid-line { stroke: #E7E1D3; stroke-width: 1; stroke-dasharray: 3 3; }
+  .grid-zero { stroke: var(--ink-soft); stroke-width: 1.4; }
+  .axis-label { font-size: 11px; fill: #8a8371; }
+  .axis-label-q { font-size: 11px; fill: #b0a68e; font-style: italic; }
+  .axis-line { stroke: var(--ink-soft); stroke-width: 1.4; }
+  .bar-pos { fill: #4E7C63; }
+  .bar-neg { fill: #C0685C; }
+  .bar-peak { fill: var(--brass); }
+  .bar-trough { fill: #C0405C; }
+  .bar-quarter { fill: none; stroke: var(--brass-dark); stroke-width: 2; stroke-dasharray: 5 4; opacity:0.85; }
+  .bar-label { font-size: 11.5px; fill: var(--ink); font-weight: 700; }
+  .bar-label-q { font-size: 11.5px; fill: var(--brass-dark); font-style: italic; font-weight: 700; }
+  .bar-label-sm { font-size: 10px; fill: var(--ink); font-weight: 700; }
+  .chart-note { font-size: 11px; fill: #8a8371; font-family: var(--sans); }
+  .bar-b { fill: #6E7FA3; }
+  .bar-c { fill: #C99A4B; }
+  .bar-b-q { fill: none; stroke: #6E7FA3; stroke-width: 2; stroke-dasharray: 4 3; }
+  .bar-c-q { fill: none; stroke: #C99A4B; stroke-width: 2; stroke-dasharray: 4 3; }
+  .combo-highlight { fill: rgba(176,141,87,0.12); stroke: none; }
+  .score-panel {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin: 24px 0;
+  }
+  .score-card { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .score-card .n { font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--ink); }
+  .score-card .label { font-size: 0.82rem; color: var(--ink-soft); }
+  .verdict-box {
+    background: var(--ink); color: var(--paper); border-radius: 12px; padding: 26px 28px; margin: 28px 0;
+    border-left: 6px solid var(--thread-red);
+  }
+  .verdict-box.ok { border-left-color: var(--pos); }
+  .verdict-box h3 { font-family: var(--serif); margin-top: 0; color: var(--brass); }
+  .snap-note { font-size: 0.82rem; color: #8a8371; margin-top: -8px; margin-bottom: 18px; }
+  .snap-note a { color: var(--brass-dark); }
+  footer { text-align:center; padding: 30px 0; color: #8a8371; font-size: 0.85rem; }
+  .persona-tag { display:inline-block; background: var(--paper-alt); border:1px solid var(--brass); color: var(--brass-dark); padding: 2px 10px; border-radius: 999px; font-size: 0.8rem; font-weight:700; margin-left:8px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">台股個股分析 · 現金流優先框架</div>
+  <h1 class="title">高林股 (1531)</h1>
+  <div class="subtitle">KAULIN MANUFACTURING CO., LTD · 工業用縫紉機及零組件製造 · 分析依「現金流優先、基本面在後」六步驟框架進行，第一步採盲測方式，尚未參考股價與產業評價。</div>
+  <div class="badge-row">
+    <img class="visitor-badge" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.stock-analysis.1531" alt="Visitors">
+  </div>
+</header>
+
+<nav class="stepnav" id="stepnav">
+  <a href="#step1" class="step-link active" data-step="1">① 現金流六大規則</a>
+  <a class="locked">② 基本資訊</a>
+  <a class="locked">③ 法說會</a>
+  <a class="locked">④ 營收趨勢</a>
+  <a class="locked">⑤ 前瞻本益比</a>
+  <a class="locked">⑥ 投資決策</a>
+</nav>
+
+<main>
+<section id="step1">
+  <h2 class="step-title"><span class="step-num">STEP 1 / 6</span> 現金流量表六大規則分析（盲測）</h2>
+  <div class="callout"><b>盲測聲明：</b>本步驟僅根據使用者提供的現金流量表數字（2016–2025 共 10 個完整年度，另附 2026Q2 單季資料供參考）進行判斷，尚未查詢或引用股價、EPS、產業地位、新聞背景。</div>
+  <div class="snap-note">資料來源：使用者提供之截圖（Goodinfo 現金流量表頁面，含投資活動／融資活動細項，2018–2025）</div>
+
+  <table>
+    <thead><tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>E 期末餘額</th></tr></thead>
+    <tbody>
+      <tr><td>2016</td><td class="pos">3.12</td><td class="pos">0.92</td><td class="neg">-2.72</td><td class="pos">1.32</td><td>10.2</td></tr>
+      <tr><td>2017</td><td class="pos">2.72</td><td class="neg">-0.22</td><td class="neg">-2.69</td><td class="pos">2.23</td><td>9.95</td></tr>
+      <tr><td>2018</td><td class="neg">-4.41</td><td class="pos">3.8</td><td class="neg">-1.48</td><td class="pos">2.63</td><td>7.73</td></tr>
+      <tr><td>2019</td><td class="pos">4.62</td><td class="neg">-2.73</td><td class="neg">-0.93</td><td class="pos">0.43</td><td>8.4</td></tr>
+      <tr><td>2020</td><td class="pos">2.26</td><td class="pos">2.05</td><td class="neg">-0.55</td><td class="neg">-0.68</td><td>12.3</td></tr>
+      <tr><td>2021</td><td class="neg">-2.28</td><td class="neg">-0.29</td><td class="pos">0.77</td><td class="pos">2.43</td><td>10.6</td></tr>
+      <tr><td>2022</td><td class="pos">1.62</td><td class="pos">0.51</td><td class="neg">-1.14</td><td class="pos">2.59</td><td>11.7</td></tr>
+      <tr><td>2023</td><td class="pos">2.99</td><td class="neg">-4.11</td><td class="neg">-3.00</td><td class="neg">-0.42</td><td>7.37</td></tr>
+      <tr><td>2024</td><td class="pos">5.00</td><td class="neg">-0.79</td><td class="neg">-0.37</td><td class="pos">1.09</td><td>13.4</td></tr>
+      <tr><td>2025</td><td class="pos">4.19</td><td class="neg">-6.20</td><td class="neg">-1.77</td><td class="neg">-0.14</td><td>9.37</td></tr>
+      <tr class="qcol"><td>26Q2（單季）</td><td class="pos">2.17</td><td class="neg">-5.25</td><td class="pos">0.89</td><td class="neg">-0.05</td><td>7.29</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.85rem;color:var(--ink-soft)">單位：億元。紅字為負值，綠字為正值，灰底斜體列為 2026 單季資料（僅供參考，不列入計分）。</p>
+
+  <h3>規則一：A 逐季與逐年成長趨勢</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" class="bar-chart" role="img">
+<line x1="70" y1="320.0" x2="840" y2="320.0" class="grid-line"/>
+<text x="60" y="324.0" class="axis-label" text-anchor="end">-8</text>
+<line x1="70" y1="277.1" x2="840" y2="277.1" class="grid-line"/>
+<text x="60" y="281.1" class="axis-label" text-anchor="end">-6</text>
+<line x1="70" y1="234.3" x2="840" y2="234.3" class="grid-line"/>
+<text x="60" y="238.3" class="axis-label" text-anchor="end">-4</text>
+<line x1="70" y1="191.4" x2="840" y2="191.4" class="grid-line"/>
+<text x="60" y="195.4" class="axis-label" text-anchor="end">-2</text>
+<line x1="70" y1="148.6" x2="840" y2="148.6" class="grid-zero"/>
+<text x="60" y="152.6" class="axis-label" text-anchor="end">0</text>
+<line x1="70" y1="105.7" x2="840" y2="105.7" class="grid-line"/>
+<text x="60" y="109.7" class="axis-label" text-anchor="end">2</text>
+<line x1="70" y1="62.9" x2="840" y2="62.9" class="grid-line"/>
+<text x="60" y="66.9" class="axis-label" text-anchor="end">4</text>
+<line x1="70" y1="20.0" x2="840" y2="20.0" class="grid-line"/>
+<text x="60" y="24.0" class="axis-label" text-anchor="end">6</text>
+<rect x="84.7" y="81.7" width="40.6" height="66.9" class="bar-pos"/>
+<text x="105.0" y="75.7" class="bar-label" text-anchor="middle">3.12</text>
+<text x="105.0" y="340.0" class="axis-label" text-anchor="middle">2016</text>
+<rect x="154.7" y="90.3" width="40.6" height="58.3" class="bar-pos"/>
+<text x="175.0" y="84.3" class="bar-label" text-anchor="middle">2.72</text>
+<text x="175.0" y="340.0" class="axis-label" text-anchor="middle">2017</text>
+<rect x="224.7" y="148.6" width="40.6" height="94.5" class="bar-trough"/>
+<text x="245.0" y="257.1" class="bar-label" text-anchor="middle">-4.41</text>
+<text x="245.0" y="340.0" class="axis-label" text-anchor="middle">2018</text>
+<rect x="294.7" y="49.6" width="40.6" height="99.0" class="bar-pos"/>
+<text x="315.0" y="43.6" class="bar-label" text-anchor="middle">4.62</text>
+<text x="315.0" y="340.0" class="axis-label" text-anchor="middle">2019</text>
+<rect x="364.7" y="100.1" width="40.6" height="48.4" class="bar-pos"/>
+<text x="385.0" y="94.1" class="bar-label" text-anchor="middle">2.26</text>
+<text x="385.0" y="340.0" class="axis-label" text-anchor="middle">2020</text>
+<rect x="434.7" y="148.6" width="40.6" height="48.9" class="bar-neg"/>
+<text x="455.0" y="211.4" class="bar-label" text-anchor="middle">-2.28</text>
+<text x="455.0" y="340.0" class="axis-label" text-anchor="middle">2021</text>
+<rect x="504.7" y="113.9" width="40.6" height="34.7" class="bar-pos"/>
+<text x="525.0" y="107.9" class="bar-label" text-anchor="middle">1.62</text>
+<text x="525.0" y="340.0" class="axis-label" text-anchor="middle">2022</text>
+<rect x="574.7" y="84.5" width="40.6" height="64.1" class="bar-pos"/>
+<text x="595.0" y="78.5" class="bar-label" text-anchor="middle">2.99</text>
+<text x="595.0" y="340.0" class="axis-label" text-anchor="middle">2023</text>
+<rect x="644.7" y="41.4" width="40.6" height="107.1" class="bar-peak"/>
+<text x="665.0" y="35.4" class="bar-label" text-anchor="middle">5</text>
+<text x="665.0" y="340.0" class="axis-label" text-anchor="middle">2024</text>
+<rect x="714.7" y="58.8" width="40.6" height="89.8" class="bar-pos"/>
+<text x="735.0" y="52.8" class="bar-label" text-anchor="middle">4.19</text>
+<text x="735.0" y="340.0" class="axis-label" text-anchor="middle">2025</text>
+<rect x="784.7" y="102.1" width="40.6" height="46.5" class="bar-quarter"/>
+<text x="805.0" y="96.1" class="bar-label-q" text-anchor="middle">2.17</text>
+<text x="805.0" y="340.0" class="axis-label-q" text-anchor="middle">26Q2</text>
+<line x1="70" y1="20" x2="70" y2="320" class="axis-line"/>
+<text x="70" y="366" class="chart-note">虛線框為 26Q2 單季，僅供參考不列入計分 · 單位：億元</text>
+</svg></div>
+  <div class="callout">
+    <b>數字現象：</b>10 年間 A 有 2 個年度轉負（2018 年 -4.41、2021 年 -2.28），其餘 8 年皆為正值；近 4 年（2022→2025）從 1.62 一路走到 5.00、4.19，呈現回升格局，但期間仍夾雜單年度大幅波動（如 2023 僅 2.99），並非穩定的線性成長。<br>
+    <b>個性標籤：</b>「間歇性造血」型——本業現金流大部分時間為正，但每隔幾年會出現一次明顯轉負，屬於本業獲利能力不算穩固、對景氣或訂單波動較敏感的中小型製造業樣貌，近兩年轉強但尚待更多年度驗證是否為結構性改善。<br>
+    <b>規則一評分：60 / 100</b>（需觀察：近期回升，但長期不具穩定趨勢）
+  </div>
+
+  <h3>規則二：B 投資紀律評估</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" class="bar-chart" role="img">
+<line x1="70" y1="320.0" x2="840" y2="320.0" class="grid-line"/>
+<text x="60" y="324.0" class="axis-label" text-anchor="end">-10</text>
+<line x1="70" y1="277.1" x2="840" y2="277.1" class="grid-line"/>
+<text x="60" y="281.1" class="axis-label" text-anchor="end">-8</text>
+<line x1="70" y1="234.3" x2="840" y2="234.3" class="grid-line"/>
+<text x="60" y="238.3" class="axis-label" text-anchor="end">-6</text>
+<line x1="70" y1="191.4" x2="840" y2="191.4" class="grid-line"/>
+<text x="60" y="195.4" class="axis-label" text-anchor="end">-4</text>
+<line x1="70" y1="148.6" x2="840" y2="148.6" class="grid-line"/>
+<text x="60" y="152.6" class="axis-label" text-anchor="end">-2</text>
+<line x1="70" y1="105.7" x2="840" y2="105.7" class="grid-zero"/>
+<text x="60" y="109.7" class="axis-label" text-anchor="end">0</text>
+<line x1="70" y1="62.9" x2="840" y2="62.9" class="grid-line"/>
+<text x="60" y="66.9" class="axis-label" text-anchor="end">2</text>
+<line x1="70" y1="20.0" x2="840" y2="20.0" class="grid-line"/>
+<text x="60" y="24.0" class="axis-label" text-anchor="end">4</text>
+<rect x="84.7" y="86.0" width="40.6" height="19.7" class="bar-pos"/>
+<text x="105.0" y="80.0" class="bar-label" text-anchor="middle">0.92</text>
+<text x="105.0" y="340.0" class="axis-label" text-anchor="middle">2016</text>
+<rect x="154.7" y="105.7" width="40.6" height="4.7" class="bar-neg"/>
+<text x="175.0" y="124.4" class="bar-label" text-anchor="middle">-0.22</text>
+<text x="175.0" y="340.0" class="axis-label" text-anchor="middle">2017</text>
+<rect x="224.7" y="24.3" width="40.6" height="81.4" class="bar-peak"/>
+<text x="245.0" y="18.3" class="bar-label" text-anchor="middle">3.8</text>
+<text x="245.0" y="340.0" class="axis-label" text-anchor="middle">2018</text>
+<rect x="294.7" y="105.7" width="40.6" height="58.5" class="bar-neg"/>
+<text x="315.0" y="178.2" class="bar-label" text-anchor="middle">-2.73</text>
+<text x="315.0" y="340.0" class="axis-label" text-anchor="middle">2019</text>
+<rect x="364.7" y="61.8" width="40.6" height="43.9" class="bar-pos"/>
+<text x="385.0" y="55.8" class="bar-label" text-anchor="middle">2.05</text>
+<text x="385.0" y="340.0" class="axis-label" text-anchor="middle">2020</text>
+<rect x="434.7" y="105.7" width="40.6" height="6.2" class="bar-neg"/>
+<text x="455.0" y="125.9" class="bar-label" text-anchor="middle">-0.29</text>
+<text x="455.0" y="340.0" class="axis-label" text-anchor="middle">2021</text>
+<rect x="504.7" y="94.8" width="40.6" height="10.9" class="bar-pos"/>
+<text x="525.0" y="88.8" class="bar-label" text-anchor="middle">0.51</text>
+<text x="525.0" y="340.0" class="axis-label" text-anchor="middle">2022</text>
+<rect x="574.7" y="105.7" width="40.6" height="88.1" class="bar-neg"/>
+<text x="595.0" y="207.8" class="bar-label" text-anchor="middle">-4.11</text>
+<text x="595.0" y="340.0" class="axis-label" text-anchor="middle">2023</text>
+<rect x="644.7" y="105.7" width="40.6" height="16.9" class="bar-neg"/>
+<text x="665.0" y="136.6" class="bar-label" text-anchor="middle">-0.79</text>
+<text x="665.0" y="340.0" class="axis-label" text-anchor="middle">2024</text>
+<rect x="714.7" y="105.7" width="40.6" height="132.9" class="bar-trough"/>
+<text x="735.0" y="252.6" class="bar-label" text-anchor="middle">-6.2</text>
+<text x="735.0" y="340.0" class="axis-label" text-anchor="middle">2025</text>
+<rect x="784.7" y="105.7" width="40.6" height="112.5" class="bar-quarter"/>
+<text x="805.0" y="232.2" class="bar-label-q" text-anchor="middle">-5.25</text>
+<text x="805.0" y="340.0" class="axis-label-q" text-anchor="middle">26Q2</text>
+<line x1="70" y1="20" x2="70" y2="320" class="axis-line"/>
+<text x="70" y="366" class="chart-note">虛線框為 26Q2 單季，僅供參考不列入計分 · 單位：億元</text>
+</svg></div>
+  <table>
+    <thead><tr><th>投資活動細項（億元）</th><th>2025</th><th>2024</th><th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th></tr></thead>
+    <tbody>
+      <tr><td>固定資產(增減)</td><td class="neg">-0.25</td><td class="pos">0.05</td><td class="neg">-0.15</td><td class="neg">-0.21</td><td class="neg">-0.10</td><td class="neg">-0.069</td><td class="neg">-0.22</td><td class="neg">-0.33</td></tr>
+      <tr><td>金融資產(增減，含攤銷後成本)</td><td class="neg">-5.50</td><td class="neg">-0.43</td><td class="neg">-3.30</td><td class="pos">0.80</td><td class="pos">0.011</td><td class="pos">2.15</td><td class="neg">-2.37</td><td class="pos">4.37</td></tr>
+      <tr><td>子公司收購/處分</td><td>—</td><td>—</td><td class="neg">-1.89</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>數字現象：</b>把投資活動拆開來看，「固定資產」增減金額每年僅約 0.05～0.33 億元，規模很小且穩定；B 的大幅波動（尤其 2023、2025 的 -4.11、-6.2）主要來自「按攤銷後成本衡量之金融資產」科目的增減，也就是**閒置資金在債券／固定收益型金融商品之間的調度**，而非蓋廠房、買設備的實質資本支出。2023 年另有一筆 1.89 億元的子公司處分。<br>
+    <b>個性標籤：</b>「理財型現金水庫」——這不是一家靠大舉擴產推動成長的公司，實質資本支出維持在低檔、多年未見明顯擴產訊號，B 的高低起伏更多反映帳上資金在不同天期金融工具間搬動的節奏，屬於保守的資金運用型態，而非積極的產能投資型態。<br>
+    <b>規則二評分：65 / 100</b>（實質資本支出紀律良好、規模穩定；但金融資產科目占比高，需在後續步驟留意其配置的風險屬性）
+  </div>
+
+  <h3>規則三：B 投資效益分析（A 是否在投資後轉強）</h3>
+  <table>
+    <thead><tr><th>投資年度</th><th>當年 B</th><th>隔年 A</th><th>較投資當年 A 是否轉強</th></tr></thead>
+    <tbody>
+      <tr><td>2019</td><td class="neg">-2.73</td><td>2020 年 A = 2.26</td><td class="fail">未轉強（低於 2019 年 A=4.62）</td></tr>
+      <tr><td>2023</td><td class="neg">-4.11</td><td>2024 年 A = 5.00</td><td class="pass">轉強（高於 2023 年 A=2.99）</td></tr>
+      <tr><td>2025</td><td class="neg">-6.20</td><td>2026 全年數據尚未齊備</td><td>待觀察（僅 26Q2 單季 A=2.17 可參考）</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>數字現象：</b>由於規則二已確認 B 的波動主要來自金融資產調度而非產能型資本支出，「投資是否轉化為造血能力」這個規則本身的因果連結對這家公司較弱——2019 年重度投資後隔年 A 未轉強，2023 年重度投資後隔年 A 明顯轉強，兩次結果不一致，且與其說是「投資效益」，更可能只是本業訂單週期或金融資產處分時點的巧合。<br>
+    <b>個性標籤：</b>「因果不明」型——此規則在資本支出型公司上通常最具解讀力，但套用在這檔金融資產調度為主的公司上，訊號強度有限，建議之後在法說會步驟中確認金融資產配置目的（避險／閒置資金理財／策略性持股）。<br>
+    <b>規則三評分：50 / 100</b>（中性，樣本數少且因果關係薄弱，非負面訊號但也難以佐證投資紀律優異）
+  </div>
+
+  <h3>規則四：C 融資活動合理性（含 B/C 並排比較）</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" class="bar-chart" role="img">
+<line x1="70" y1="330.0" x2="880" y2="330.0" class="grid-line"/>
+<text x="60" y="334.0" class="axis-label" text-anchor="end">-10</text>
+<line x1="70" y1="285.7" x2="880" y2="285.7" class="grid-line"/>
+<text x="60" y="289.7" class="axis-label" text-anchor="end">-8</text>
+<line x1="70" y1="241.4" x2="880" y2="241.4" class="grid-line"/>
+<text x="60" y="245.4" class="axis-label" text-anchor="end">-6</text>
+<line x1="70" y1="197.1" x2="880" y2="197.1" class="grid-line"/>
+<text x="60" y="201.1" class="axis-label" text-anchor="end">-4</text>
+<line x1="70" y1="152.9" x2="880" y2="152.9" class="grid-line"/>
+<text x="60" y="156.9" class="axis-label" text-anchor="end">-2</text>
+<line x1="70" y1="108.6" x2="880" y2="108.6" class="grid-zero"/>
+<text x="60" y="112.6" class="axis-label" text-anchor="end">0</text>
+<line x1="70" y1="64.3" x2="880" y2="64.3" class="grid-line"/>
+<text x="60" y="68.3" class="axis-label" text-anchor="end">2</text>
+<line x1="70" y1="20.0" x2="880" y2="20.0" class="grid-line"/>
+<text x="60" y="24.0" class="axis-label" text-anchor="end">4</text>
+<rect x="84.0" y="88.2" width="20.8" height="20.4" class="bar-b"/>
+<rect x="108.8" y="108.6" width="20.8" height="60.2" class="bar-c"/>
+<text x="94.4" y="82.2" class="bar-label-sm" text-anchor="middle">0.92</text>
+<text x="119.2" y="182.8" class="bar-label-sm" text-anchor="middle">-2.72</text>
+<text x="106.8" y="350.0" class="axis-label" text-anchor="middle">2016</text>
+<rect x="157.6" y="108.6" width="20.8" height="4.9" class="bar-b"/>
+<rect x="182.5" y="108.6" width="20.8" height="59.6" class="bar-c"/>
+<text x="168.0" y="127.4" class="bar-label-sm" text-anchor="middle">-0.22</text>
+<text x="192.9" y="182.1" class="bar-label-sm" text-anchor="middle">-2.69</text>
+<text x="180.5" y="350.0" class="axis-label" text-anchor="middle">2017</text>
+<rect x="231.3" y="24.4" width="20.8" height="84.1" class="bar-b"/>
+<rect x="256.1" y="108.6" width="20.8" height="32.8" class="bar-c"/>
+<text x="241.7" y="18.4" class="bar-label-sm" text-anchor="middle">3.8</text>
+<text x="266.5" y="155.3" class="bar-label-sm" text-anchor="middle">-1.48</text>
+<text x="254.1" y="350.0" class="axis-label" text-anchor="middle">2018</text>
+<rect x="304.9" y="108.6" width="20.8" height="60.4" class="bar-b"/>
+<rect x="329.7" y="108.6" width="20.8" height="20.6" class="bar-c"/>
+<text x="315.3" y="183.0" class="bar-label-sm" text-anchor="middle">-2.73</text>
+<text x="340.1" y="143.2" class="bar-label-sm" text-anchor="middle">-0.93</text>
+<text x="327.7" y="350.0" class="axis-label" text-anchor="middle">2019</text>
+<rect x="378.5" y="63.2" width="20.8" height="45.4" class="bar-b"/>
+<rect x="403.4" y="108.6" width="20.8" height="12.2" class="bar-c"/>
+<text x="389.0" y="57.2" class="bar-label-sm" text-anchor="middle">2.05</text>
+<text x="413.8" y="134.8" class="bar-label-sm" text-anchor="middle">-0.55</text>
+<text x="401.4" y="350.0" class="axis-label" text-anchor="middle">2020</text>
+<rect x="452.2" y="108.6" width="20.8" height="6.4" class="bar-b"/>
+<rect x="477.0" y="91.5" width="20.8" height="17.1" class="bar-c"/>
+<text x="462.6" y="129.0" class="bar-label-sm" text-anchor="middle">-0.29</text>
+<text x="487.4" y="85.5" class="bar-label-sm" text-anchor="middle">0.77</text>
+<text x="475.0" y="350.0" class="axis-label" text-anchor="middle">2021</text>
+<rect x="525.8" y="97.3" width="20.8" height="11.3" class="bar-b"/>
+<rect x="550.6" y="108.6" width="20.8" height="25.2" class="bar-c"/>
+<text x="536.2" y="91.3" class="bar-label-sm" text-anchor="middle">0.51</text>
+<text x="561.1" y="147.8" class="bar-label-sm" text-anchor="middle">-1.14</text>
+<text x="548.6" y="350.0" class="axis-label" text-anchor="middle">2022</text>
+<rect x="599.4" y="108.6" width="20.8" height="91.0" class="bar-b"/>
+<rect x="624.3" y="108.6" width="20.8" height="66.4" class="bar-c"/>
+<text x="609.9" y="213.6" class="bar-label-sm" text-anchor="middle">-4.11</text>
+<text x="634.7" y="189.0" class="bar-label-sm" text-anchor="middle">-3</text>
+<text x="622.3" y="350.0" class="axis-label" text-anchor="middle">2023</text>
+<rect x="673.1" y="108.6" width="20.8" height="17.5" class="bar-b"/>
+<rect x="697.9" y="108.6" width="20.8" height="8.2" class="bar-c"/>
+<text x="683.5" y="140.1" class="bar-label-sm" text-anchor="middle">-0.79</text>
+<text x="708.3" y="130.8" class="bar-label-sm" text-anchor="middle">-0.37</text>
+<text x="695.9" y="350.0" class="axis-label" text-anchor="middle">2024</text>
+<rect x="746.7" y="108.6" width="20.8" height="137.3" class="bar-b"/>
+<rect x="771.5" y="108.6" width="20.8" height="39.2" class="bar-c"/>
+<text x="757.1" y="259.9" class="bar-label-sm" text-anchor="middle">-6.2</text>
+<text x="782.0" y="161.8" class="bar-label-sm" text-anchor="middle">-1.77</text>
+<text x="769.5" y="350.0" class="axis-label" text-anchor="middle">2025</text>
+<rect x="820.4" y="108.6" width="20.8" height="116.2" class="bar-b-q"/>
+<rect x="845.2" y="88.9" width="20.8" height="19.7" class="bar-c-q"/>
+<text x="830.8" y="238.8" class="bar-label-sm" text-anchor="middle">-5.25</text>
+<text x="855.6" y="82.9" class="bar-label-sm" text-anchor="middle">0.89</text>
+<text x="843.2" y="350.0" class="axis-label-q" text-anchor="middle">26Q2</text>
+<line x1="70" y1="20" x2="70" y2="330" class="axis-line"/>
+<rect x="70" y="362" width="14" height="14" class="bar-b"/><text x="90" y="374" class="chart-note">B 投資活動</text>
+<rect x="180" y="362" width="14" height="14" class="bar-c"/><text x="200" y="374" class="chart-note">C 融資活動</text>
+<rect x="310" y="362" width="14" height="14" class="combo-highlight" stroke="#B08D57"/><text x="330" y="374" class="chart-note">B負C正(疑似舉債投資)年度</text>
+<text x="590" y="374" class="chart-note">單位：億元；虛線框為 26Q2 單季，僅供參考不列入計分</text>
+</svg></div>
+  <div class="callout warn">
+    <b>數字現象：</b>10 年中僅 2021 年同時出現「A 為負（-2.28）且 C 為正（0.77）」的組合，符合規則四定義的最嚴重警戒訊號（本業現金流已為負，同時融資活動未見淨還債、甚至小幅淨流入）。細看 2021 年融資明細，C 轉正主要來自短期借款增加 2.38 億元，同時償還長期借款 1 億元、發放股利 0.37 億元，屬於「短期借款支應」而非股權募資，需列為警訊。其餘年度 C 多為負值（淨還債／發股利），顯示整體並非長期依賴舉債。另需留意 2026Q2 單季再度出現「B 大幅負值（-5.25）＋C 轉正（0.89）」的組合，雖然該季 A 仍為正值（2.17，未達最嚴重定義的門檻），但型態與 2021 年相似，建議後續追蹤 2026 全年是否重演。<br>
+    <b>個性標籤：</b>「單次警訊、非慣性舉債」型——過去十年僅一次觸發最嚴重訊號，且該年舉債規模不大（淨額 1.38 億元），不構成持續依賴外部資金的結構性問題，但近期單季再現類似型態，值得列為觀察重點帶入後續步驟。<br>
+    <b>規則四評分：60 / 100</b>（歷史上非慣性問題，但存在孤立警訊且近期有復發跡象，需觀察）
+  </div>
+
+  <h3>規則五：A &gt; D 現金流品質（嚴格二分法）</h3>
+  <table>
+    <thead><tr><th>年度</th><th>A</th><th>D（稅前淨利）</th><th>A &gt; D？</th></tr></thead>
+    <tbody>
+      <tr><td>2016</td><td>3.12</td><td>1.32</td><td class="pass">通過</td></tr>
+      <tr><td>2017</td><td>2.72</td><td>2.23</td><td class="pass">通過</td></tr>
+      <tr><td>2018</td><td class="neg">-4.41</td><td>2.63</td><td class="fail">不通過</td></tr>
+      <tr><td>2019</td><td>4.62</td><td>0.43</td><td class="pass">通過</td></tr>
+      <tr><td>2020</td><td>2.26</td><td class="neg">-0.68</td><td class="pass">通過（D為負，A為正）</td></tr>
+      <tr><td>2021</td><td class="neg">-2.28</td><td>2.43</td><td class="fail">不通過</td></tr>
+      <tr><td>2022</td><td>1.62</td><td>2.59</td><td class="fail">不通過</td></tr>
+      <tr><td>2023</td><td>2.99</td><td class="neg">-0.42</td><td class="pass">通過（D為負，A為正）</td></tr>
+      <tr><td>2024</td><td>5.00</td><td>1.09</td><td class="pass">通過</td></tr>
+      <tr><td>2025</td><td>4.19</td><td class="neg">-0.14</td><td class="pass">通過（D為負，A為正）</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>數字現象：</b>10 年中 7 年通過（A&gt;D）、3 年不通過（2018、2021、2022），通過率 70%。值得注意的是近三年（2023–2025）D 有兩年為負值（虧損），但同期 A 皆維持正值，屬於「帳面虧損、現金仍能進帳」的型態。<br>
+    <b>個性標籤：</b>「現金優於帳面」型——多數年度現金流品質優於會計淨利，不是靠灌水的帳面獲利撐場面，但 2018、2021、2022 三年不通過也提醒本業現金創造能力並非年年穩定。<br>
+    <b>規則五評分：70 / 100</b>（良好）
+  </div>
+
+  <h3>規則六：E 期末現金餘額穩定性</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" class="bar-chart" role="img">
+<line x1="70" y1="320.0" x2="840" y2="320.0" class="grid-line"/>
+<text x="60" y="324.0" class="axis-label" text-anchor="end">-3</text>
+<line x1="70" y1="270.0" x2="840" y2="270.0" class="grid-zero"/>
+<text x="60" y="274.0" class="axis-label" text-anchor="end">0</text>
+<line x1="70" y1="220.0" x2="840" y2="220.0" class="grid-line"/>
+<text x="60" y="224.0" class="axis-label" text-anchor="end">3</text>
+<line x1="70" y1="170.0" x2="840" y2="170.0" class="grid-line"/>
+<text x="60" y="174.0" class="axis-label" text-anchor="end">6</text>
+<line x1="70" y1="120.0" x2="840" y2="120.0" class="grid-line"/>
+<text x="60" y="124.0" class="axis-label" text-anchor="end">9</text>
+<line x1="70" y1="70.0" x2="840" y2="70.0" class="grid-line"/>
+<text x="60" y="74.0" class="axis-label" text-anchor="end">12</text>
+<line x1="70" y1="20.0" x2="840" y2="20.0" class="grid-line"/>
+<text x="60" y="24.0" class="axis-label" text-anchor="end">15</text>
+<rect x="84.7" y="100.0" width="40.6" height="170.0" class="bar-pos"/>
+<text x="105.0" y="94.0" class="bar-label" text-anchor="middle">10.2</text>
+<text x="105.0" y="340.0" class="axis-label" text-anchor="middle">2016</text>
+<rect x="154.7" y="104.2" width="40.6" height="165.8" class="bar-pos"/>
+<text x="175.0" y="98.2" class="bar-label" text-anchor="middle">9.95</text>
+<text x="175.0" y="340.0" class="axis-label" text-anchor="middle">2017</text>
+<rect x="224.7" y="141.2" width="40.6" height="128.8" class="bar-pos"/>
+<text x="245.0" y="135.2" class="bar-label" text-anchor="middle">7.73</text>
+<text x="245.0" y="340.0" class="axis-label" text-anchor="middle">2018</text>
+<rect x="294.7" y="130.0" width="40.6" height="140.0" class="bar-pos"/>
+<text x="315.0" y="124.0" class="bar-label" text-anchor="middle">8.4</text>
+<text x="315.0" y="340.0" class="axis-label" text-anchor="middle">2019</text>
+<rect x="364.7" y="65.0" width="40.6" height="205.0" class="bar-pos"/>
+<text x="385.0" y="59.0" class="bar-label" text-anchor="middle">12.3</text>
+<text x="385.0" y="340.0" class="axis-label" text-anchor="middle">2020</text>
+<rect x="434.7" y="93.3" width="40.6" height="176.7" class="bar-pos"/>
+<text x="455.0" y="87.3" class="bar-label" text-anchor="middle">10.6</text>
+<text x="455.0" y="340.0" class="axis-label" text-anchor="middle">2021</text>
+<rect x="504.7" y="75.0" width="40.6" height="195.0" class="bar-pos"/>
+<text x="525.0" y="69.0" class="bar-label" text-anchor="middle">11.7</text>
+<text x="525.0" y="340.0" class="axis-label" text-anchor="middle">2022</text>
+<rect x="574.7" y="147.2" width="40.6" height="122.8" class="bar-trough"/>
+<text x="595.0" y="141.2" class="bar-label" text-anchor="middle">7.37</text>
+<text x="595.0" y="340.0" class="axis-label" text-anchor="middle">2023</text>
+<rect x="644.7" y="46.7" width="40.6" height="223.3" class="bar-peak"/>
+<text x="665.0" y="40.7" class="bar-label" text-anchor="middle">13.4</text>
+<text x="665.0" y="340.0" class="axis-label" text-anchor="middle">2024</text>
+<rect x="714.7" y="113.8" width="40.6" height="156.2" class="bar-pos"/>
+<text x="735.0" y="107.8" class="bar-label" text-anchor="middle">9.37</text>
+<text x="735.0" y="340.0" class="axis-label" text-anchor="middle">2025</text>
+<rect x="784.7" y="148.5" width="40.6" height="121.5" class="bar-quarter"/>
+<text x="805.0" y="142.5" class="bar-label-q" text-anchor="middle">7.29</text>
+<text x="805.0" y="340.0" class="axis-label-q" text-anchor="middle">26Q2</text>
+<line x1="70" y1="20" x2="70" y2="320" class="axis-line"/>
+<text x="70" y="366" class="chart-note">虛線框為 26Q2 單季，僅供參考不列入計分 · 單位：億元</text>
+</svg></div>
+  <div class="callout">
+    <b>數字現象：</b>E 在 7.37～13.4 億元區間反覆震盪，年增減幅經常超過 30%（如 2023→2024 +81.8%、2024→2025 -30.1%），並非平穩爬升的資金水位；十年頭尾對比（2016 年 10.2 億 → 2025 年 9.37 億）幾乎持平，未見長期趨勢向上。<br>
+    <b>個性標籤：</b>「水位起伏」型——現金餘額有一定基礎（未跌破 7 億元），但年度間波動明顯大於規則六建議的合理區間，與規則二觀察到的「金融資產調度頻繁」相互呼應，屬於資金活性較高、非靜態囤積現金的操作型態。<br>
+    <b>規則六評分：48 / 100</b>（需觀察）
+  </div>
+
+  <h2 style="font-family:var(--serif);margin-top:40px;">總評分與關卡建議</h2>
+  <div class="score-panel">
+    <div class="score-card"><div class="n">60</div><div class="label">規則一 · A趨勢</div></div>
+    <div class="score-card"><div class="n">65</div><div class="label">規則二 · B投資紀律</div></div>
+    <div class="score-card"><div class="n">50</div><div class="label">規則三 · B投資效益</div></div>
+    <div class="score-card"><div class="n">60</div><div class="label">規則四 · C融資合理性</div></div>
+    <div class="score-card"><div class="n">70</div><div class="label">規則五 · A&gt;D品質</div></div>
+    <div class="score-card"><div class="n">48</div><div class="label">規則六 · E穩定性</div></div>
+  </div>
+
+  <div class="verdict-box">
+    <h3>總分約 59 / 100（六項平均）</h3>
+    <p>總分落在 60% 門檻之下，且雖然十年間沒有出現「A為負＋B大幅負值＋C為正」三重疊加的最嚴重訊號同時發生於同一年度，但 2021 年確實出現「A為負＋C轉正（疑似舉債）」的孤立警訊，且 2026Q2 單季又浮現「B大幅負值＋C轉正」的相似型態。整體現金流體質評價為<b>「普通偏弱、需觀察」</b>，尚未達到明確的危險訊號，但也稱不上體質優異。</p>
+    <p style="margin-bottom:0;"><b>建議：</b>依規則，總分 &lt;60% 建議先不繼續深入基本面分析，除非你仍想往下看。若考量到公司實質資本支出小、金融資產調度屬性特殊（規則二、三的訊號強度本身較弱），也可以選擇繼續往第二步了解股價、EPS 與產業定位，再綜合判斷。</p>
+  </div>
+
+  <p><b>要繼續進行第二步（基本資訊查詢：股價／EPS／殖利率／營收）嗎？</b>還是先在這裡打住？</p>
+
+</section>
+</main>
+
+<footer>
+  高林股(1531) 現金流分析報告 · 版本 v1.0（第1步） · 生成時間：2026-08-27<br>
+  資料來源：現金流量表數據為使用者提供之 Goodinfo 截圖，非本次搜尋所得
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var links = document.querySelectorAll('.step-link');
+  var sections = [];
+  links.forEach(function(l) {
+    var id = l.getAttribute('href');
+    if (id) {
+      sections.push({id: id, link: l});
+      l.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(id).scrollIntoView({behavior: 'smooth'});
+      });
+    }
+  });
+  window.addEventListener('scroll', function() {
+    var pos = window.scrollY + 120;
+    sections.forEach(function(s) {
+      var el = document.querySelector(s.id);
+      if (el) {
+        var top = el.offsetTop, bottom = top + el.offsetHeight;
+        if (pos >= top && pos < bottom) {
+          links.forEach(function(l) { l.classList.remove('active'); });
+          s.link.classList.add('active');
+        }
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
