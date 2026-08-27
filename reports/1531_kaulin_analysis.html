@@ -127,7 +127,7 @@
 
 <nav class="stepnav" id="stepnav">
   <a href="#step1" class="step-link active" data-step="1">① 現金流六大規則</a>
-  <a class="locked">② 基本資訊</a>
+  <a href="#step2" class="step-link" data-step="2">② 基本資訊</a>
   <a class="locked">③ 法說會</a>
   <a class="locked">④ 營收趨勢</a>
   <a class="locked">⑤ 前瞻本益比</a>
@@ -482,13 +482,79 @@
     <p style="margin-bottom:0;"><b>建議：</b>依規則，總分 &lt;60% 建議先不繼續深入基本面分析，除非你仍想往下看。若考量到公司實質資本支出小、金融資產調度屬性特殊（規則二、三的訊號強度本身較弱），也可以選擇繼續往第二步了解股價、EPS 與產業定位，再綜合判斷。</p>
   </div>
 
-  <p><b>要繼續進行第二步（基本資訊查詢：股價／EPS／殖利率／營收）嗎？</b>還是先在這裡打住？</p>
+
+</section>
+
+<section id="step2">
+  <h2 class="step-title"><span class="step-num">STEP 2 / 6</span> 基本資訊查詢</h2>
+  <div class="callout">現金流體質評價為「普通偏弱、需觀察」，總分略低於 60% 門檻，但因無慣性舉債等結構性訊號，依你的指示繼續查看基本面資訊。</div>
+
+  <h3>股價與市值</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>最近查得股價</td><td>13.10 元（+0.10，+0.77%）</td></tr>
+      <tr><td>52 週高／低</td><td>13.55 / 11.20 元</td></tr>
+      <tr><td>市值</td><td>約 23.9 億元</td></tr>
+      <tr><td>本益比（近四季）</td><td>無法計算（近四季 EPS 為負值區間，網站顯示「--」）</td></tr>
+      <tr><td>股價淨值比</td><td>約 0.66 倍</td></tr>
+      <tr><td>每股淨值</td><td>19.70～20.07 元（不同資料時點略有差異）</td></tr>
+    </tbody>
+  </table>
+  <div class="snap-note">⚠️ 即時報價提醒：以上股價為「查詢當下的單一快照」，查得於 2026/07/15 收盤，並非即時報價，與你查詢當下的實際股價可能已有落差，請以看盤軟體/券商App為準。資料來源：<a href="https://www.cnyes.com/twstock/1531" target="_blank">鉅亨網 高林股總覽</a>、<a href="https://tw.stock.yahoo.com/quote/1531.TW/profile" target="_blank">Yahoo股市基本資料</a>（2026/07/14 資料時間）</div>
+
+  <h3>EPS 與獲利能力</h3>
+  <table>
+    <thead><tr><th>期間</th><th>EPS（元）</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>2026 Q1</td><td>0.03</td><td>季減 73%，年減 82%</td></tr>
+      <tr><td>2025 全年</td><td class="neg">-0.12</td><td>轉虧</td></tr>
+      <tr><td>2024 全年</td><td class="pos">0.47</td><td>—</td></tr>
+      <tr><td>2023 全年</td><td class="pos">0.08</td><td>—</td></tr>
+      <tr><td>2022 全年</td><td class="pos">1.02</td><td>—</td></tr>
+      <tr><td>近四季合計</td><td class="neg">-0.26</td><td>2025Q2~2026Q1</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">近 1-2 年查無股票分割或減資紀錄，股本維持在 18.2 億元左右，EPS 各期可直接比較，不需回溯調整。</div>
+  <div class="snap-note">資料來源：<a href="https://www.cnyes.com/twstock/1531" target="_blank">鉅亨網</a>、<a href="https://winvest.tw/Stock/Symbol/Comment/1531" target="_blank">Win投資</a>（查詢於 2026/08/27）</div>
+
+  <h3>營收概況</h3>
+  <table>
+    <thead><tr><th>期間</th><th>營收</th><th>年增減</th></tr></thead>
+    <tbody>
+      <tr><td>2026年5月（單月）</td><td>1.32 億元</td><td>月增 5.1%／年減 4.9%</td></tr>
+      <tr><td>2026年1-5月（累計）</td><td>6.05 億元</td><td>年減 10.84%</td></tr>
+      <tr><td>2025 全年</td><td>14.91 億元</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="snap-note">資料來源：<a href="https://winvest.tw/Stock/Symbol/Comment/1531" target="_blank">Win投資 高林股頁面</a>（查詢於 2026/08/27）；完整近8-12期月營收趨勢圖將在第4步以長條圖呈現。</div>
+
+  <h3>股利與殖利率</h3>
+  <div class="callout warn">
+    <b>數字現象：</b>2025年實際發放現金股利為 0.4 元（除息日 2025/07/14，現金殖利率約 3.05%~3.23%，兩家資料源數字略有出入）。但 Yahoo股市另顯示「股利所屬期間2025」欄位為<b>擬定發放 1.00 元</b>（標註「預」，代表尚未經股東會正式決議）。2025 全年 EPS 為 -0.12 元（虧損），若最終真的配發 1.00 元現金股利，代表將動用保留盈餘配發，不是來自當年度獲利，建議之後留意股東會正式決議公告與可分配盈餘狀況，不要直接假設 1.00 元會如數發放。
+  </div>
+
+  <h3>公司基本資料</h3>
+  <table>
+    <thead><tr><th>項目</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td>產業類別</td><td>電機機械</td></tr>
+      <tr><td>主要產品</td><td>工業用縫紉機及其零組件（占比約 96.83%）</td></tr>
+      <tr><td>成立時間</td><td>1965/10/05；掛牌日期 2000/09/11</td></tr>
+      <tr><td>董事長／總經理</td><td>林陳雅子／林培嘉</td></tr>
+      <tr><td>股本</td><td>約 18.21 億元</td></tr>
+    </tbody>
+  </table>
+  <div class="snap-note">資料來源：<a href="https://tw.stock.yahoo.com/quote/1531.TW/profile" target="_blank">Yahoo股市基本資料</a></div>
+
+  <h3>法說會資料</h3>
+  <div class="callout">查詢公開資訊觀測站與投資人關係平台，<b>目前未查到高林股近期公開法人說明會簡報或逐字稿</b>。以公司規模（市值約24億元的中小型傳產股）研判，可能未定期召開對外公開法說會。若你手邊有该公司法說會或股東會資料，可以提供給我補充第3步分析；若沒有，建議直接跳過第3步，進入第4步營收趨勢視覺化。</div>
 
 </section>
 </main>
 
 <footer>
-  高林股(1531) 現金流分析報告 · 版本 v1.0（第1步） · 生成時間：2026-08-27<br>
+  高林股(1531) 現金流分析報告 · 版本 v1.1（第1-2步） · 生成時間：2026-08-27<br>
   資料來源：現金流量表數據為使用者提供之 Goodinfo 截圖，非本次搜尋所得
 </footer>
 
