@@ -188,7 +188,7 @@ img.visitor-badge{opacity:0.85;margin-top:6px;}
     <div class="hero-meta">
       <span class="tag">股票代號 2732</span>
       <span class="tag">分析框架：現金流優先，基本面在後</span>
-      <span class="tag">報告版本 v4｜第 4 步完成</span>
+      <span class="tag">報告版本 v5｜第 5 步完成</span>
     </div>
     <div class="badge-row">
       <img class="visitor-badge" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.stock-analysis.2732" alt="Visitors">
@@ -202,7 +202,7 @@ img.visitor-badge{opacity:0.85;margin-top:6px;}
     <div class="pad active" data-target="step2">② 基本資訊</div>
     <div class="pad active" data-target="step3">③ 法說會</div>
     <div class="pad active" data-target="step4">④ 營收趨勢</div>
-    <div class="pad locked" data-target="step5">⑤ 前瞻本益比</div>
+    <div class="pad active" data-target="step5">⑤ 前瞻本益比</div>
     <div class="pad locked" data-target="step6">⑥ 投資決策</div>
   </div>
 </nav>
@@ -766,10 +766,66 @@ img.visitor-badge{opacity:0.85;margin-top:6px;}
 
 </section>
 
+<section class="step" id="step5">
+  <div class="step-head">
+    <span class="step-num">Step 05</span>
+    <h2 class="step-title">前瞻本益比／EPS 預估</h2>
+  </div>
+  <div class="step-progress">【第 5 步／共 6 步：前瞻本益比／EPS 預估】── 現金流體質＋基本面確認後的估值拼圖。</div>
+
+  <div class="callout note">
+    <p><strong>誠實告知：搜尋範圍內找不到券商／法人針對六角次一年度（2026）或次二年度（2027）EPS 的正式研究報告預估數字。</strong>六角是市值約 30 億元的小型上櫃股，法人覆蓋有限，多數第三方網站（FinLab、財報狗等）呈現的是「近四季 EPS」等既有數字的技術性回推，不是分析師的前瞻預估。以下改用「情境敏感度估算」，並清楚標示這是根據公司自身財報數字與展望說法所做的推算，不是市場共識預測。</p>
+  </div>
+
+  <div class="rule-block">
+    <h3>一個重要發現：TTM 本益比與「假設性前瞻本益比」的巨大落差</h3>
+    <div class="rule-body">
+      <p>目前市場看到的本益比（約 33.6–33.8 倍，第二步已確認）是用<strong>近四季（TTM）EPS 約 1.92 元</strong>回推的，而這近四季裡有 3 個季度（2025 Q2–Q4）落在 2025 年獲利重摔的低谷期。<strong>換句話說，目前 33 倍左右的本益比，很大一部分是被 2025 年的「壞資料」拉高的。</strong></p>
+      <p>如果用 2026 上半年已實現的 EPS 2.13 元為基礎，搭配公司自身對下半年「傳統旺季、費用控制得宜、獲利可望持續成長」的展望，做三種情境的全年 EPS 敏感度估算：</p>
+    </div>
+    <table>
+      <caption>2026 全年 EPS 情境敏感度估算（非法人預估，Claude 依 H1 實績＋公司展望自行推算）</caption>
+      <thead><tr><th>情境</th><th>假設</th><th>H2 EPS（估）</th><th>全年 EPS（估）</th><th>前瞻本益比（現價 64.6 元）</th></tr></thead>
+      <tbody>
+        <tr><td>保守</td><td>H2 與 H1 打平</td><td>2.13</td><td class="scorecell">4.26</td><td>15.2 倍</td></tr>
+        <tr><td>中性</td><td>H2 較 H1 成長約 15–20%（呼應公司「持續成長」說法）</td><td>2.50</td><td class="scorecell">4.65</td><td>13.9 倍</td></tr>
+        <tr><td>樂觀</td><td>H2 較 H1 成長約 30–40%（比照 2025 年「下半年顯著優於上半年」的模式）</td><td>2.90</td><td class="scorecell">5.05</td><td>12.8 倍</td></tr>
+      </tbody>
+    </table>
+    <p class="rule-body" style="font-size:14.5px;">三種情境下的前瞻本益比都落在 <strong>12.8–15.2 倍</strong>，遠低於目前 TTM 本益比的 33 倍區間——如果六角真的能延續上半年的獲利動能，現在的股價用「未來獲利」來看並不算貴；但這個結論完全建立在「H2 動能能否延續」這個尚未證實的假設上，第三步已經指出 Q2 環比動能其實在降溫，因此這裡的 12.8–15.2 倍應該看成「情境樂觀」的下緣，不是保守的基準。</p>
+  </div>
+
+  <div class="rule-block">
+    <h3>目標本益比法：反推目標價區間</h3>
+    <div class="rule-body">
+      <p>用「情境 EPS × 假設本益比倍數」反推目標價，倍數採 15／20／25 倍三組情境（分別對應「保守回歸估值」、「持平同業平均」、「維持目前市場給的溢價估值」），這是敏感度試算，不是預測：</p>
+    </div>
+    <table>
+      <caption>目標本益比法反推目標價（元）</caption>
+      <thead><tr><th>情境 EPS</th><th>15 倍</th><th>20 倍</th><th>25 倍</th></tr></thead>
+      <tbody>
+        <tr><td>保守 4.26 元</td><td>63.9</td><td>85.2</td><td>106.5</td></tr>
+        <tr><td>中性 4.65 元</td><td>69.8</td><td>93.0</td><td>116.3</td></tr>
+        <tr><td>樂觀 5.05 元</td><td>75.8</td><td>101.0</td><td>126.3</td></tr>
+      </tbody>
+    </table>
+    <p class="rule-body" style="font-size:14.5px;">目標價區間從 63.9 元（保守情境×15倍，接近甚至低於目前股價）到 126.3 元（樂觀情境×25倍）不等，落差非常大——這正說明「倍數怎麼選」對目標本益比法的結果影響極大，沒有標準答案，這裡呈現的是敏感度而非目標價預測。</p>
+  </div>
+
+  <div class="callout gate-warn">
+    <p><strong>誠實揭露預估的不確定性：六角過去對自身展望的樂觀說法，曾與實際結果出現明顯落差。</strong>2025 年初除息時，公司對 2025 年的展望是「正向」的<span class="snap-note">（<em>來源：Yahoo股市新聞，約2025年初</em> tw.stock.yahoo.com「六角填息達8成 2025展望正向」）</span>，但 2025 年實際 EPS 最終重摔到 1.09 元，創近 15 年新低。這個先例提醒：公司自身「展望穩健成長」「Q3 旺季看升」等說法，在轉化為實際財報數字前，都應保留一定的懷疑空間，本節的情境估算也不例外。</p>
+  </div>
+
+  <div class="callout note">
+    <p>第 5 步完成。要不要繼續進行第 6 步：投資決策推理？</p>
+  </div>
+
+</section>
+
 </div>
 
 <footer>
-  <p>報告版本 v4｜生成時間：2026-08-28｜第 1 步資料來源：使用者提供 Goodinfo 現金流量表截圖；第 2–4 步資料來源：Yahoo股市、Anue鉅亨、時報資訊、散戶鬥嘴鼓（整理自 MOPS）等網路搜尋結果，詳見各段落引註</p>
+  <p>報告版本 v5｜生成時間：2026-08-28｜第 1 步資料來源：使用者提供 Goodinfo 現金流量表截圖；第 2–5 步資料來源：Yahoo股市、Anue鉅亨、時報資訊、FinLab、散戶鬥嘴鼓（整理自 MOPS）等網路搜尋結果，詳見各段落引註；第 5 步 EPS 情境估算為 Claude 自行推算，非法人預估</p>
   <p>本報告為個人研究筆記整理，非投資建議。</p>
 </footer>
 
@@ -780,7 +836,7 @@ document.querySelectorAll('.pad.active').forEach(function(el){
     if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
   });
 });
-var activeStepIds = ['step1', 'step2', 'step3', 'step4'];
+var activeStepIds = ['step1', 'step2', 'step3', 'step4', 'step5'];
 var sections = activeStepIds.map(function(id){ return document.getElementById(id); }).filter(Boolean);
 if('IntersectionObserver' in window && sections.length){
   var pads = {};
