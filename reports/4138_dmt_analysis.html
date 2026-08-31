@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>曜亞國際（4138）個股初步分析 — 現金流優先</title>
+<style>
+  :root {
+    --bg: #f2f6f4;
+    --paper: #fdfffe;
+    --ink: #1c2b2a;
+    --ink-soft: #5c6f6c;
+    --ink-faint: #7f938f;
+    --line: #dfe6e3;
+    --accent: #2f6b5e;
+    --accent-soft: #c99a5b;
+    --pos: #3f7a5f;
+    --neg: #a8433a;
+    --warn-bg: #eef3ea;
+    --warn-border: #7fa88e;
+    --lock: #c4d0cc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 80px; }
+  header.hero {
+    padding: 56px 24px 40px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 34px;
+    margin: 0 0 8px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin: 0;
+  }
+  img.badge { opacity: 0.85; margin-top: 14px; }
+
+  nav.stepnav {
+    position: sticky;
+    top: 0;
+    background: rgba(242,246,244,0.96);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--line);
+    z-index: 50;
+    padding: 0 24px;
+  }
+  .stepnav-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    font-family: "Inter", -apple-system, sans-serif;
+  }
+  .stepnav-inner a {
+    display: block;
+    padding: 14px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .stepnav-inner a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .stepnav-inner a.locked {
+    color: var(--lock);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .step-label {
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  h2 { font-size: 24px; margin: 0 0 20px; }
+  h3 { font-size: 18px; margin: 32px 0 12px; color: var(--accent); }
+
+  .callout {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px;
+    margin: 0 0 28px;
+    font-size: 15px;
+  }
+  .callout b { color: var(--ink); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 16px 0 8px;
+    font-family: "Inter", -apple-system, sans-serif;
+  }
+  th, td {
+    padding: 8px 10px;
+    text-align: right;
+    border-bottom: 1px solid var(--line);
+  }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    color: var(--ink-faint);
+    font-weight: 600;
+    font-size: 12px;
+    border-bottom: 1px solid var(--ink-faint);
+  }
+  td.pos { color: var(--pos); }
+  td.neg { color: var(--neg); font-weight: 600; }
+  tr.quarter td { font-style: italic; color: var(--ink-faint); }
+  td.pass { color: var(--pos); font-weight: 700; }
+  td.fail { color: var(--neg); font-weight: 700; }
+
+  .chart-wrap { margin: 20px 0; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 8px; }
+  .chart-wrap svg { width: 100%; height: auto; display: block; }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+    font-family: "Inter", -apple-system, sans-serif;
+  }
+  .score-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px;
+  }
+  .score-card .n { font-size: 11px; color: var(--ink-faint); margin-bottom: 4px; }
+  .score-card .v { font-size: 26px; font-weight: 700; }
+  .score-card .v.watch { color: var(--accent-soft); }
+  .score-card .v.good { color: var(--pos); }
+  .score-card .v.bad { color: var(--neg); }
+  .score-total {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .score-total .n { color: #b9cbc6; }
+  .score-total .v { color: #d9e8c6 !important; }
+
+  .snap-note {
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    padding-left: 10px;
+    border-left: 2px solid var(--line);
+  }
+
+  footer {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">台股個股初步分析 · 現金流優先，基本面在後</div>
+  <h1>曜亞國際（4138）</h1>
+  <p class="subtitle">上櫃生技醫療類股。從現金流量表開始，暫且撇開股價與產業印象，先看這家公司近十年的錢是怎麼流動的。</p>
+  <img class="badge" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.stock-analysis.4138" alt="Visitors" style="opacity:0.85;">
+</header>
+
+<nav class="stepnav">
+  <div class="stepnav-inner" id="stepnavInner">
+    <a href="#step1" class="navlink" data-step="1">① 現金流六大規則</a>
+    <a href="#step2" class="navlink" data-step="2">② 基本資訊</a>
+    <a href="#step3" class="navlink" data-step="3">③ 法說會</a>
+    <a href="#step4" class="navlink" data-step="4">④ 營收趨勢</a>
+    <a href="#step5" class="navlink" data-step="5">⑤ 前瞻本益比</a>
+    <a href="#step6" class="navlink" data-step="6">⑥ 投資決策</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section id="step1">
+  <div class="step-label">【第 1 步／共 6 步：現金流量表六大規則分析】</div>
+  <h2>盲測階段 — 只看現金流本身，先不查股價與產業背景</h2>
+
+  <div class="callout">
+    <b>總評 71.7 分（良好，可繼續往下看）。</b>曜亞十年間 A（營業現金流）維持在 1.44–3.61 億的穩定區間，近三年更逐步墊高；C（融資活動）十年間<b>從未轉正</b>，代表資金結構偏向自有現金支應、持續還債配息，沒有舉債投資的跡象；獲利品質（A&gt;D）通過率高達 80%。整體現金流體質屬於「穩健型」，規模雖小但體質扎實。
+  </div>
+
+  <p><b>資料來源說明：</b>本節數據為使用者提供之截圖（Goodinfo 現金流量表頁面總表），涵蓋 2016–2025 年度與 26Q2 單季資料。<b>目前僅有 A/B/C/D/E 總表，尚未取得投資活動與融資活動細項</b>，因此規則二、三、四的評分屬於暫定，建議後續補充細項截圖以校正判斷。</p>
+
+  <h3>現金流量原始數據（億元）</h3>
+  <table>
+    <thead>
+      <tr><th>年度</th><th>稅前淨利(D)</th><th>營業活動(A)</th><th>投資活動(B)</th><th>融資活動(C)</th><th>期末餘額(E)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2016</td><td>1.83</td><td class="pos">2.47</td><td class="neg">-2.41</td><td class="neg">-1.2</td><td>9.19</td></tr>
+      <tr><td>2017</td><td>1.76</td><td class="pos">1.44</td><td class="neg">-0.07</td><td class="neg">-1.17</td><td>9.25</td></tr>
+      <tr><td>2018</td><td>1.42</td><td class="pos">1.46</td><td class="pos">2.19</td><td class="neg">-4.28</td><td>8.69</td></tr>
+      <tr><td>2019</td><td>1.6</td><td class="pos">2.67</td><td class="neg">-3.12</td><td class="neg">-1.38</td><td>6.81</td></tr>
+      <tr><td>2020</td><td>1.49</td><td class="pos">2.49</td><td class="pos">0.17</td><td class="neg">-1.51</td><td>7.85</td></tr>
+      <tr><td>2021</td><td>1.74</td><td class="pos">2.78</td><td class="neg">-0.92</td><td class="neg">-1.49</td><td>8.13</td></tr>
+      <tr><td>2022</td><td>1.78</td><td class="pos">2.77</td><td class="neg">-2.51</td><td class="neg">-1.87</td><td>6.79</td></tr>
+      <tr><td>2023</td><td>2.97</td><td class="pos">3.61</td><td class="neg">-0.29</td><td class="neg">-0.85</td><td>9.25</td></tr>
+      <tr><td>2024</td><td>2.9</td><td class="pos">2.24</td><td class="neg">-0.62</td><td class="neg">-3.79</td><td>7.26</td></tr>
+      <tr><td>2025</td><td>2.18</td><td class="pos">3.15</td><td class="neg">-0.48</td><td class="neg">-2.68</td><td>7.23</td></tr>
+      <tr class="quarter"><td>26Q2（單季）</td><td>1.02</td><td>0.4</td><td>0.5</td><td>-2.15</td><td>5.98</td></tr>
+    </tbody>
+  </table>
+  <div class="snap-note">來源：使用者提供之 Goodinfo 現金流量表截圖（總表）。</div>
+
+  <h3>規則一：營業活動現金流量（A）逐年趨勢</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" font-family="Inter, -apple-system, sans-serif">
+<text x="450.0" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#1c2b2a">規則一：營業活動現金流量（A）逐年趨勢</text>
+<text x="450.0" y="40" text-anchor="middle" font-size="11" fill="#6f8481">虛線框為26Q2單季數字，僅供參考不列入計分</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="none"/>
+<text x="52" y="334.0" text-anchor="end" font-size="10" fill="#7f938f">0.0</text>
+<line x1="60" y1="262.6" x2="870" y2="262.6" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="266.6" text-anchor="end" font-size="10" fill="#7f938f">1.0</text>
+<line x1="60" y1="195.1" x2="870" y2="195.1" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="199.1" text-anchor="end" font-size="10" fill="#7f938f">2.0</text>
+<line x1="60" y1="127.7" x2="870" y2="127.7" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="131.7" text-anchor="end" font-size="10" fill="#7f938f">3.0</text>
+<line x1="60" y1="60.2" x2="870" y2="60.2" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="64.2" text-anchor="end" font-size="10" fill="#7f938f">4.0</text>
+<rect x="76.6" y="163.4" width="40.5" height="166.6" fill="#5f8f80" rx="2"/>
+<text x="96.8" y="158.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.47</text>
+<text x="96.8" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2016</text>
+<rect x="150.2" y="232.9" width="40.5" height="97.1" fill="#c17a6f" rx="2"/>
+<text x="170.5" y="227.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">1.44</text>
+<text x="170.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2017</text>
+<rect x="223.8" y="231.5" width="40.5" height="98.5" fill="#5f8f80" rx="2"/>
+<text x="244.1" y="226.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">1.46</text>
+<text x="244.1" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2018</text>
+<rect x="297.5" y="149.9" width="40.5" height="180.1" fill="#5f8f80" rx="2"/>
+<text x="317.7" y="144.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.67</text>
+<text x="317.7" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2019</text>
+<rect x="371.1" y="162.1" width="40.5" height="167.9" fill="#5f8f80" rx="2"/>
+<text x="391.4" y="157.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.49</text>
+<text x="391.4" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2020</text>
+<rect x="444.8" y="142.5" width="40.5" height="187.5" fill="#5f8f80" rx="2"/>
+<text x="465.0" y="137.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.78</text>
+<text x="465.0" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2021</text>
+<rect x="518.4" y="143.2" width="40.5" height="186.8" fill="#5f8f80" rx="2"/>
+<text x="538.6" y="138.2" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.77</text>
+<text x="538.6" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2022</text>
+<rect x="592.0" y="86.5" width="40.5" height="243.5" fill="#c99a5b" rx="2"/>
+<text x="612.3" y="81.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">3.61</text>
+<text x="612.3" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2023</text>
+<rect x="665.7" y="178.9" width="40.5" height="151.1" fill="#5f8f80" rx="2"/>
+<text x="685.9" y="173.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.24</text>
+<text x="685.9" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2024</text>
+<rect x="739.3" y="117.5" width="40.5" height="212.5" fill="#5f8f80" rx="2"/>
+<text x="759.5" y="112.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">3.15</text>
+<text x="759.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2025</text>
+<rect x="812.9" y="303.0" width="40.5" height="27.0" fill="none" stroke="#94a7a3" stroke-width="1.5" stroke-dasharray="4,3" rx="2" opacity="0.85"/>
+<text x="833.2" y="298.0" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">0.40</text>
+<text x="833.2" y="346.0" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">26Q2</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#33413f" stroke-width="1.3"/>
+<text x="872" y="44" font-size="10" fill="#7f938f">億元</text>
+</svg></div>
+  <p>A 十年間都維持在正值，區間落在 1.44–3.61 億，波動幅度不算大。2016 年為近十年低點 2.47 億後於 2017 年降到最低點 1.44 億，隨後緩步回升，<b>2023 年來到十年新高 3.61 億</b>，2024 年小幅回落到 2.24 億，2025 年再度回升至 3.15 億。整體呈「先降後升」的趨勢，近三年明顯優於 2016–2020 年區間。26Q2 單季僅 0.4 億，明顯低於過去單季一般水準，需留意是否為單季波動或全年放緩的前兆，但單季數字不宜過度解讀。<b>整體屬於「規模雖小但持續正向造血」型。</b></p>
+
+  <h3>規則二：投資活動現金流量（B）投資紀律評估 <span style="font-size:13px;color:var(--ink-faint);font-weight:400;">（暫定，待細項校正）</span></h3>
+  <div class="chart-wrap"><svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" font-family="Inter, -apple-system, sans-serif">
+<text x="450.0" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#1c2b2a">規則二／三：投資活動現金流量（B）逐年趨勢</text>
+<text x="450.0" y="40" text-anchor="middle" font-size="11" fill="#6f8481">虛線框為26Q2單季，僅供參考不列入計分</text>
+<line x1="60" y1="348.9" x2="870" y2="348.9" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="352.9" text-anchor="end" font-size="10" fill="#7f938f">-4.0</text>
+<line x1="60" y1="257.2" x2="870" y2="257.2" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="261.2" text-anchor="end" font-size="10" fill="#7f938f">-2.0</text>
+<line x1="60" y1="165.5" x2="870" y2="165.5" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="none"/>
+<text x="52" y="169.5" text-anchor="end" font-size="10" fill="#7f938f">0.0</text>
+<line x1="60" y1="73.8" x2="870" y2="73.8" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="77.8" text-anchor="end" font-size="10" fill="#7f938f">2.0</text>
+<rect x="76.6" y="165.5" width="40.5" height="110.5" fill="#a7b8a9" rx="2"/>
+<text x="96.8" y="289.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-2.41</text>
+<text x="96.8" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2016</text>
+<rect x="150.2" y="165.5" width="40.5" height="3.2" fill="#a7b8a9" rx="2"/>
+<text x="170.5" y="181.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-0.07</text>
+<text x="170.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2017</text>
+<rect x="223.8" y="65.1" width="40.5" height="100.4" fill="#c99a5b" rx="2"/>
+<text x="244.1" y="60.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">2.19</text>
+<text x="244.1" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2018</text>
+<rect x="297.5" y="165.5" width="40.5" height="143.1" fill="#c17a6f" rx="2"/>
+<text x="317.7" y="321.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-3.12</text>
+<text x="317.7" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2019</text>
+<rect x="371.1" y="157.7" width="40.5" height="7.8" fill="#5f8f80" rx="2"/>
+<text x="391.4" y="152.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">0.17</text>
+<text x="391.4" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2020</text>
+<rect x="444.8" y="165.5" width="40.5" height="42.2" fill="#a7b8a9" rx="2"/>
+<text x="465.0" y="220.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-0.92</text>
+<text x="465.0" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2021</text>
+<rect x="518.4" y="165.5" width="40.5" height="115.1" fill="#a7b8a9" rx="2"/>
+<text x="538.6" y="293.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-2.51</text>
+<text x="538.6" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2022</text>
+<rect x="592.0" y="165.5" width="40.5" height="13.3" fill="#a7b8a9" rx="2"/>
+<text x="612.3" y="191.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-0.29</text>
+<text x="612.3" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2023</text>
+<rect x="665.7" y="165.5" width="40.5" height="28.4" fill="#a7b8a9" rx="2"/>
+<text x="685.9" y="206.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-0.62</text>
+<text x="685.9" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2024</text>
+<rect x="739.3" y="165.5" width="40.5" height="22.0" fill="#a7b8a9" rx="2"/>
+<text x="759.5" y="200.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">-0.48</text>
+<text x="759.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2025</text>
+<rect x="812.9" y="142.6" width="40.5" height="22.9" fill="none" stroke="#94a7a3" stroke-width="1.5" stroke-dasharray="4,3" rx="2" opacity="0.85"/>
+<text x="833.2" y="137.6" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">0.50</text>
+<text x="833.2" y="346.0" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">26Q2</text>
+<line x1="60" y1="165.5" x2="870" y2="165.5" stroke="#33413f" stroke-width="1.3"/>
+<text x="872" y="44" font-size="10" fill="#7f938f">億元</text>
+</svg></div>
+  <p>B 十年間有 8 年為負值（持續投資），僅 2018、2020 年轉正，且正值金額不大（2.19 億、0.17 億），較可能是資產處分或金融資產調度所致，而非常態。負值年度中，除了 2019 年（-3.12 億）與 2022 年（-2.51 億）金額較大之外，其餘多落在 -0.07 至 -0.92 億的小額區間，相對 A 的規模而言（多數年度 |B| &lt; A），屬於溫和而非重砲式的投資支出，不像資本密集產業那樣長期大幅負值。<b>此規則的評分屬暫定，建議提供投資活動細項（固定資產增減 vs. 金融資產調度），以確認是否為穩定的設備汰換／擴充支出。</b></p>
+
+  <h3>規則三：投資效益分析（B 是否轉化為隔年 A 成長）<span style="font-size:13px;color:var(--ink-faint);font-weight:400;">（暫定）</span></h3>
+  <table>
+    <thead><tr><th>投資年度</th><th>當年 B</th><th>隔年 A</th><th>隔兩年 A</th><th>效果判讀</th></tr></thead>
+    <tbody>
+      <tr><td>2016</td><td class="neg">-2.41</td><td>1.44（2017）</td><td>1.46（2018）</td><td class="fail">隔年、隔兩年皆未轉強</td></tr>
+      <tr><td>2019</td><td class="neg">-3.12（十年最大手筆）</td><td>2.49（2020）</td><td>2.78（2021）</td><td>小幅轉強，效果延遲一年後顯現</td></tr>
+      <tr><td>2022</td><td class="neg">-2.51</td><td>3.61（2023，十年新高）</td><td>2.24（2024）</td><td class="pass">隔年明顯轉強</td></tr>
+    </tbody>
+  </table>
+  <p>三次金額較大的投資中，有兩次（2019、2022 年）在隔年看到 A 的成長，僅 2016 年那次沒有明顯效果。整體來看<b>投資轉化為造血能力的機率偏正向</b>，尤其 2022 年投入後、2023 年 A 創下十年新高，是本次分析中較明確的正向案例。<b>此規則需搭配細項（確認資金是否真的投入設備/產能而非理財調度）才能完全確認結論，目前評分屬暫定。</b></p>
+
+  <h3>規則四：融資活動（C）合理性 <span style="font-size:13px;color:var(--ink-faint);font-weight:400;">（暫定）</span></h3>
+  <p>C 十年間<b>每一年都是負值</b>，從未轉正，代表公司持續在用自有現金還債或配發股利，沒有出現任何一年靠舉債或現金增資來支應資金缺口。「A為負且C為正/小幅負」的最高警戒組合完全沒有觸發的空間——因為 A 十年間也始終為正值。這是六項規則中最一致、最無疑慮的一項，屬於財務結構穩健的正面訊號。<b>若能取得細項，可進一步確認 C 的負值主要來自股利發放還是償還既有借款，但即使不細分，方向性的判斷已相當明確。</b></p>
+
+  <h3>規則五：A &gt; D 現金流品質（嚴格二分法）</h3>
+  <table>
+    <thead><tr><th>年度</th><th>A</th><th>D</th><th>判定</th></tr></thead>
+    <tbody>
+      <tr><td>2016</td><td>2.47</td><td>1.83</td><td class="pass">通過</td></tr>
+      <tr><td>2017</td><td>1.44</td><td>1.76</td><td class="fail">不通過</td></tr>
+      <tr><td>2018</td><td>1.46</td><td>1.42</td><td class="pass">通過</td></tr>
+      <tr><td>2019</td><td>2.67</td><td>1.6</td><td class="pass">通過</td></tr>
+      <tr><td>2020</td><td>2.49</td><td>1.49</td><td class="pass">通過</td></tr>
+      <tr><td>2021</td><td>2.78</td><td>1.74</td><td class="pass">通過</td></tr>
+      <tr><td>2022</td><td>2.77</td><td>1.78</td><td class="pass">通過</td></tr>
+      <tr><td>2023</td><td>3.61</td><td>2.97</td><td class="pass">通過</td></tr>
+      <tr><td>2024</td><td>2.24</td><td>2.9</td><td class="fail">不通過</td></tr>
+      <tr><td>2025</td><td>3.15</td><td>2.18</td><td class="pass">通過</td></tr>
+    </tbody>
+  </table>
+  <p>十年間 <b>8 年通過，通過率 80%</b>，僅 2017、2024 兩年未通過。這代表帳上獲利絕大多數年度都能確實轉化為實際收到的現金，獲利品質偏高，是六項規則中表現最好的一項之一。</p>
+
+  <h3>規則六：期末現金餘額（E）穩定性</h3>
+  <div class="chart-wrap"><svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" font-family="Inter, -apple-system, sans-serif">
+<text x="450.0" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#1c2b2a">規則六：期末現金餘額（E）逐年趨勢</text>
+<text x="450.0" y="40" text-anchor="middle" font-size="11" fill="#6f8481">虛線框為26Q2單季，僅供參考不列入計分</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="none"/>
+<text x="52" y="334.0" text-anchor="end" font-size="10" fill="#7f938f">0.0</text>
+<line x1="60" y1="198.4" x2="870" y2="198.4" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="202.4" text-anchor="end" font-size="10" fill="#7f938f">5.0</text>
+<line x1="60" y1="66.8" x2="870" y2="66.8" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="70.8" text-anchor="end" font-size="10" fill="#7f938f">10</text>
+<rect x="76.6" y="88.1" width="40.5" height="241.9" fill="#5f8f80" rx="2"/>
+<text x="96.8" y="83.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">9.19</text>
+<text x="96.8" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2016</text>
+<rect x="150.2" y="86.5" width="40.5" height="243.5" fill="#c99a5b" rx="2"/>
+<text x="170.5" y="81.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">9.25</text>
+<text x="170.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2017</text>
+<rect x="223.8" y="101.3" width="40.5" height="228.7" fill="#5f8f80" rx="2"/>
+<text x="244.1" y="96.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">8.69</text>
+<text x="244.1" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2018</text>
+<rect x="297.5" y="150.7" width="40.5" height="179.3" fill="#5f8f80" rx="2"/>
+<text x="317.7" y="145.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">6.81</text>
+<text x="317.7" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2019</text>
+<rect x="371.1" y="123.4" width="40.5" height="206.6" fill="#5f8f80" rx="2"/>
+<text x="391.4" y="118.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">7.85</text>
+<text x="391.4" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2020</text>
+<rect x="444.8" y="116.0" width="40.5" height="214.0" fill="#5f8f80" rx="2"/>
+<text x="465.0" y="111.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">8.13</text>
+<text x="465.0" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2021</text>
+<rect x="518.4" y="151.3" width="40.5" height="178.7" fill="#c17a6f" rx="2"/>
+<text x="538.6" y="146.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">6.79</text>
+<text x="538.6" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2022</text>
+<rect x="592.0" y="86.5" width="40.5" height="243.5" fill="#5f8f80" rx="2"/>
+<text x="612.3" y="81.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">9.25</text>
+<text x="612.3" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2023</text>
+<rect x="665.7" y="138.9" width="40.5" height="191.1" fill="#5f8f80" rx="2"/>
+<text x="685.9" y="133.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">7.26</text>
+<text x="685.9" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2024</text>
+<rect x="739.3" y="139.7" width="40.5" height="190.3" fill="#5f8f80" rx="2"/>
+<text x="759.5" y="134.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#33413f">7.23</text>
+<text x="759.5" y="346.0" text-anchor="middle" font-size="10.5" fill="#5c6f6c">2025</text>
+<rect x="812.9" y="172.6" width="40.5" height="157.4" fill="none" stroke="#94a7a3" stroke-width="1.5" stroke-dasharray="4,3" rx="2" opacity="0.85"/>
+<text x="833.2" y="167.6" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">5.98</text>
+<text x="833.2" y="346.0" text-anchor="middle" font-size="10" font-style="italic" fill="#94a7a3">26Q2</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#33413f" stroke-width="1.3"/>
+<text x="872" y="44" font-size="10" fill="#7f938f">億元</text>
+</svg></div>
+  <p>期末餘額十年間落在 6.79–9.25 億的區間內波動，2016–2018 年維持在 8.69–9.25 億高檔，2019、2022 年各出現一次小幅回落（6.81 億、6.79 億），但都能在隔年回升，2023 年重新站回 9.25 億，2024、2025 年則落在 7.23–7.26 億的中段水準。整體沒有長期單向下滑的趨勢，屬於區間內小幅震盪、體質穩定的型態。26Q2 單季回落到 5.98 億，較 2025 年末下滑約 17%，需觀察是否為單季波動，暫不列入年度計分。</p>
+
+  <h3>六大規則評分總覽</h3>
+  <div class="score-grid">
+    <div class="score-card"><div class="n">① A逐年趨勢</div><div class="v good">72</div></div>
+    <div class="score-card"><div class="n">② B投資紀律（暫定）</div><div class="v watch">65</div></div>
+    <div class="score-card"><div class="n">③ B投資效益（暫定）</div><div class="v watch">58</div></div>
+    <div class="score-card"><div class="n">④ C融資合理性（暫定）</div><div class="v good">85</div></div>
+    <div class="score-card"><div class="n">⑤ A&gt;D現金流品質</div><div class="v good">80</div></div>
+    <div class="score-card"><div class="n">⑥ E餘額穩定性</div><div class="v good">70</div></div>
+    <div class="score-card score-total"><div class="n">總分（六項平均）</div><div class="v">71.7</div></div>
+  </div>
+
+  <div class="callout">
+    <b>關卡判斷：總分 71.7%，達到「良好」等級（60–79%），現金流體質可以繼續看下去。</b>沒有出現任何警戒訊號——A 十年間始終為正、C 十年間始終為負，公司財務結構偏保守穩健。接下來自然進入第二步：查詢股價、EPS、殖利率等基本資訊。
+  </div>
+
+</section>
+
+<section id="step2">
+  <div class="step-label">【第 2 步／共 6 步：基本資訊查詢】</div>
+  <h2>股價、EPS、殖利率與獲利能力概況</h2>
+
+  <div class="callout">
+    <b>現價 52.3 元、本益比約 14.4 倍、現金殖利率約 8%。</b>曜亞是主營醫學美容雷射儀器銷售的上櫃小型股（股本僅 3.99 億），近四季 EPS 3.65 元，較 2023 年高峰的 6.37 元明顯下滑——但這個下滑<b>有一部分是股本膨脹稀釋所致，並非全部來自獲利衰退</b>，詳見下方說明。
+  </div>
+
+  <h3>即時報價快照</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>股價（查詢當下）</td><td>52.3 元（+0.5，+0.95%）</td></tr>
+      <tr><td>52 週高／低</td><td>77.20 元／50.00 元</td></tr>
+      <tr><td>本益比（近四季EPS）</td><td>約 14.4 倍</td></tr>
+      <tr><td>市值</td><td>約 21.1 億元</td></tr>
+      <tr><td>每股淨值</td><td>39.56 元（股價淨值比約 1.32 倍）</td></tr>
+      <tr><td>近四季 EPS</td><td>3.65 元</td></tr>
+      <tr><td>2026 年最新股利（所屬2025年度）</td><td>現金股利 4.20 元</td></tr>
+      <tr><td>現金殖利率（以現價計）</td><td>約 8.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="snap-note">股價／本益比／52週高低查詢於 2026/08/31（Yahoo股市、鉅亨網），為查詢當下單一時間點快照，非即時報價區間，正式交易請以看盤軟體/券商App為準。不同財經網站因EPS計算基期（近四季 vs 上年度）不同，本益比顯示範圍約在 11.9～14.4 倍之間。</div>
+
+  <h3>近四年 EPS 趨勢與股本稀釋說明</h3>
+  <table>
+    <thead><tr><th>年度</th><th>稅後淨利(億)</th><th>EPS(元)</th><th>推算加權股數(萬股)</th></tr></thead>
+    <tbody>
+      <tr><td>2022</td><td>1.37</td><td>4.57</td><td>约 2,998</td></tr>
+      <tr><td>2023</td><td>2.10</td><td>6.37</td><td>约 3,297</td></tr>
+      <tr><td>2024</td><td>2.05</td><td>5.66</td><td>约 3,622</td></tr>
+      <tr><td>2025</td><td>1.52</td><td>3.81</td><td>约 3,990</td></tr>
+    </tbody>
+  </table>
+  <p>曜亞每年都有「盈餘轉增資」配股（2025年3月董事會決議每千股無償配發100股，即10%股票股利），使加權股數從 2022 年約 3,000 萬股增加到 2025 年近 3,990 萬股，三年間膨脹約 33%。因此 <b>EPS 從 2023 年高峰 6.37 元降到 2025 年 3.81 元，並非單純獲利衰退 40%</b>——同期稅後淨利實際從 2.10 億降到 1.52 億（衰退約 28%），另外約 12 個百分點的差距來自股本稀釋。<b>這是評估曜亞估值時的重要基期調整，不能只看 EPS 數字表面的降幅。</b></p>
+
+  <h3>獲利能力指標（2026 Q2 累計）</h3>
+  <table>
+    <thead><tr><th>指標</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>營業毛利率</td><td>43.65%</td></tr>
+      <tr><td>營業利益率</td><td>13.52%</td></tr>
+      <tr><td>稅前淨利率</td><td>16.76%</td></tr>
+      <tr><td>資產報酬率（ROA）</td><td>1.57%</td></tr>
+      <tr><td>股東權益報酬率（ROE）</td><td>2.55%</td></tr>
+    </tbody>
+  </table>
+  <p>毛利率維持 4 成以上，屬於典型醫美耗材／儀器代理商的高毛利結構，但 ROA、ROE 偏低，反映公司帳上現金部位較重（期末餘額常年 7-9 億，占市值比重不低），資產運用效率尚未完全發揮。</p>
+  <div class="snap-note">來源：Yahoo股市個股基本資料頁（tw.stock.yahoo.com/quote/4138/profile），查詢於 2026/08/31。</div>
+
+  <h3>公司基本背景</h3>
+  <p>曜亞國際（英文簡稱 DMT）成立於 2003 年，2010 年掛牌上櫃，主要經營業務為<b>醫學美容雷射儀器銷售、醫美耗材與保養品銷售、儀器維護</b>，屬於醫美設備通路商角色，而非藥廠或原廠製造商。董監持股比例約 34%，公司已連續 14 年發放股利，合計 49.69 元，近 5 年平均現金殖利率 6.38%。</p>
+
+</section>
+
+<section id="step3">
+  <div class="step-label">【第 3 步／共 6 步：法說會資料】</div>
+  <h2>2026/03/26 法說會重點（涵蓋 2025 全年，最新一場完整內容）</h2>
+
+  <div class="callout">
+    <b>2025 年營收因韓國醫美旅遊與同業競爭而下滑，但毛利率不降反升，通路業務比重逐年提高。</b>公司短期策略聚焦提升高毛利耗材銷售比重、優化通路服務品質、佈局東南亞市場，未提供具體財測數據。
+  </div>
+
+  <h3>2025 全年營運摘要</h3>
+  <table>
+    <thead><tr><th>項目</th><th>2025 全年數值</th></tr></thead>
+    <tbody>
+      <tr><td>合併營收</td><td>13.87 億元</td></tr>
+      <tr><td>營業毛利率</td><td>44.09%（較前兩年持續提升）</td></tr>
+      <tr><td>營業利益</td><td>1.9 億元（營益率 13.70%）</td></tr>
+      <tr><td>稅後淨利（歸屬母公司）</td><td>1.52 億元</td></tr>
+      <tr><td>EPS</td><td>3.81 元</td></tr>
+      <tr><td>勞務收入占營收比重</td><td>28%（2023年為22%，逐年攀升）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>營收下滑的原因（公司說法）</h3>
+  <p>公司在法說會中說明，2025 年營收下滑主因有二：一是<b>近年韓國醫美旅遊風潮興起</b>，部分國內消費者轉往海外進行醫美療程，分食台灣本地市場；二是<b>台灣同業競爭加劇</b>，加上<b>大型連鎖醫美診所議價能力強</b>，可能直接與原廠合作繞過經銷商，壓縮曜亞這類通路商的獲利空間。儘管營收下滑，公司透過優化產品組合，<b>毛利率不降反升</b>，且旗下通路業務子公司曜勝生技（DR CYJ 頭皮養護等品牌）表現逆勢成長，使勞務收入占比穩定墊高，成為對抗營收下滑的重要緩衝。</p>
+
+  <h3>業務結構</h3>
+  <p>曜亞隸屬佳醫集團，業務分為兩大塊：<b>醫學美容</b>（母公司曜亞、海外曜亞香港/廣州、佳醫美人，負責儀器、耗材、植入式填充劑的銷售與技術維修）與<b>生活美容</b>（子公司曜勝生技，負責頭皮護理 DR CYJ、LPG 體雕、臉部皮膚養護等）。產品線涵蓋雷射光電、身體雕塑、微整型注射（代理 AestheFill 艾麗斯、Medytox 優力柔等品牌）及通路經營，CYJ、伊啵等通路品牌全台共 34 家門店。</p>
+
+  <h3>未來策略方向</h3>
+  <table>
+    <thead><tr><th>時程</th><th>策略重點</th></tr></thead>
+    <tbody>
+      <tr><td>短期</td><td>門店擴張趨緩、轉向服務品質優化；提升高毛利耗材銷售比重；透過轉投資公司拓展東南亞醫美市場</td></tr>
+      <tr><td>中期</td><td>拓展預防醫學領域；開發生活美容、整形外科及耗材類自有產品</td></tr>
+      <tr><td>長期</td><td>成為亞洲醫美市場的產品定位者，並與區域夥伴建立策略聯盟</td></tr>
+    </tbody>
+  </table>
+  <p><b>公司在本次法說會中未提供具體財測數據（如次年度營收/EPS預估），</b>僅說明成長動能預期來自高毛利耗材銷售提升、通路業務優化與東南亞布局。全球非侵入式醫美市場預估將以 13.1% 的年複合成長率，從 2025 年 400.6 億美元成長至 2032 年 949.0 億美元，產業長期趨勢仍屬成長格局。</p>
+
+  <div class="snap-note">來源：富果直送法說會備忘錄（根據台灣證券交易所及櫃買中心法說會官方影音檔摘要整理），原始影音與簡報連結見該文末。查詢於 2026/08/31，摘要內容涵蓋 2026/03/26 舉行、說明 2025全年度表現之法說會，為目前公開可查最新且最完整之場次。</div>
+
+</section>
+
+<section id="step4">
+  <div class="step-label">【第 4 步／共 6 步：營收趨勢視覺化】</div>
+  <h2>近 12 個月合併月營收走勢</h2>
+
+  <div class="callout">
+    <b>2026 年營收年增率明顯轉正，與法說會提到的「2025 年營收下滑」形成對比。</b>近 12 個月中，2025 下半年多數月份年增率為負（10月甚至衰退 20.5%），但進入 2026 年後，除了 2 月、5 月，其餘月份年增率都轉為正成長，7 月更達到 +13.42%，是近 12 個月最高年增率。這與第 3 步法說會提到的「提升高毛利耗材銷售、優化通路服務」等策略時間點大致吻合，初步看來 2026 年的營運動能優於 2025 年下半年。
+  </div>
+
+  <div class="chart-wrap"><svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, -apple-system, sans-serif">
+<text x="450.0" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#1c2b2a">近12個月合併月營收趨勢</text>
+<text x="450.0" y="40" text-anchor="middle" font-size="11" fill="#6f8481">單位：億元；長條上方為當月營收，下方標籤為年增率</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="none"/>
+<text x="52" y="334.0" text-anchor="end" font-size="10" fill="#7f938f">0.0</text>
+<line x1="60" y1="238.1" x2="870" y2="238.1" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="242.1" text-anchor="end" font-size="10" fill="#7f938f">0.5</text>
+<line x1="60" y1="146.2" x2="870" y2="146.2" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="150.2" text-anchor="end" font-size="10" fill="#7f938f">1.0</text>
+<line x1="60" y1="54.4" x2="870" y2="54.4" stroke="#dfe6e3" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="52" y="58.4" text-anchor="end" font-size="10" fill="#7f938f">1.5</text>
+<rect x="75.2" y="121.0" width="37.1" height="209.0" fill="#5f8f80" rx="2"/>
+<text x="93.8" y="116.0" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.14</text>
+<text x="93.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-0.2%</text>
+<text x="93.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">25/08</text>
+<rect x="142.7" y="108.1" width="37.1" height="221.9" fill="#5f8f80" rx="2"/>
+<text x="161.2" y="103.1" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.21</text>
+<text x="161.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-2.7%</text>
+<text x="161.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">25/09</text>
+<rect x="210.2" y="115.3" width="37.1" height="214.7" fill="#5f8f80" rx="2"/>
+<text x="228.8" y="110.3" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.17</text>
+<text x="228.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-20.5%</text>
+<text x="228.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">25/10</text>
+<rect x="277.7" y="86.5" width="37.1" height="243.5" fill="#c99a5b" rx="2"/>
+<text x="296.2" y="81.5" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.33</text>
+<text x="296.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-11.0%</text>
+<text x="296.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">25/11</text>
+<rect x="345.2" y="107.7" width="37.1" height="222.3" fill="#5f8f80" rx="2"/>
+<text x="363.8" y="102.7" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.21</text>
+<text x="363.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+1.7%</text>
+<text x="363.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">25/12</text>
+<rect x="412.7" y="110.9" width="37.1" height="219.1" fill="#5f8f80" rx="2"/>
+<text x="431.2" y="105.9" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.19</text>
+<text x="431.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+5.2%</text>
+<text x="431.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/01</text>
+<rect x="480.2" y="152.6" width="37.1" height="177.4" fill="#c17a6f" rx="2"/>
+<text x="498.8" y="147.6" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">0.97</text>
+<text x="498.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-18.4%</text>
+<text x="498.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/02</text>
+<rect x="547.7" y="96.7" width="37.1" height="233.3" fill="#5f8f80" rx="2"/>
+<text x="566.2" y="91.7" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.27</text>
+<text x="566.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+6.2%</text>
+<text x="566.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/03</text>
+<rect x="615.2" y="115.6" width="37.1" height="214.4" fill="#5f8f80" rx="2"/>
+<text x="633.8" y="110.6" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.17</text>
+<text x="633.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+10.6%</text>
+<text x="633.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/04</text>
+<rect x="682.7" y="132.4" width="37.1" height="197.6" fill="#5f8f80" rx="2"/>
+<text x="701.2" y="127.4" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.08</text>
+<text x="701.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a8433a">-2.5%</text>
+<text x="701.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/05</text>
+<rect x="750.2" y="109.1" width="37.1" height="220.9" fill="#5f8f80" rx="2"/>
+<text x="768.8" y="104.1" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.20</text>
+<text x="768.8" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+7.9%</text>
+<text x="768.8" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/06</text>
+<rect x="817.7" y="114.2" width="37.1" height="215.8" fill="#5f8f80" rx="2"/>
+<text x="836.2" y="109.2" text-anchor="middle" font-size="10" font-weight="600" fill="#33413f">1.17</text>
+<text x="836.2" y="344.0" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f7a5f">+13.4%</text>
+<text x="836.2" y="358.0" text-anchor="middle" font-size="10" fill="#5c6f6c">26/07</text>
+<line x1="60" y1="330.0" x2="870" y2="330.0" stroke="#33413f" stroke-width="1.3"/>
+<text x="872" y="44" font-size="10" fill="#7f938f">億元</text>
+</svg></div>
+
+  <table>
+    <thead><tr><th>年月</th><th>當月營收(億)</th><th>年增率</th></tr></thead>
+    <tbody>
+      <tr><td>2025/08</td><td>1.137</td><td class="neg">-0.23%</td></tr>
+      <tr><td>2025/09</td><td>1.208</td><td class="neg">-2.70%</td></tr>
+      <tr><td>2025/10</td><td>1.168</td><td class="neg">-20.46%</td></tr>
+      <tr><td>2025/11</td><td>1.325</td><td class="neg">-11.01%</td></tr>
+      <tr><td>2025/12</td><td>1.210</td><td class="pos">+1.72%</td></tr>
+      <tr><td>2026/01</td><td>1.192</td><td class="pos">+5.16%</td></tr>
+      <tr><td>2026/02</td><td>0.966</td><td class="neg">-18.37%</td></tr>
+      <tr><td>2026/03</td><td>1.270</td><td class="pos">+6.21%</td></tr>
+      <tr><td>2026/04</td><td>1.167</td><td class="pos">+10.58%</td></tr>
+      <tr><td>2026/05</td><td>1.076</td><td class="neg">-2.51%</td></tr>
+      <tr><td>2026/06</td><td>1.202</td><td class="pos">+7.89%</td></tr>
+      <tr><td>2026/07</td><td>1.174</td><td class="pos">+13.42%</td></tr>
+    </tbody>
+  </table>
+  <p>月營收本身波動幅度不大，落在 0.97-1.33 億區間，全年沒有暴衝或崩落的單月異常值。<b>比較值得注意的是年增率的轉折</b>：2025 年 8-11 月連續 4 個月年減，10 月甚至衰退超過 20%，是最疲弱的一段時間；12 月止跌轉正後，2026 年前 7 個月中有 5 個月年增率為正，且近 3 個月（5、6、7月）雖然 5 月仍小幅衰退，但 6、7 月動能明顯回升。2 月的 -18.37% 較為異常，但落在農曆春節工作天數變動常見的季節性影響範圍內，需留意 2027 年同期是否恢復正常再下定論。</p>
+  <div class="snap-note">來源：Yahoo股市個股營收表（tw.stock.yahoo.com/quote/4138/revenue），查詢於 2026/08/31。</div>
+
+</section>
+
+<section id="step5">
+  <div class="step-label">【第 5 步／共 6 步：前瞻本益比／EPS 預估】</div>
+  <h2>現在貴不貴？合理價可能落在哪？</h2>
+
+  <div class="callout">
+    <b>沒有找到可靠的次年度（2027年）法人 EPS 預估共識——曜亞屬於小型股，法人覆蓋非常有限。</b>唯一查到的具體法人預估來自 2023-2024 年間第一金證券的舊報告（目標價 123 元、預估 2024 年 EPS 6.82 元），但實際 2024 年 EPS 僅 5.66 元、目前股價僅 52.3 元，與該預估落差極大，顯示過往法人預估對這檔股票的參考價值有限。以下改用「目前股價 ÷ 近四季實際EPS」的隱含本益比，以及「近四季EPS × 公司自身歷史本益比區間」的目標價敏感度試算，取代不可靠的次年度預估。
+  </div>
+
+  <h3>隱含本益比（現在貴不貴）</h3>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th></tr></thead>
+    <tbody>
+      <tr><td>目前股價</td><td>52.3 元</td></tr>
+      <tr><td>近四季 EPS（2025Q3-2026Q2）</td><td>3.65 元（0.91+0.92+0.84+0.99）</td></tr>
+      <tr><td>隱含本益比</td><td>約 14.3 倍</td></tr>
+    </tbody>
+  </table>
+  <p>用「現在股價 ÷ 近四季實際EPS」回答「現在貴不貴」：目前隱含本益比約 14.3 倍。查詢當下多個財經網站顯示的本益比範圍落在 11.9-15.7 倍之間（差異來自各站計算基期不同，如用去年全年 EPS 3.81 元 vs 近四季 EPS 3.65 元），但整體都落在 12-16 倍的區間內，彼此相差不大。</p>
+
+  <h3>目標本益比法（合理價可能落在哪）— 敏感度試算</h3>
+  <p>「目標本益比法」與上面「隱含本益比」是同一公式的不同用法：隱含本益比是已知股價、反推市場給的倍數；目標本益比法則是假設一個合理倍數、反推目標價，兩者不是同一件事。由於找不到次年度 EPS 共識，這裡改以曜亞近年自身的歷史本益比區間（約 12-16 倍，如上表所示）作為情境倍數，而非套用適合成長股的 20/25/30 倍——曜亞是穩定配息的小型通路商，用它自己的歷史估值區間更合理，但這仍只是敏感度試算，不是預測。</p>
+  <table>
+    <thead><tr><th>情境倍數</th><th>× 近四季EPS 3.65元</th><th>= 隱含目標價</th></tr></thead>
+    <tbody>
+      <tr><td>偏低（12倍）</td><td>3.65</td><td>約 43.8 元</td></tr>
+      <tr><td>中性（14倍，近似目前隱含倍數）</td><td>3.65</td><td>約 51.1 元</td></tr>
+      <tr><td>偏高（16倍）</td><td>3.65</td><td>約 58.4 元</td></tr>
+    </tbody>
+  </table>
+  <p>目前股價 52.3 元落在「中性至偏高」情境之間，<b>用公司自身歷史本益比區間衡量，目前股價大致合理，並未出現明顯低估或高估</b>。但這個結論高度依賴「倍數怎麼選」，若曜亞近期營收年增率轉正的趨勢（見第4步）能延續並反映在後續季度 EPS 上，市場給予的倍數也可能隨獲利動能改善而上修；反之若 2025 年營收下滑的壓力（韓國醫美旅遊分流、同業競爭）捲土重來，倍數同樣可能下修，這只是敏感度試算，不是預測。</p>
+
+  <h3>預估不確定性揭露</h3>
+  <p>本檔股票法人研究覆蓋稀少，公開查到的唯一具體目標價／EPS預估（第一金證券，約 2023-2024 年間發布）已與實際結果落差極大（預估EPS 6.82元 vs 實際 5.66元，目標價123元 vs 目前股價 52.3元），顯示對這類法人關注度低的小型股，任何單一法人預估都應謹慎看待，不宜過度信任。</p>
+  <div class="snap-note">EPS數據來源：Yahoo股市每股盈餘頁面；歷史法人預估來源：愛玩股（istock.tw）引述之第一金證券報告；查詢於 2026/08/31。</div>
+
+</section>
+
+<section id="step6">
+  <div class="step-label">【第 6 步／共 6 步：投資決策推理】</div>
+  <h2>會不會投資？續抱還是賣出？</h2>
+
+  <p style="color:var(--ink-faint);font-size:14px;">以下是根據前五步分析的推理與個人觀點，不是專業投資建議，我不是理財顧問。實際投資決策請自行判斷並承擔風險。</p>
+
+  <div class="callout">
+    <b>核心判斷呼應第1步的現金流結論：曜亞的財務體質是這次分析中最穩的一塊——現金流十年沒有警訊、獲利品質高、殖利率約8%；但獲利成長性偏弱是另一回事——2023年至今稅後淨利實際衰退約28%，2026年營收才剛開始出現止跌回升的跡象，還沒有明確證據證明趨勢已經反轉。</b>這是一檔「體質穩但成長性待驗證」的股票，決策的關鍵在於你更看重哪一邊。
+  </div>
+
+  <h3>若尚未持有：會不會進場？</h3>
+  <p>傾向<b>不急著現在進場，但值得放進觀察名單</b>。現金流體質（第1步）與估值水位（第5步：目前股價大致落在自身歷史本益比區間的合理位置，非低估）都不構成「非買不可」的理由；真正吸引人的是約8%的現金殖利率與第4步觀察到的營收年增率轉正跡象，但目前只有半年多的正成長月份，還不足以確認 2025 年營收下滑的壓力（韓國醫美旅遊分流、同業競爭）已經真正解除。與其現在進場，不如等下一個訊號出現後再決定。</p>
+
+  <h3>若已持有：續抱還是賣出？</h3>
+  <p>傾向<b>續抱</b>。賣出的理由通常是財務體質惡化或估值過度偏離合理區間，但這兩點在曜亞身上都不成立——現金流沒有警訊，股價也沒有明顯高估。既然現金殖利率仍有約8%，且營收動能出現轉強跡象，在沒有新的負面訊號之前，沒有急著出場的理由。</p>
+
+  <h3>具體觀察訊號（尚未發生，可用於未來驗證）</h3>
+  <table>
+    <thead><tr><th>訊號</th><th>意義</th></tr></thead>
+    <tbody>
+      <tr><td>2026年第3季EPS（預計11月中旬公布）是否重新超過去年同期（2025Q3的0.91元）</td><td>若能轉為年增正成長，代表獲利端的衰退趨勢可能已經跟上營收端的復甦</td></tr>
+      <tr><td>2026年8-12月月營收年增率是否維持正成長（而不只是7月單月）</td><td>確認營收回升是趨勢而非單月波動</td></tr>
+      <tr><td>下一場法說會（預計2026年第3季後）是否提及韓國醫美旅遊分流效應是否減弱</td><td>營收下滑的主要外部壓力是否真正緩解</td></tr>
+      <tr><td>下一次股利政策公告，現金股利是否維持在4元以上（目前殖利率約8%的基礎）</td><td>公司對獲利前景的信心程度，也影響殖利率吸引力能否延續</td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+</div>
+
+<footer>
+  報告版本 v1.5（完整六步）· 生成時間：2026-08-31 · 現金流數據來源：使用者提供之 Goodinfo 截圖；基本資訊、法說會、營收與估值資料來源：Yahoo股市、富果直送、愛玩股等公開網頁搜尋所得
+</footer>
+
+<script>
+(function() {
+  var links = document.querySelectorAll('.stepnav-inner a.navlink');
+  links.forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  });
+
+  var sections = document.querySelectorAll('section[id]');
+  if ('IntersectionObserver' in window && sections.length) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute('id');
+          links.forEach(function(a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s) { observer.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
