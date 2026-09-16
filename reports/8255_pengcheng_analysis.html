@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>朋程 (8255) 個股分析報告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F3EC;
+    --panel: #FFFFFF;
+    --ink: #1C2430;
+    --ink-soft: #565F6B;
+    --line: #E1DCCF;
+    --teal: #2F6F5E;
+    --teal-soft: #E4EFE9;
+    --coral: #C0483A;
+    --coral-soft: #F7E7E3;
+    --gold: #B8892B;
+    --gold-soft: #F4E9D2;
+    --locked: #B9B4A6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.7;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 20px 80px;}
+  header.hero{
+    padding:52px 20px 40px; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#FBF9F3 0%, var(--bg) 100%);
+  }
+  .hero-inner{max-width:900px; margin:0 auto;}
+  .ticker-row{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+  .ticker-badge{
+    font-family:'Roboto Mono', monospace; font-weight:600; font-size:14px;
+    color:var(--teal); border:1px solid var(--teal); border-radius:3px;
+    padding:3px 9px; letter-spacing:0.5px;
+  }
+  h1{
+    font-family:'Noto Serif TC', serif; font-weight:900;
+    font-size:clamp(32px,5vw,46px); margin:14px 0 6px; letter-spacing:0.5px;
+  }
+  .subtitle{color:var(--ink-soft); font-size:15px; margin-bottom:18px;}
+  img.visitor-badge{opacity:0.75; margin-top:6px;}
+
+  nav.stepnav{
+    position:sticky; top:0; z-index:10; background:rgba(246,243,236,0.96);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--line);
+    overflow-x:auto; white-space:nowrap;
+  }
+  nav.stepnav .navrow{max-width:900px; margin:0 auto; padding:0 20px; display:flex; gap:4px;}
+  nav.stepnav a{
+    display:inline-block; padding:14px 10px; font-size:13px; color:var(--ink-soft);
+    text-decoration:none; border-bottom:2px solid transparent; flex-shrink:0;
+  }
+  nav.stepnav a.active{color:var(--teal); border-bottom-color:var(--teal); font-weight:700;}
+  nav.stepnav a.locked{color:var(--locked); cursor:default; pointer-events:none;}
+
+  section.step{padding:44px 0; border-bottom:1px solid var(--line);}
+  section.step:last-of-type{border-bottom:none;}
+  .step-eyebrow{
+    font-size:13px; color:var(--teal); font-weight:700; margin-bottom:8px;
+  }
+  h2.step-title{
+    font-family:'Noto Serif TC', serif; font-size:26px; font-weight:700; margin:0 0 20px;
+  }
+
+  .callout{
+    background:var(--teal-soft); border-left:4px solid var(--teal);
+    padding:18px 20px; border-radius:2px; margin-bottom:28px;
+  }
+  .callout.warn{background:var(--gold-soft); border-left-color:var(--gold);}
+  .callout p{margin:0 0 6px; font-size:15px;}
+  .callout p:last-child{margin-bottom:0;}
+  .callout b{color:var(--teal);}
+  .callout.warn b{color:var(--gold);}
+
+  h3.rule-title{
+    font-family:'Noto Serif TC', serif; font-size:19px; font-weight:700;
+    margin:36px 0 6px; padding-top:8px;
+  }
+  .rule-num{
+    display:inline-block; font-family:'Roboto Mono',monospace; font-size:12px;
+    color:var(--ink-soft); border:1px solid var(--line); border-radius:20px;
+    padding:2px 10px; margin-right:8px; vertical-align:middle;
+  }
+  .score-pill{
+    float:right; font-family:'Roboto Mono',monospace; font-weight:700; font-size:14px;
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    padding:3px 12px;
+  }
+  p{margin:0 0 14px; font-size:15.5px;}
+  .negv{color:var(--coral); font-weight:700;}
+  .posv{color:var(--teal); font-weight:700;}
+
+  table{width:100%; border-collapse:collapse; margin:14px 0 22px; font-size:14px; background:var(--panel);}
+  table.datatable{font-size:13.5px;}
+  th,td{padding:9px 8px; text-align:right; border-bottom:1px solid var(--line);}
+  th:first-child, td:first-child{text-align:left;}
+  th{background:#EFEAE0; font-weight:700; font-size:13px;}
+  td.neg{color:var(--coral);}
+  td.pos{color:var(--teal);}
+  tr.flagrow td{background:var(--coral-soft);}
+  .scroll-x{overflow-x:auto;}
+
+  .chart-box{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px 10px 6px; margin:18px 0 24px;}
+  .chart-box svg{width:100%; height:auto; display:block;}
+  .chart-caption{font-size:12.5px; color:var(--ink-soft); text-align:center; margin-top:2px;}
+  .legend{display:flex; gap:18px; justify-content:center; font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
+  .legend span{display:inline-flex; align-items:center; gap:5px;}
+  .legend i{width:11px; height:11px; display:inline-block; border-radius:2px;}
+
+  .snap-note{font-size:12.5px; color:var(--ink-soft); margin:-10px 0 20px; font-style:italic;}
+
+  .verdict{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px;
+    padding:26px; margin-top:32px;
+  }
+  .verdict .totalscore{
+    font-family:'Roboto Mono', monospace; font-size:44px; font-weight:700; color:var(--teal);
+  }
+  .verdict .label{font-size:13px; color:var(--ink-soft); letter-spacing:1px;}
+  .verdict-flex{display:flex; align-items:flex-end; gap:16px; margin-bottom:14px; flex-wrap:wrap;}
+  .badge-good{background:var(--teal-soft); color:var(--teal); padding:4px 12px; border-radius:20px; font-size:13px; font-weight:700;}
+
+  .footer-meta{margin-top:40px; font-size:12.5px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:16px;}
+  .source-note{font-size:12.5px; color:var(--ink-soft); background:#EFEAE0; padding:10px 14px; border-radius:3px; margin-top:18px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="ticker-row">
+      <span class="ticker-badge">8255 · TWSE</span>
+      <span class="subtitle">車用二極體 / 整流器供應商</span>
+    </div>
+    <h1>朋程 個股現金流分析</h1>
+    <p class="subtitle">六步驟框架「現金流優先、基本面在後」｜盲測階段：暫不引用股價、EPS、產業地位</p>
+    <img class="visitor-badge" src="https://visitor-badge.laobi.icu/badge?page_id=bigwolfQQ.stock-analysis.8255" alt="Visitors">
+  </div>
+</header>
+
+<nav class="stepnav">
+  <div class="navrow">
+    <a href="#step1" class="active" id="nav1">① 現金流六大規則</a>
+    <a class="locked">② 基本資訊</a>
+    <a class="locked">③ 法說會</a>
+    <a class="locked">④ 營收趨勢</a>
+    <a class="locked">⑤ 前瞻本益比</a>
+    <a class="locked">⑥ 投資決策</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<section class="step" id="step1">
+  <div class="step-eyebrow">【第 1 步／共 6 步】</div>
+  <h2 class="step-title">現金流量表六大規則分析（盲測）</h2>
+
+  <div class="callout">
+    <p><b>總評分約 75%（良好）</b>——本業現金流（A）十年來從未轉負，最嚴重的警戒訊號（A為負＋C為正）未曾出現，現金流體質可以繼續往下看基本面。</p>
+    <p>唯一要留意的是：<b>2019、2021、2022、2023 這四年出現「B大幅負值＋C同時為正」的組合</b>（規則四），代表這幾年可能有部分靠外部資金支應投資，但因為只有總表、沒有細項拆解，暫時無法判斷是股權募資還是純舉債，建議之後補上細項截圖校正。</p>
+  </div>
+
+  <div class="callout warn">
+    <p><b>資料範圍提醒</b>：你提供的表格含「26Q2」欄位，判斷應為最新一期單季或部分期間資料，<b>僅供參考、不列入六大規則計分</b>，計分仍以 2016–2025 共 10 個完整年度為基準。規則二、三、四因缺投資／融資活動細項，評分屬<b>暫定</b>。</p>
+  </div>
+
+  <h3 style="font-family:'Noto Serif TC',serif; font-size:17px; margin-top:0;">現金流量數據總表（單位：億元）</h3>
+  <div class="scroll-x">
+  <table class="datatable">
+    <thead>
+      <tr><th>年度</th><th>A 營業活動</th><th>B 投資活動</th><th>C 融資活動</th><th>D 稅前淨利</th><th>E 期末現金餘額</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2016</td><td class="pos">10.6</td><td class="pos">0.06</td><td class="neg">-4.68</td><td>6.62</td><td>11.3</td></tr>
+      <tr><td>2017</td><td class="pos">7.11</td><td class="neg">-9.02</td><td class="neg">-0.47</td><td>6.36</td><td>8.98</td></tr>
+      <tr><td>2018</td><td class="pos">6.15</td><td class="neg">-6.65</td><td class="neg">-1.99</td><td>6.64</td><td>6.45</td></tr>
+      <tr><td>2019</td><td class="pos">3.82</td><td class="neg">-9.28</td><td class="pos">18.8</td><td>3.6</td><td>19.8</td></tr>
+      <tr><td>2020</td><td class="pos">5.24</td><td class="neg">-10.5</td><td class="neg">-1.14</td><td>2.16</td><td>13.4</td></tr>
+      <tr><td>2021</td><td class="pos">5.8</td><td class="neg">-12</td><td class="pos">4.86</td><td>5.34</td><td>12</td></tr>
+      <tr><td>2022</td><td class="pos">6.7</td><td class="neg">-14.2</td><td class="pos">3.32</td><td>6.48</td><td>7.84</td></tr>
+      <tr><td>2023</td><td class="pos">10.5</td><td class="neg">-9.53</td><td class="pos">10.4</td><td>7.14</td><td>19.2</td></tr>
+      <tr><td>2024</td><td class="pos">9.45</td><td class="neg">-11.9</td><td class="neg">-2.57</td><td>10.3</td><td>14.3</td></tr>
+      <tr><td>2025</td><td class="pos">14.1</td><td class="neg">-5.83</td><td class="neg">-5.2</td><td>6.84</td><td>17.5</td></tr>
+      <tr style="opacity:0.6;"><td><i>26Q2（單季，不列入計分）</i></td><td>7.07</td><td>-2.46</td><td>-1.86</td><td>3.28</td><td>20.4</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="snap-note">資料來源：使用者提供截圖（財報網站現金流量彙整表），非本次搜尋所得。</p>
+
+  <!-- Rule 1 -->
+  <h3 class="rule-title"><span class="rule-num">規則一</span>A 逐年成長趨勢<span class="score-pill">75 分</span></h3>
+  <p>A 從 2016 年的 10.6 億一路下滑到 2019 年低點 3.82 億（三年腰斬），屬於「體質一度變差」的階段；但 2020 年起連續 <b>6 年穩步回升</b>，2025 年來到十年新高 14.1 億，長期方向是「先衰退、後強力復甦」的 U 型走勢，且終點顯著高於起點，屬於<b>「浴火重生」型</b>：曾經現金流轉弱，但近幾年重新找到造血能力。</p>
+  <div class="chart-box">
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" id="chartA"></svg>
+    <div class="chart-caption">圖一：營業活動現金流量 A（2016–2025，億元）</div>
+  </div>
+
+  <!-- Rule 2 -->
+  <h3 class="rule-title"><span class="rule-num">規則二</span>B 投資紀律評估<span class="score-pill">75 分</span></h3>
+  <p>B 除 2016 年幾乎為零外，其餘 <b>9 個年度全數為負值</b>，代表公司持續在投入資本支出，屬正常經營行為。投資規模在 2019–2022 年明顯放大（單年最高 -14.2 億，2022年），2023 年後轉為收斂（2025 年僅 -5.83 億），顯示近兩年投資力道趨緩、轉為收成階段。由於盲測階段尚不知產業別，暫不對「B 是否大於 A」本身扣分。</p>
+  <div class="chart-box">
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" id="chartB"></svg>
+    <div class="chart-caption">圖二：投資活動現金流量 B（2016–2025，億元；綠色=淨流入，紅色=淨流出）</div>
+  </div>
+
+  <!-- Rule 3 -->
+  <h3 class="rule-title"><span class="rule-num">規則三</span>B 投資效益分析（隔年 A 是否轉強）<span class="score-pill">85 分</span></h3>
+  <p>對照重度投資年度（B 絕對值放大的年份）與其後 1 年的 A 表現：</p>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>投資年度</th><th>當年 B</th><th>隔年</th><th>隔年 A</th><th>是否較前一年成長</th></tr></thead>
+    <tbody>
+      <tr><td>2019</td><td class="neg">-9.28</td><td>2020</td><td>5.24</td><td class="pos">是（較2019年 3.82 成長）</td></tr>
+      <tr><td>2020</td><td class="neg">-10.5</td><td>2021</td><td>5.8</td><td class="pos">是（微幅成長）</td></tr>
+      <tr><td>2021</td><td class="neg">-12</td><td>2022</td><td>6.7</td><td class="pos">是</td></tr>
+      <tr><td>2022</td><td class="neg">-14.2</td><td>2023</td><td>10.5</td><td class="pos">是（大幅跳升）</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>連續四個重度投資年度，隔年 A 都確實回升，且 2022→2023 的轉換效果最明顯，屬於<b>「敢衝且有實力」型</b>：投資有持續轉化為造血能力，不是砸錢卻沒效果的類型。（提醒：投資活動細項未取得，此處僅能確認「A 有跟著回升」的相關性，無法確認資金真的流向固定資產擴產，暫定評分。）</p>
+
+  <!-- Rule 4 -->
+  <h3 class="rule-title"><span class="rule-num">規則四</span>C 融資活動合理性<span class="score-pill">65 分（暫定）</span></h3>
+  <p>十年間 A 從未轉負，因此<b>最高警戒訊號（A為負且C為正/小幅負）從未出現</b>，這是好消息。但檢查「B 大幅負值＋C 同時為正」的組合（借錢/募資支應投資的訊號）：<b>2019、2021、2022、2023 共 4 個年度</b>符合此組合，並非單一特例，而是重複出現的模式。</p>
+  <div class="chart-box">
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" id="chartBC"></svg>
+    <div class="legend">
+      <span><i style="background:#2f6f5e"></i>B/C 正值</span>
+      <span><i style="background:#c0483a"></i>B/C 負值</span>
+      <span><i style="background:#F7E7E3; border:1px dashed #C0483A"></i>符合「B負+C正」年度</span>
+    </div>
+    <div class="chart-caption">圖三：投資活動(B) 與融資活動(C) 並排比較（2016–2025，億元）</div>
+  </div>
+  <p><b>此評分為暫定</b>：由於沒有融資活動細項（現金增資 vs. 短期借款/公司債等純舉債），無法判斷這 4 個年度的正 C 是偏股權募資（風險較低）還是偏純舉債（風險較高）。建議之後補上細項截圖，才能正確排序哪一年風險較高，目前先保守給 65 分。</p>
+
+  <!-- Rule 5 -->
+  <h3 class="rule-title"><span class="rule-num">規則五</span>A ＞ D 現金流品質（嚴格二分法）<span class="score-pill">80 分</span></h3>
+  <p>逐年判斷 A 是否單純大於 D，10 個完整年度中有 <b>8 年通過、2 年不通過</b>（2018、2024），通過率 80%。</p>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>年度</th><th>A</th><th>D</th><th>A ＞ D？</th></tr></thead>
+    <tbody>
+      <tr><td>2016</td><td>10.6</td><td>6.62</td><td class="pos">通過</td></tr>
+      <tr><td>2017</td><td>7.11</td><td>6.36</td><td class="pos">通過</td></tr>
+      <tr class="flagrow"><td>2018</td><td>6.15</td><td>6.64</td><td class="negv">不通過</td></tr>
+      <tr><td>2019</td><td>3.82</td><td>3.6</td><td class="pos">通過</td></tr>
+      <tr><td>2020</td><td>5.24</td><td>2.16</td><td class="pos">通過</td></tr>
+      <tr><td>2021</td><td>5.8</td><td>5.34</td><td class="pos">通過</td></tr>
+      <tr><td>2022</td><td>6.7</td><td>6.48</td><td class="pos">通過</td></tr>
+      <tr><td>2023</td><td>10.5</td><td>7.14</td><td class="pos">通過</td></tr>
+      <tr class="flagrow"><td>2024</td><td>9.45</td><td>10.3</td><td class="negv">不通過</td></tr>
+      <tr><td>2025</td><td>14.1</td><td>6.84</td><td class="pos">通過</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>2018、2024 這兩年帳面淨利略高於實際營業現金流，代表獲利中有一部分尚未轉為現金（可能是應收帳款或存貨增加），但並非長期趨勢，其餘 8 年現金流品質良好。</p>
+
+  <!-- Rule 6 -->
+  <h3 class="rule-title"><span class="rule-num">規則六</span>E 期末現金餘額穩定性<span class="score-pill">70 分</span></h3>
+  <p>E 的走勢並非單調上升，波動幅度不小：2016–2018 連續下滑（11.3→6.45億），2019 因融資活動大幅淨流入跳升到 19.8 億，之後在 7.84～19.2 億區間反覆震盪，2025 年收在 17.5 億。長期來看（十年頭尾比較）現金餘額成長約 55%，方向正向，但過程波動較大，不算平穩的「穩定成長」型，比較接近<b>「震盪墊高」型</b>：整體往上，但每年都可能有較大起伏，不宜只看單一年度數字判斷體質好壞。</p>
+  <div class="chart-box">
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" id="chartE"></svg>
+    <div class="chart-caption">圖四：期末現金餘額 E（2016–2025，億元）</div>
+  </div>
+
+  <!-- Verdict -->
+  <div class="verdict">
+    <div class="verdict-flex">
+      <div>
+        <div class="label">六項平均總分</div>
+        <div class="totalscore">75<span style="font-size:20px;">%</span></div>
+      </div>
+      <span class="badge-good">良好（60–79%）</span>
+    </div>
+    <p style="margin-bottom:0;"><b>關卡判斷：現金流體質可以繼續看下去。</b>本業現金流十年未曾轉負，最嚴重警戒訊號從未出現，2020年後的復甦力道也具體反映在A、E兩項數據上。主要待確認事項是規則四的融資結構細項——建議你之後若方便，補上 Goodinfo 頁面往下捲動的投資/融資活動明細截圖，我可以重新校正規則二、三、四的分數。若你想直接往下走，我們可以進入第 2 步：查詢股價、EPS、殖利率等基本資訊。</p>
+  </div>
+
+  <div class="footer-meta">
+    報告版本 v1.0｜第 1 步完成，生成時間：2026-09-16（台北時間）<br>
+    資料來源：使用者提供之現金流量表截圖（含平均股本、財報評分、年度股價、獲利、現金流量、現金餘額欄位），非 Claude 自行搜尋取得。
+  </div>
+</section>
+
+</div>
+
+<script>
+function bar(x,y,w,h,fill,rx){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" rx="${rx||1.5}"></rect>`;}
+function txt(x,y,s,anchor,size,fill,style){return `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" font-size="${size||11}" fill="${fill||'#565F6B'}" font-family="'Roboto Mono',monospace" ${style||''}>${s}</text>`;}
+
+const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+
+// ---- Chart A ----
+(function(){
+  const zero_y=220, left_pad=50, top_pad=30, plot_h=190, vmax=14.1;
+  const bars = [
+    [63.8,77.2,41.4,142.8,'#2f6f5e',10.6],
+    [132.8,124.2,41.4,95.8,'#2f6f5e',7.11],
+    [201.8,137.1,41.4,82.9,'#2f6f5e',6.15],
+    [270.8,168.5,41.4,51.5,'#2f6f5e',3.82],
+    [339.8,149.4,41.4,70.6,'#2f6f5e',5.24],
+    [408.8,141.8,41.4,78.2,'#2f6f5e',5.8],
+    [477.8,129.7,41.4,90.3,'#2f6f5e',6.7],
+    [546.8,78.5,41.4,141.5,'#2f6f5e',10.5],
+    [615.8,92.7,41.4,127.3,'#2f6f5e',9.45],
+    [684.8,30.0,41.4,190.0,'#2f6f5e',14.1]
+  ];
+  let svg = '';
+  // gridlines 0,4,8,12,16
+  [0,4,8,12,16].forEach(v=>{
+    const gy = zero_y - (v/vmax)*plot_h;
+    svg += `<line x1="50" y1="${gy}" x2="740" y2="${gy}" stroke="#E1DCCF" stroke-width="1" ${v===0?'':'stroke-dasharray="3,3"'}/>`;
+    svg += txt(44,gy+4,v,'end',10);
+  });
+  bars.forEach((b,i)=>{
+    svg += bar(b[0],b[1],b[2],b[3],b[4]);
+    svg += txt(b[0]+b[2]/2, b[1]-6, b[5], 'middle', 11, '#1C2430');
+    svg += txt(b[0]+b[2]/2, 238, years[i], 'middle', 11);
+  });
+  document.getElementById('chartA').innerHTML = svg;
+})();
+
+// ---- Chart B ----
+(function(){
+  const zero_y=30.8, vmin=-14.2, plot_h=190, top_pad=30;
+  const bars = [
+    [63.8,30.0,41.4,0.8,'#2f6f5e',0.06],
+    [132.8,30.8,41.4,120.2,'#c0483a',-9.02],
+    [201.8,30.8,41.4,88.6,'#c0483a',-6.65],
+    [270.8,30.8,41.4,123.6,'#c0483a',-9.28],
+    [339.8,30.8,41.4,139.9,'#c0483a',-10.5],
+    [408.8,30.8,41.4,159.9,'#c0483a',-12],
+    [477.8,30.8,41.4,189.2,'#c0483a',-14.2],
+    [546.8,30.8,41.4,127.0,'#c0483a',-9.53],
+    [615.8,30.8,41.4,158.6,'#c0483a',-11.9],
+    [684.8,30.8,41.4,77.7,'#c0483a',-5.83]
+  ];
+  let svg='';
+  [0,-4,-8,-12].forEach(v=>{
+    const gy = zero_y + (v/vmin)*plot_h;
+    svg += `<line x1="50" y1="${gy}" x2="740" y2="${gy}" stroke="#E1DCCF" stroke-width="1" ${v===0?'':'stroke-dasharray="3,3"'}/>`;
+    svg += txt(44,gy+4,v,'end',10);
+  });
+  bars.forEach((b,i)=>{
+    svg += bar(b[0],b[1],b[2],b[3],b[4]);
+    const ly = b[4]==='#2f6f5e' ? b[1]-6 : b[1]+b[3]+14;
+    svg += txt(b[0]+b[2]/2, ly, b[5], 'middle', 11, '#1C2430');
+    svg += txt(b[0]+b[2]/2, 238, years[i], 'middle', 11);
+  });
+  document.getElementById('chartB').innerHTML = svg;
+})();
+
+// ---- Chart E ----
+(function(){
+  const zero_y=220, vmax=19.8, plot_h=190;
+  const bars = [
+    [63.8,111.6,41.4,108.4,'#2f6f5e',11.3],
+    [132.8,133.8,41.4,86.2,'#2f6f5e',8.98],
+    [201.8,158.1,41.4,61.9,'#2f6f5e',6.45],
+    [270.8,30.0,41.4,190.0,'#2f6f5e',19.8],
+    [339.8,91.4,41.4,128.6,'#2f6f5e',13.4],
+    [408.8,104.8,41.4,115.2,'#2f6f5e',12],
+    [477.8,144.8,41.4,75.2,'#2f6f5e',7.84],
+    [546.8,35.8,41.4,184.2,'#2f6f5e',19.2],
+    [615.8,82.8,41.4,137.2,'#2f6f5e',14.3],
+    [684.8,52.1,41.4,167.9,'#2f6f5e',17.5]
+  ];
+  let svg='';
+  [0,5,10,15,20].forEach(v=>{
+    const gy = zero_y - (v/vmax)*plot_h;
+    svg += `<line x1="50" y1="${gy}" x2="740" y2="${gy}" stroke="#E1DCCF" stroke-width="1" ${v===0?'':'stroke-dasharray="3,3"'}/>`;
+    svg += txt(44,gy+4,v,'end',10);
+  });
+  bars.forEach((b,i)=>{
+    svg += bar(b[0],b[1],b[2],b[3],b[4]);
+    svg += txt(b[0]+b[2]/2, b[1]-6, b[5], 'middle', 11, '#1C2430');
+    svg += txt(b[0]+b[2]/2, 238, years[i], 'middle', 11);
+  });
+  document.getElementById('chartE').innerHTML = svg;
+})();
+
+// ---- Chart B/C paired ----
+(function(){
+  const zero_y=146.8, flagged=[2019,2021,2022,2023];
+  const data = [
+    {yr:2016, bx:58.4, by:146.4, bw:24.1, bh:0.4, bv:0.06, cx:86.5, cy:146.8, cw:24.1, ch:29.1, cv:-4.68},
+    {yr:2017, bx:127.3, by:146.8, bw:24.1, bh:56.0, bv:-9.02, cx:155.5, cy:146.8, cw:24.1, ch:2.9, cv:-0.47},
+    {yr:2018, bx:196.3, by:146.8, bw:24.1, bh:41.3, bv:-6.65, cx:224.5, cy:146.8, cw:24.1, ch:12.4, cv:-1.99},
+    {yr:2019, bx:265.4, by:146.8, bw:24.1, bh:57.6, bv:-9.28, cx:293.5, cy:30.0, cw:24.1, ch:116.8, cv:18.8},
+    {yr:2020, bx:334.4, by:146.8, bw:24.1, bh:65.2, bv:-10.5, cx:362.5, cy:146.8, cw:24.1, ch:7.1, cv:-1.14},
+    {yr:2021, bx:403.4, by:146.8, bw:24.1, bh:74.5, bv:-12, cx:431.5, cy:116.6, cw:24.1, ch:30.2, cv:4.86},
+    {yr:2022, bx:472.4, by:146.8, bw:24.1, bh:88.2, bv:-14.2, cx:500.5, cy:126.2, cw:24.1, ch:20.6, cv:3.32},
+    {yr:2023, bx:541.4, by:146.8, bw:24.1, bh:59.2, bv:-9.53, cx:569.5, cy:82.2, cw:24.1, ch:64.6, cv:10.4},
+    {yr:2024, bx:610.4, by:146.8, bw:24.1, bh:73.9, bv:-11.9, cx:638.5, cy:146.8, cw:24.1, ch:16.0, cv:-2.57},
+    {yr:2025, bx:679.4, by:146.8, bw:24.1, bh:36.2, bv:-5.83, cx:707.5, cy:146.8, cw:24.1, ch:32.3, cv:-5.2}
+  ];
+  let svg='';
+  const plot_h=190, vmax=18.8, vmin=-14.2, vrange=vmax-vmin, top_pad=30;
+  [16,12,8,4,0,-4,-8,-12].forEach(v=>{
+    const gy = top_pad + plot_h*(vmax-v)/vrange;
+    svg += `<line x1="50" y1="${gy}" x2="740" y2="${gy}" stroke="#E1DCCF" stroke-width="1" ${v===0?'':'stroke-dasharray="3,3"'}/>`;
+    svg += txt(44,gy+4,v,'end',10);
+  });
+  data.forEach(d=>{
+    if(flagged.includes(d.yr)){
+      svg += `<rect x="${d.bx-6}" y="18" width="${(d.cx+d.cw)-(d.bx-6)+6}" height="242" fill="#F7E7E3" opacity="0.6"/>`;
+    }
+  });
+  data.forEach(d=>{
+    svg += bar(d.bx,d.by,d.bw,d.bh, d.bv>=0?'#2f6f5e':'#c0483a');
+    svg += bar(d.cx,d.cy,d.cw,d.ch, d.cv>=0?'#2f6f5e':'#c0483a');
+    const bly = d.bv>=0 ? d.by-6 : d.by+d.bh+13;
+    const cly = d.cv>=0 ? d.cy-6 : d.cy+d.ch+13;
+    svg += txt(d.bx+d.bw/2, bly, d.bv, 'middle', 10, '#1C2430');
+    svg += txt(d.cx+d.cw/2, cly, d.cv, 'middle', 10, '#1C2430');
+    svg += txt((d.bx+d.cx+d.cw)/2, 256, d.yr, 'middle', 11);
+  });
+  document.getElementById('chartBC').innerHTML = svg;
+})();
+
+// ---- Nav smooth scroll + active state ----
+(function(){
+  document.querySelectorAll('nav.stepnav a:not(.locked)').forEach(a=>{
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+  const sections = document.querySelectorAll('section.step');
+  const navLinks = {};
+  document.querySelectorAll('nav.stepnav a:not(.locked)').forEach(a=>{
+    navLinks[a.getAttribute('href').slice(1)] = a;
+  });
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        Object.values(navLinks).forEach(a=>a.classList.remove('active'));
+        const link = navLinks[entry.target.id];
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+})();
+</script>
+
+</body>
+</html>
